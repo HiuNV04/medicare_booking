@@ -4,19 +4,20 @@
  */
 package controller;
 
-import dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author ADMIN
+ * @author kinkin
  */
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "Home", urlPatterns = {"/home"})
+public class Home extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +36,10 @@ public class RegisterController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RegisterController</title>");
+            out.println("<title>Servlet Home</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RegisterController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Home at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +57,7 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -70,38 +71,7 @@ public class RegisterController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-
-        String email = request.getParameter("email");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmPassword");
-
-        if (!password.equals(confirmPassword)) {
-            request.setAttribute("error", "Mật khẩu không khớp.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-            return;
-        }
-
-        AccountDAO dao = new AccountDAO();
-
-        if (dao.isEmailExist(email)) {
-            request.setAttribute("error", "Email đã được sử dụng.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-            return;
-        }
-
-        if (dao.isUsernameExist(username)) {
-            request.setAttribute("error", "Tên đăng nhập đã được sử dụng.");
-            request.getRequestDispatcher("register.jsp").forward(request, response);
-            return;
-        }
-
-        int defaultRoleId = 5; 
-        dao.insertAccount(email, username, password, defaultRoleId);
-
-        request.setAttribute("success", "Đăng ký thành công!");
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

@@ -4,10 +4,114 @@
  */
 package model;
 
+import java.util.Date;
+
 /**
  *
  * @author ADMIN
  */
 public class Account {
+  private int id;
+    private String email;
+    private String username;
+    private String password;
+    private String passwordHash;
+    private int roleId;
+    private String resetToken;
+    private Date resetTokenExpiry;
+    private boolean status;
+
+    public Account() {
+    }
+
+    public Account(int id, String email, String username, String password, String passwordHash, int roleId, String resetToken, Date resetTokenExpiry, boolean status) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.passwordHash = passwordHash;
+        this.roleId = roleId;
+        this.resetToken = resetToken;
+        this.resetTokenExpiry = resetTokenExpiry;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public Date getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
+
+    public void setResetTokenExpiry(Date resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", passwordHash=" + passwordHash + ", roleId=" + roleId + ", resetToken=" + resetToken + ", resetTokenExpiry=" + resetTokenExpiry + ", status=" + status + '}';
+    }
+
     
 }
