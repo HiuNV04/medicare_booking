@@ -6,7 +6,7 @@ package controller.admin;
 
 import dal.DoctorLevelDAO;
 import dal.SpecializationDAO;
-import dal.UserAccountDAO;
+import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,32 +17,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.DoctorLevel;
 import model.Specialization;
-import model.UserAccount;
+import model.Staff;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(name = "ViewUserDetailController", urlPatterns = {"/viewUserDetail"})
-public class ViewUserDetailController extends HttpServlet {
+@WebServlet(urlPatterns = {"/viewStaffDetail"})
+public class ViewStaffDetailController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserAccountDAO dao = new UserAccountDAO();
-        String username = request.getParameter("username");
-        String role = request.getParameter("role");
-
-        UserAccount accountDetail = dao.viewDetailAccount(username, role);
-        List<Specialization> specializations = new SpecializationDAO().getAll();
-        List<DoctorLevel> doctorLevels = new DoctorLevelDAO().getAll();
-
-        request.setAttribute("specializations", specializations);
-        request.setAttribute("doctorLevels", doctorLevels);
-
-        request.setAttribute("ua", accountDetail);
-        request.getRequestDispatcher("/admin/viewAccountDetail.jsp").forward(request, response);
-
+        StaffDAO dao = new StaffDAO();
+        String idString = request.getParameter("id").trim();
+        int id = Integer.parseInt(idString);
+        Staff staff = dao.viewStaffDetail(id);
+        request.setAttribute("staff", staff);
+        request.getRequestDispatcher("/admin/viewStaffDetail.jsp").forward(request, response);
     }
 
     @Override

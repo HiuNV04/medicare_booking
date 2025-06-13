@@ -10,8 +10,8 @@ import java.util.Date;
  *
  * @author ADMIN
  */
-public class UserAccount {
-     private int id;
+public class Staff {
+    private int id;
     private String imageUrl;
     private String email;
     private String username;
@@ -23,16 +23,11 @@ public class UserAccount {
     private String address;
     private String phoneNumber;
     private boolean status;
-    //
-    private Integer doctorLevelId;
-    private Integer specializationId;
-    private String  identityNumber;
-    private String  insuranceNumber;
 
-    public UserAccount() {
+    public Staff() {
     }
 
-    public UserAccount(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status, Integer doctorLevelId, Integer specializationId, String identityNumber, String insuranceNumber) {
+    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -45,10 +40,6 @@ public class UserAccount {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.status = status;
-        this.doctorLevelId = doctorLevelId;
-        this.specializationId = specializationId;
-        this.identityNumber = identityNumber;
-        this.insuranceNumber = insuranceNumber;
     }
 
     public int getId() {
@@ -147,42 +138,7 @@ public class UserAccount {
         this.status = status;
     }
 
-    public Integer getDoctorLevelId() {
-        return doctorLevelId;
-    }
-
-    public void setDoctorLevelId(Integer doctorLevelId) {
-        this.doctorLevelId = doctorLevelId;
-    }
-
-    public Integer getSpecializationId() {
-        return specializationId;
-    }
-
-    public void setSpecializationId(Integer specializationId) {
-        this.specializationId = specializationId;
-    }
-
-    public String getIdentityNumber() {
-        return identityNumber;
-    }
-
-    public void setIdentityNumber(String identityNumber) {
-        this.identityNumber = identityNumber;
-    }
-
-    public String getInsuranceNumber() {
-        return insuranceNumber;
-    }
-
-    public void setInsuranceNumber(String insuranceNumber) {
-        this.insuranceNumber = insuranceNumber;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAccount{" + "id=" + id + ", imageUrl=" + imageUrl + ", email=" + email + ", username=" + username + ", password=" + password + ", role=" + role + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", address=" + address + ", phoneNumber=" + phoneNumber + ", status=" + status + ", doctorLevelId=" + doctorLevelId + ", specializationId=" + specializationId + ", identityNumber=" + identityNumber + ", insuranceNumber=" + insuranceNumber + '}';
-    }
+   
    
     
 }
