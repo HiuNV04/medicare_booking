@@ -12,11 +12,16 @@ public class DBContext {
         try {
             String user = "sa"; //sửa theo cấu hình cảu mình
             String pass = "sa"; // sửa theo cấu hình cảu mình
-            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=medicare_booking"; //đổi tên DATABASE
+            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=Medicare_Booking"; //đổi tên DATABASE
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static void main(String[] args) {
+        DBContext d = new DBContext();
+    }
+
 }
