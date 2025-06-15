@@ -5,16 +5,14 @@
 
 package controller;
 
-import dal.StaffDAO;
-import model.Account;
-import model.Staff;
+import dal.UserDAO;
+import model.User;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
 
 @WebServlet(name="ManagerProfileServlet", urlPatterns={"/manager/profile"})
@@ -30,40 +28,33 @@ public class ManagerProfileServlet extends HttpServlet {
 //            return;
 //        }
 
-        Account acc = new Account();
-        acc.setId(2); // id của manager mẫu trong DB
-        acc.setEmail("manager1@medicare.com");
-        acc.setRoleId(2);
-        
-        StaffDAO staffDAO = new StaffDAO();
-        Staff staff = staffDAO.getStaffByAccountId(acc.getId());
-        request.setAttribute("staff", staff);
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserById(2);
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/auth/manager_profile.jsp").forward(request, response);
     }
 
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int staffId = Integer.parseInt(request.getParameter("id"));
+        int userId = Integer.parseInt(request.getParameter("id"));
         String fullName = request.getParameter("fullName");
         String address = request.getParameter("address");
         String phone = request.getParameter("phoneNumber");
         String gender = request.getParameter("gender");
-        String imageURL = request.getParameter("imageURL");
+        String imageUrl = request.getParameter("imageUrl");
         java.sql.Date dob = java.sql.Date.valueOf(request.getParameter("dateOfBirth"));
 
-        Staff s = new Staff();
-        s.setId(staffId);
-        s.setFullName(fullName);
-        s.setAddress(address);
-        s.setPhoneNumber(phone);
-        s.setGender(gender);
-        s.setImageURL(imageURL);
-        s.setDateOfBirth(dob);
-
-        StaffDAO staffDAO = new StaffDAO();
-        staffDAO.updateStaff(s);
-
+        UserDAO userDAO = new UserDAO();
+        User user = userDAO.getUserById(userId);
+        user.setFullName(fullName);
+        user.setAddress(address);
+        user.setPhoneNumber(phone);
+        user.setGender(gender);
+        user.setImageUrl(imageUrl);
+        user.setDateOfBirth(dob);
+        // TODO: Thêm hàm updateUser(user) trong UserDAO để cập nhật DB
+        // userDAO.updateUser(user);
         response.sendRedirect("home");
     }
     

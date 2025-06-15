@@ -10,34 +10,34 @@
 <div class="container mt-5">
     <h2>Chỉnh sửa thông tin cá nhân</h2>
     <form method="post" action="${pageContext.request.contextPath}/manager/profile">
-        <input type="hidden" name="id" value="${staff.id}"/>
+        <input type="hidden" name="id" value="${user.id}"/>
         <div class="mb-3">
             <label class="form-label">Họ tên</label>
-            <input type="text" class="form-control" name="fullName" value="${staff.fullName}" required>
+            <input type="text" class="form-control" name="fullName" value="${user.fullName}" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Ngày sinh</label>
-            <input type="date" class="form-control" name="dateOfBirth" value="${staff.dateOfBirth}" required>
+            <input type="date" class="form-control" name="dateOfBirth" value="${user.dateOfBirth}" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Địa chỉ</label>
-            <input type="text" class="form-control" name="address" value="${staff.address}">
+            <input type="text" class="form-control" name="address" value="${user.address}">
         </div>
         <div class="mb-3">
             <label class="form-label">Số điện thoại</label>
-            <input type="text" class="form-control" name="phoneNumber" value="${staff.phoneNumber}">
+            <input type="text" class="form-control" name="phoneNumber" value="${user.phoneNumber}">
         </div>
         <div class="mb-3">
             <label class="form-label">Giới tính</label>
             <select class="form-control" name="gender">
-                <option value="Nam" ${staff.gender == 'Nam' ? 'selected' : ''}>Nam</option>
-                <option value="Nữ" ${staff.gender == 'Nữ' ? 'selected' : ''}>Nữ</option>
-                <option value="Khác" ${staff.gender == 'Khác' ? 'selected' : ''}>Khác</option>
+                <option value="Nam" ${user.gender == 'Nam' ? 'selected' : ''}>Nam</option>
+                <option value="Nữ" ${user.gender == 'Nữ' ? 'selected' : ''}>Nữ</option>
+                <option value="Khác" ${user.gender == 'Khác' ? 'selected' : ''}>Khác</option>
             </select>
         </div>
         <div class="mb-3">
             <label class="form-label">Ảnh đại diện (URL)</label>
-            <input type="text" class="form-control" name="imageURL" value="${staff.imageURL}">
+            <input type="text" class="form-control" name="imageUrl" value="${user.imageUrl}">
         </div>
         <button type="submit" class="btn btn-success">Lưu thay đổi</button>
         <a href="${pageContext.request.contextPath}/manager/home" class="btn btn-secondary ms-2">Quay lại</a>

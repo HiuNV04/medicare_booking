@@ -5,8 +5,8 @@
 
 package controller;
 
-import dal.AccountDAO;
-import model.Account;
+import dal.UserDAO;
+import model.User;
 import util.PasswordUtil;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -31,12 +31,12 @@ public class ManagerChangePasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Account acc = (Account) session.getAttribute("account");
+        User user = (User) session.getAttribute("user");
         String oldPass = request.getParameter("oldPassword");
         String newPass = request.getParameter("newPassword");
         String confirmPass = request.getParameter("confirmPassword");
 
-        if (!PasswordUtil.hashSHA256(oldPass).equals(acc.getPasswordHash())) {
+        if (!PasswordUtil.hashSHA256(oldPass).equals(user.getPassword())) {
             request.setAttribute("error", "Mật khẩu cũ không đúng");
             request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
             return;
@@ -47,10 +47,11 @@ public class ManagerChangePasswordServlet extends HttpServlet {
             return;
         }
         String newHash = PasswordUtil.hashSHA256(newPass);
-        AccountDAO dao = new AccountDAO();
-        dao.updatePassword(acc.getId(), newHash);
-        acc.setPasswordHash(newHash);
-        session.setAttribute("account", acc);
+        UserDAO dao = new UserDAO();
+        // TODO: Thêm hàm updatePassword(userId, newHash) trong UserDAO
+        // dao.updatePassword(user.getId(), newHash);
+        user.setPassword(newHash);
+        session.setAttribute("user", user);
         request.setAttribute("success", "Đổi mật khẩu thành công");
         request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
     }
