@@ -112,7 +112,6 @@ public class StaffDAO extends MyDAO {
         }
     }
 
- 
     public List<Staff> getStaffsByPage(int page, int pageSize, String search, String role, String status) {
         List<Staff> list = new ArrayList<>();
         xSql = "SELECT * FROM staff WHERE 1=1 and role != 'Admin'";
@@ -144,7 +143,7 @@ public class StaffDAO extends MyDAO {
             ps.setInt(idx++, pageSize);
             rs = ps.executeQuery();
             while (rs.next()) {
-                 Staff staff = new Staff();
+                Staff staff = new Staff();
                 staff.setId(rs.getInt("id"));
                 staff.setImageUrl(rs.getString("image_url"));
                 staff.setEmail(rs.getString("email"));
@@ -199,39 +198,63 @@ public class StaffDAO extends MyDAO {
         }
         return count;
     }
-public boolean insertStaff(String imageUrl, String email, String username, String password,
-                          String role, String fullName, LocalDate dateOfBirth, String gender,
-                          String address, String phoneNumber) {
-    String sql = "INSERT INTO staff (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    try {
-        ps = con.prepareStatement(sql);
-        ps.setString(1, imageUrl);
-        ps.setString(2, email);
-        ps.setString(3, username);
-        ps.setString(4, password);
-        ps.setString(5, role);
-        ps.setString(6, fullName);
-        ps.setDate(7, java.sql.Date.valueOf(dateOfBirth)); // KHÔNG check null
-        ps.setString(8, gender);
-        ps.setString(9, address);
-        ps.setString(10, phoneNumber);
-         int affected = ps.executeUpdate();
-        return affected > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
+
+    public boolean addStaff(String imageUrl, String email, String username, String password,
+            String role, String fullName, LocalDate dateOfBirth, String gender,
+            String address, String phoneNumber) {
+        String sql = "INSERT INTO staff (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, imageUrl);
+            ps.setString(2, email);
+            ps.setString(3, username);
+            ps.setString(4, password);
+            ps.setString(5, role);
+            ps.setString(6, fullName);
+            ps.setDate(7, java.sql.Date.valueOf(dateOfBirth)); // KHÔNG check null
+            ps.setString(8, gender);
+            ps.setString(9, address);
+            ps.setString(10, phoneNumber);
+            int affected = ps.executeUpdate();
+            return affected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
+
+   
+
+    public boolean checkEmailExists(String email) {
+        xSql = "SELECT 1 FROM Staff WHERE email = ?";
+        try {
+        ps = con.prepareStatement(xSql);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+   public boolean checkUsernameExists(String username) {
+        xSql = "SELECT 1 FROM Staff WHERE username = ?";
+        try {
+        ps = con.prepareStatement(xSql);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public static void main(String[] args) {
-        StaffDAO dao = new StaffDAO();
-//        List<Staff> x = dao.getStaffsByPage("","","","");
-        Staff s = dao.viewStaffDetail(2);
-//        System.out.println(s);
-//        for (Staff a : x) {
-//            System.out.println(a);
-//        }
+        StaffDAO staff = new StaffDAO();
+        boolean isExisted = staff.checkUsernameExists("manager2");
+        System.out.println(isExisted);
     }
-
 }

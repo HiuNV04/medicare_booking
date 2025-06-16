@@ -284,8 +284,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageStaff"><i class="bi bi-person-badge"></i> Quản lí nhân viên</a></li>
-                                <li><a class="dropdown-item" href="manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
-                                <li><a class="dropdown-item" href="managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mt-3">
@@ -298,18 +298,16 @@
                     <div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
                         <div class="card shadow-sm border-0 w-100" style="max-width:900px;">
                             <div class="card-body">
-                                <c:if test="${not empty msgError}">
-                                    <div class="alert alert-danger">${msgError}</div>
-                                </c:if>
+                              
 
                                 <h4 class="card-title mb-4" style="color: #30425d;">
-                                    <i class="bi bi-person-plus"></i> Thêm nhân viên mới
+                                    <i class="bi bi-person-plus"></i> Thêm Bác sĩ mới
                                 </h4>
                                 <c:if test="${not empty param.message}">
                                     <div class="alert alert-${param.message eq 'Added successfully' ? 'success' : 'danger'}">${param.message}</div>
                                 </c:if>
                                 <!-- Form Thêm nhân viên -->
-                                <form id="staffForm" action="addStaff" method="post" enctype="multipart/form-data" novalidate>
+                                <form id="staffForm" action="addDoctor" method="post" enctype="multipart/form-data" novalidate>
 
                                     <div class="mb-3">
                                         <c:if test="${not empty imageUpload}">
@@ -317,7 +315,7 @@
                                         </c:if>
                                         <input id="imageUpload" type="file" name="imageUpload" class="form-control" accept="image/*" onchange="previewImage(event)">
                                         <span class="error-message" id="imageUpload-error"></span>
-                                     </div>
+                                    </div>
 
 
                                     <div class="mb-3">
@@ -325,7 +323,7 @@
                                         <div class="d-flex align-items-center">
                                             <input id="email" name="email" class="form-control" required value="${email != null ? email : ''}">                                            
                                         </div>
-                                        <span class="error-message" id="email-error"></span>
+                                        <span class="error-message" id="email-error">${emailError}</span>
 
                                     </div>
 
@@ -334,7 +332,7 @@
                                         <div class="d-flex align-items-center">
                                             <input id="username" name="username" class="form-control" required value="${username != null ? username : ''}">
                                         </div>
-                                        <span class="error-message" id="username-error"></span>
+                                        <span class="error-message" id="username-error">${usernameError}</span>
                                     </div>
 
                                     <div class="mb-3">
@@ -342,7 +340,7 @@
                                         <div class="d-flex align-items-center">
                                             <input id="password" name="password" type="text"  class="form-control" required value="${password != null ? password : ''}">
                                         </div>
-                                        <span class="error-message" id="password-error"></span>
+                                        <span class="error-message" id="password-error">${passwordError}</span>
 
                                     </div>
 
@@ -351,7 +349,7 @@
                                         <div class="d-flex align-items-center">
                                             <input id="fullName" name="fullName" class="form-control" required value="${fullName != null ? fullName : ''}">
                                         </div>
-                                        <span class="error-message" id="fullName-error"></span>
+                                        <span class="error-message" id="fullName-error">${fullNameError}</span>
                                     </div>
 
                                     <div class="mb-3">
@@ -359,10 +357,8 @@
                                         <div class="d-flex align-items-center">
                                             <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" required value="${dateOfBirth != null ? dateOfBirth : ''}">
                                         </div>
-                                        <span class="error-message" id="dateOfBirth-error"></span>
+                                        <span class="error-message" id="dateOfBirth-error">${dateOfBirthError}</span>
                                     </div>
-
-
 
                                     <div class="mb-3">
                                         <select id="gender" name="gender" class="form-select" required value="${gender != null ? gender : ''}" >
@@ -376,7 +372,7 @@
                                     <div class="mb-3">
                                         <label class="form-label">Địa chỉ</label>
                                         <input id="address" name="address" class="form-control" required value="${address != null ? address : ''}">
-                                        <span class="error-message" id="address-error"></span>
+                                        <span class="error-message" id="address-error">${addressError}</span>
                                     </div>
 
                                     <div class="mb-3">
@@ -384,30 +380,45 @@
                                         <div class="d-flex align-items-center">
                                             <input id="phoneNumber" name="phoneNumber" class="form-control"  required value="${phoneNumber != null ? phoneNumber : ''}">
                                         </div>
-                                        <span class="error-message" id="phoneNumber-error"></span>
+                                        <span class="error-message" id="phoneNumber-error">${phoneNumberError}</span>
+                                    </div>
+                                  
+                                    <div class="mb-3">
+                                        <label class="form-label">Doctor Level</label>
+                                        <select name="doctorLevelId" class="form-select">
+                                            <c:forEach var="lv" items="${doctorLevel}">
+                                                <option value="${lv.id}"  ${doctorLevelId == lv.id ? 'selected' : ''} > 
+                                                    ${lv.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-select">Vai trò</label>
-                                        <div class="d-flex align-items-center">
-                                            <select id="role" name="role" class="form-select" required value="${role != null ? role : ''}">
-                                                <option value="Receptionist" selected="">Receptionist</option>
-                                                <option value="Manager">Manager</option>
-                                            </select>
-                                        </div>
+                                        <label class="form-label">Specialization</label>
+                                        <select name="specializationId" class="form-select" >
+                                            <c:forEach var="sp" items="${specialization}">
+                                                <option value="${sp.id}" ${specializationId == sp.id ? 'selected' : ''}  >
+                                                    ${sp.name}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary px-4">
                                         <i class="bi bi-person-plus"></i> Thêm mới
                                     </button>
-                                    <a href="manageStaff" class="btn btn-link">Quay lại danh sách</a>
+                                    <a href="manageDoctor" class="btn btn-link">Quay lại danh sách</a>
                                 </form>
                             </div>
+                                            
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+ 
 
         <!-- Bootstrap JS and Icons -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

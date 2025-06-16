@@ -98,13 +98,13 @@
                     <div class="main-content">
                         <!-- Dòng 1: Button Thêm nhân viên, căn trái -->
                         <div class="mb-3">
-                            <a href="<%=request.getContextPath()%>/addStaff" class="btn btn-success">
-                                <i class="bi bi-person-plus"></i> Thêm nhân viên
+                            <a href="<%=request.getContextPath()%>/addDoctor" class="btn btn-success">
+                                <i class="bi bi-person-plus"></i> Thêm bác sĩ
                             </a>
 
                         </div>
                         <!-- Dòng 2: Search + Filter, chung 1 hàng, căn trái -->
-                        <form class="row g-2 mb-4 align-items-center" method="get" action="manageStaff">
+                        <form class="row g-2 mb-4 align-items-center" method="get" action="manageDoctor">
                             <div class="col-md-4">
                                 <input type="text" name="search" class="form-control"
                                        placeholder="Tìm kiếm theo email, username"
@@ -113,8 +113,7 @@
                             <div class="col-md-3">
                                 <select class="form-select" name="role">
                                     <option value="">Tất cả vai trò</option>
-                                    <option value="Manager" ${param.role == 'Manager' ? 'selected' : ''}>Manager</option>
-                                    <option value="Receptionist" ${param.role == 'Receptionist' ? 'selected' : ''}>Receptionist</option>
+                                    <option value="Doctor" ${param.role == 'Doctor' ? 'selected' : ''}>Doctor</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -144,29 +143,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="staff" items="${staffs}">
+                                    <c:forEach var="doctor" items="${doctors}">
                                         <tr>
-                                            <td>${staff.id}</td>
-                                            <td>${staff.email}</td>
-                                            <td>${staff.username}</td>
-                                            <td>${staff.role}</td>
+                                            <td>${doctor.id}</td>
+                                            <td>${doctor.email}</td>
+                                            <td>${doctor.username}</td>
+                                            <td>${doctor.role}</td>
                                             <td>
-                                                <span class="badge bg-${staff.status ? 'success' : 'secondary'}">
+                                                <span class="badge bg-${doctor.status ? 'success' : 'secondary'}">
                                                     <c:choose>
-                                                        <c:when test="${staff.status}">Hoạt động</c:when>
+                                                        <c:when test="${doctor.status}">Hoạt động</c:when>
                                                         <c:otherwise>Đã khóa</c:otherwise>
                                                     </c:choose>
                                                 </span>
                                             </td>
                                             <td>
-                                                
-                                                <a href="viewStaffDetail?id=${staff.id}" class="btn btn-sm btn-info text-white">
+                                                <a href="viewDoctorDetail?id=${doctor.id}" class="btn btn-sm btn-info text-white">
                                                     <i class="bi bi-eye"></i> Xem chi tiết
                                                 </a>
                                             </td>
                                         </tr>
                                     </c:forEach>
-                                    <c:if test="${empty staffs}">
+                                    <c:if test="${empty doctors}">
                                         <tr>
                                             <td colspan="6" class="text-center text-muted">Không có dữ liệu</td>
                                         </tr>
@@ -181,7 +179,7 @@
                                 <c:forEach var="i" begin="1" end="${totalPage}">
                                     <li class="page-item ${i == currentPage ? 'active' : ''}">
                                         <a class="page-link"
-                                           href="manageStaff?page=${i}&search=${param.search}&role=${param.role}&status=${param.status}">
+                                           href="manageDoctor?page=${i}&search=${param.search}&role=${param.role}&status=${param.status}">
                                             ${i}
                                         </a>
                                     </li>

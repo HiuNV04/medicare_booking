@@ -82,8 +82,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageStaff"><i class="bi bi-person-badge"></i> Quản lí nhân viên</a></li>
-                                <li><a class="dropdown-item" href="manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
-                                <li><a class="dropdown-item" href="managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
                             </ul>
                         </li>
                         <li class="nav-item mt-3">
@@ -159,6 +159,7 @@
                                                 </span>
                                             </td>
                                             <td>
+                                                
                                                 <a href="viewStaffDetail?id=${staff.id}" class="btn btn-sm btn-info text-white">
                                                     <i class="bi bi-eye"></i> Xem chi tiết
                                                 </a>

@@ -308,21 +308,21 @@
                                             <div class="alert alert-${param.message eq 'Update successfully' ? 'success' : 'danger'}">${param.message}</div>
                                         </c:if>
 
-                                        <form id="staffForm" action="updateStaff" method="post" enctype="multipart/form-data" >
+                                        <form id="staffForm" action="updateDoctor" method="post" enctype="multipart/form-data" >
 
                                             <div class="mb-3">
                                                 <label class="form-label">Id</label>
-                                                <input name="id" class="form-control" value="${staff.id}" required>
+                                                <input name="id" class="form-control" value="${doctor.id}" required>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Image:</label>
-                                                <c:if test="${not empty staff.imageUrl}">
-                                                    <img class="form-control" src="${staff.imageUrl}" alt="Current Image" class="image-preview" id="imagePreview">
-                                                        <input type="hidden" name="currentImageUrl" value="${staff.imageUrl}">
+                                                <c:if test="${not empty doctor.imageUrl}">
+                                                    <img class="form-control" src="${doctor.imageUrl}" alt="Current Image" class="image-preview" id="imagePreview">
+                                                    <input type="hidden" name="currentImageUrl" value="${doctor.imageUrl}">
 
                                                 </c:if>
-                                                <c:if test="${empty staff.imageUrl}">
+                                                <c:if test="${empty doctor.imageUrl}">
                                                     <img src="" alt="Preview Image" class="image-preview" id="imagePreview" style="display: none;">
                                                 </c:if>
                                                 <input type="file" name="imageUpload" class="form-control" accept="image/*" onchange="previewImage(event)">
@@ -331,7 +331,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id="email" name="email" class="form-control" value="${staff.email}">
+                                                    <input id="email" name="email" class="form-control" value="${doctor.email}">
                                                 </div>
                                                 <span class="error-message" id="email-error"></span>
 
@@ -340,7 +340,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Username</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id="username" name="username" class="form-control" value="${staff.username}">
+                                                    <input id="username" name="username" class="form-control" value="${doctor.username}">
                                                 </div>
                                                 <span class="error-message" id="username-error"></span>
 
@@ -349,7 +349,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Password</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id="password" name="password" type="text"  class="form-control" value="${staff.password}">
+                                                    <input id="password" name="password" type="text"  class="form-control" value="${doctor.password}">
                                                 </div>
                                                 <span class="error-message" id="password-error"></span>
 
@@ -358,7 +358,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Họ tên</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id="fullName" name="fullName" class="form-control" value="${staff.fullName}">
+                                                    <input id="fullName" name="fullName" class="form-control" value="${doctor.fullName}">
                                                 </div>
                                                 <span class="error-message" id="fullName-error"></span>
                                             </div>
@@ -369,23 +369,23 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Ngày sinh</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" value="${staff.dateOfBirth != null ? staff.dateOfBirth.toString() : ""}">
+                                                    <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" value="${doctor.dateOfBirth != null ? doctor.dateOfBirth.toString() : ""}">
                                                 </div>
                                                 <span class="error-message" id="dateOfBirth-error"></span>
                                             </div>
 
                                             <div class="mb-3">
                                                 <select name="gender" class="form-select">
-                                                    <option value="Nam"   ${staff.gender eq 'Nam'   ? 'selected' : ''}>Nam</option>
-                                                    <option value="Nữ"    ${staff.gender eq 'Nữ'    ? 'selected' : ''}>Nữ</option>
-                                                    <option value="Khác"  ${staff.gender eq 'Khác'  ? 'selected' : ''}>Khác</option>
+                                                    <option value="Nam"   ${doctor.gender eq 'Nam'   ? 'selected' : ''}>Nam</option>
+                                                    <option value="Nữ"    ${doctor.gender eq 'Nữ'    ? 'selected' : ''}>Nữ</option>
+                                                    <option value="Khác"  ${doctor.gender eq 'Khác'  ? 'selected' : ''}>Khác</option>
                                                 </select>
                                                 <span class="error-message" id="gender-error"></span>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Địa chỉ</label>
-                                                <input id="address" name="address" class="form-control" value="${staff.address}">
+                                                <input id="address" name="address" class="form-control" value="${doctor.address}">
                                                 <span class="error-message" id="address-error"></span>
                                             </div> 
 
@@ -393,7 +393,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Số điện thoại</label>
                                                 <div class="d-flex align-items-center">
-                                                    <input id="phoneNumber" name="phoneNumber" class="form-control"  value="${staff.phoneNumber}">
+                                                    <input id="phoneNumber" name="phoneNumber" class="form-control"  value="${doctor.phoneNumber}">
                                                 </div>
                                                 <span class="error-message" id="phoneNumber-error"></span>
                                             </div>
@@ -401,8 +401,32 @@
 
                                             <div class="mb-3">
                                                 <label class="form-label">Vai trò</label>
-                                                <input name="role" class="form-control" value="${staff.role}" readonly>
+                                                <input name="role" class="form-control" value="${doctor.role}" readonly>
                                             </div>
+
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Doctor Level</label>
+                                                <select name="doctorLevelId" class="form-select" required>
+                                                    <c:forEach var="lv" items="${doctorLevel}">
+                                                        <option value="${lv.id}" ${lv.id == doctor.doctorLevelId ? 'selected' : ''}>
+                                                            ${lv.name}
+                                                        </option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Specialization</label>
+                                                <select name="specializationId" class="form-select" required>
+                                                    <c:forEach var="sp" items="${specialization}">
+                                                        <option value="${sp.id}" ${sp.id == doctor.specializationId ? 'selected' : ''}>
+                                                            ${sp.name}
+                                                        </option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
                                             <button type="submit" class="btn btn-primary mt-2 px-4">
                                                 <i class="bi bi-save"></i> Save changes
                                             </button>
@@ -415,12 +439,12 @@
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body">
                                         <h5 class="card-title mb-4"><i class="bi bi-shield-lock"></i> Trạng thái tài khoản</h5>
-                                        <form action="changeStaffStatus" method="post">
-                                            <input type="hidden" name="id" value="${staff.id}">
+                                        <form action="changeDoctorStatus" method="post">
+                                            <input type="hidden" name="id" value="${doctor.id}">
                                             <div class="mb-4">
                                                 <label class="form-label">Trạng thái hiện tại:</label><br>
                                                 <c:choose>
-                                                    <c:when test="${staff.status}">
+                                                    <c:when test="${doctor.status}">
                                                         <span class="badge bg-success fs-6">Đang hoạt động</span>
                                                     </c:when>
                                                     <c:otherwise>
@@ -429,19 +453,19 @@
                                                 </c:choose>
                                             </div>
                                             <button type="submit" name="status"
-                                                    value="${staff.status ? 0 : 1}"
-                                                    class="btn ${staff.status ? 'btn-danger' : 'btn-success'} px-4">
-                                                <i class="bi ${staff.status ? 'bi-person-x-fill' : 'bi-person-check-fill'}"></i>
-                                                ${staff.status ? 'Deactivate' : 'Active'}
+                                                    value="${doctor.status ? 0 : 1}"
+                                                    class="btn ${doctor.status ? 'btn-danger' : 'btn-success'} px-4">
+                                                <i class="bi ${doctor.status ? 'bi-person-x-fill' : 'bi-person-check-fill'}"></i>
+                                                ${doctor.status ? 'Deactivate' : 'Active'}
                                             </button>
                                         </form>
                                     </div>
                                 </div>
-                                             
+
                             </div>
 
-                             <!-- Back button -->
-                            <a href="<%=request.getContextPath()%>/manageStaff" class="btn btn-link mt-4">
+                            <!-- Back button -->
+                            <a href="<%=request.getContextPath()%>/manageDoctor" class="btn btn-link mt-4">
                                 <i class="bi bi-arrow-left"></i> Quay lại danh sách
                             </a>
                         </div>

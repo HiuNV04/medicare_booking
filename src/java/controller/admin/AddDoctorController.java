@@ -1,6 +1,8 @@
 package controller.admin;
 
-import dal.StaffDAO;
+import dal.DoctorDAO;
+import dal.DoctorLevelDAO;
+import dal.SpecializationDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -19,21 +21,24 @@ import java.util.Collection;
         maxFileSize = 1024 * 1024 * 40, // 40MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
-@WebServlet(name = "AddStaffController", urlPatterns = {"/addStaff"})
-public class AddStaffController extends HttpServlet {
+@WebServlet(name = "AddDoctorController", urlPatterns = {"/addDoctor"})
+public class AddDoctorController extends HttpServlet {
 
     private static final String UPLOAD_DIRECTORY = "uploads";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/admin/addStaff.jsp").forward(request, response);
+        DoctorLevelDAO doc = new DoctorLevelDAO();
+        SpecializationDAO spec = new SpecializationDAO();
+        request.setAttribute("doctorLevel", doc.getDoctorLevel());
+        request.setAttribute("specialization", spec.getSpecialization());
+        request.getRequestDispatcher("/admin/addDoctor.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -42,8 +47,9 @@ public class AddStaffController extends HttpServlet {
         String gender = request.getParameter("gender");
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
-        String role = request.getParameter("role");
         String imageUrl = null;
+        int specializationId = Integer.parseInt(request.getParameter("specializationId"));
+        int doctorLevelId = Integer.parseInt(request.getParameter("doctorLevelId"));
 
         // Validate ảnh đại diện (optional, không bắt buộc phải chọn)
         Collection<Part> parts = request.getParts();
@@ -76,7 +82,8 @@ public class AddStaffController extends HttpServlet {
         request.setAttribute("gender", gender);
         request.setAttribute("address", address);
         request.setAttribute("phoneNumber", phoneNumber);
-        request.setAttribute("role", role);
+        request.setAttribute("specializationId", specializationId);
+        request.setAttribute("doctorLevelId", doctorLevelId);
 
         boolean hasError = false;
 
@@ -87,7 +94,7 @@ public class AddStaffController extends HttpServlet {
         } else if (!email.contains("@")) {
             request.setAttribute("emailError", "Email phải chứa ký tự @");
             hasError = true;
-        } else if (new StaffDAO().checkEmailExists(email)) {
+        } else if (new DoctorDAO().checkEmailExists(email)) {
             request.setAttribute("emailError", "Email đã tồn tại");
             hasError = true;
             request.setAttribute("email", ""); // clear input nếu trùng
@@ -99,7 +106,7 @@ public class AddStaffController extends HttpServlet {
         } else if (!username.matches("^[A-Za-z0-9]{5,}$")) {
             request.setAttribute("usernameError", "Username từ 5 ký tự, chỉ chữ/số, không khoảng trắng");
             hasError = true;
-        } else if (new StaffDAO().checkUsernameExists(username)) {
+        } else if (new DoctorDAO().checkUsernameExists(username)) {
             request.setAttribute("usernameError", "Username đã tồn tại");
             hasError = true;
             request.setAttribute("username", ""); // clear input nếu trùng
@@ -149,9 +156,13 @@ public class AddStaffController extends HttpServlet {
         }
 
         if (hasError) {
-            // Quay lại trang với lỗi, giữ lại input hợp lệ
-            request.getRequestDispatcher("/admin/addStaff.jsp").forward(request, response);
+            DoctorLevelDAO doc = new DoctorLevelDAO();
+            SpecializationDAO spec = new SpecializationDAO();
+            request.setAttribute("doctorLevel", doc.getDoctorLevel());
+            request.setAttribute("specialization", spec.getSpecialization());
+            request.getRequestDispatcher("/admin/addDoctor.jsp").forward(request, response);
             return;
+
         }
 
         // Nếu không lỗi, insert vào DB
@@ -160,18 +171,19 @@ public class AddStaffController extends HttpServlet {
             dateOfBirth = LocalDate.parse(dateOfBirthStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
 
-        boolean insert = new StaffDAO().addStaff(
-                imageUrl, email, username, password, role, fullName,
-                dateOfBirth, gender, address, phoneNumber
+        boolean add = new DoctorDAO().addDoctor(
+                imageUrl, email, username, password, "Doctor", fullName,
+                dateOfBirth, gender, address, phoneNumber, doctorLevelId, specializationId
         );
 
-        if (insert) {
+        if (add) {
             String encodedMsg = java.net.URLEncoder.encode("Added successfully", "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/addStaff?message=" + encodedMsg);
+            response.sendRedirect(request.getContextPath() + "/addDoctor?message=" + encodedMsg);
         } else {
             String encodedMsg = java.net.URLEncoder.encode("Added failed", "UTF-8");
-            response.sendRedirect(request.getContextPath() + "/addStaff?message=" + encodedMsg);
+            response.sendRedirect(request.getContextPath() + "/addDoctor?message=" + encodedMsg);
         }
+
     }
 
     private String extractFileName(Part part) {

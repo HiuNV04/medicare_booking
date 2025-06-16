@@ -24,13 +24,13 @@ public class Patient {
     private String phoneNumber;
     private boolean status;
     //
-    private int identityNumber;
-    private int insuranceNumber;
+    private String identityNumber;
+    private String insuranceNumber;
 
     public Patient() {
     }
 
-    public Patient(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status, int identityNumber, int insuranceNumber) {
+    public Patient(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status, String identityNumber, String insuranceNumber) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -143,20 +143,21 @@ public class Patient {
         this.status = status;
     }
 
-    public int getIdentityNumber() {
+    public String getIdentityNumber() {
         return identityNumber;
     }
 
-    public void setIdentityNumber(int identityNumber) {
+    public void setIdentityNumber(String identityNumber) {
         this.identityNumber = identityNumber;
     }
 
-    public int getInsuranceNumber() {
+    public String getInsuranceNumber() {
         return insuranceNumber;
     }
 
-    public void setInsuranceNumber(int insuranceNumber) {
+    public void setInsuranceNumber(String insuranceNumber) {
         this.insuranceNumber = insuranceNumber;
     }
+
     
 }

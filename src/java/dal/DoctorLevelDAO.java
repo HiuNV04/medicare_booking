@@ -14,7 +14,7 @@ import model.DoctorLevel;
  */
 public class DoctorLevelDAO extends MyDAO {
 
-    public List<DoctorLevel> getAll() {
+    public List<DoctorLevel> getDoctorLevel() {
         List<DoctorLevel> list = new ArrayList<>();
         xSql = "SELECT id, name, examination_fee FROM doctor_level";
         try {

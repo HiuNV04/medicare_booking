@@ -1,16 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.*" %>
 <%@ page import="java.util.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<%
-    Staff staff = (Staff) request.getAttribute("staff");
-    if (staff == null) {
-%>
-<div class="alert alert-danger mt-5">Không tìm thấy tài khoản!</div>
-<%
-        return;
-    }
-%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -66,6 +60,11 @@
                 float: right;
                 margin-top: 9px;
             }
+            .error-message {
+                color: red;
+                font-size: 0.95em;
+                margin-top: 3px;
+            }
         </style>
         <script>
             function previewImage(event) {
@@ -80,6 +79,188 @@
                     reader.readAsDataURL(file);
                 }
             }
+            window.onload = function () {
+                // Lấy element cho tiện
+                const imageUpload = document.getElementById('imageUpload');
+                const imageUploadError = document.getElementById('imageUpload-error');
+
+                const email = document.getElementById('email');
+                const emailError = document.getElementById('email-error');
+
+                const username = document.getElementById('username');
+                const usernameError = document.getElementById('username-error');
+
+                const password = document.getElementById('password');
+                const passwordError = document.getElementById('password-error');
+
+
+                const fullName = document.getElementById('fullName');
+                const fullNameError = document.getElementById('fullName-error');
+
+
+                const dateOfBirth = document.getElementById('dateOfBirth');
+                const dateOfBirthError = document.getElementById('dateOfBirth-error');
+
+
+
+                const address = document.getElementById('address');
+                const addressError = document.getElementById('address-error');
+
+                const phoneNumber = document.getElementById('phoneNumber');
+                const phoneNumberError = document.getElementById('phoneNumber-error');
+
+
+
+                function validateImageUpload() {
+                    const val = imageUpload.value.trim();
+                    if (val === '') {
+                        imageUploadError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    imageUploadError.textContent = '';
+                    return true;
+                }
+
+                function validateEmail() {
+                    const val = email.value.trim();
+                    if (val === '') {
+                        emailError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    if (!val.includes('@')) {
+                        emailError.textContent = 'Email phải chứa ký tự @';
+                        return false;
+                    }
+                    emailError.textContent = '';
+                    return true;
+                }
+                function validateUsername() {
+                    const val = username.value.trim();
+                    if (val === '') {
+                        usernameError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    if (!/^[A-Za-z0-9]{5,}$/.test(val)) {
+                        usernameError.textContent = 'Username từ 5 ký tự, chỉ chữ/số, không khoảng trắng';
+                        return false;
+                    }
+                    usernameError.textContent = '';
+                    return true;
+                }
+                function validatePassword() {
+                    const val = password.value;
+                    if (val === '') {
+                        passwordError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    if (!/^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])(?=\S+$).{8,}$/.test(val)) {
+                        passwordError.textContent = 'Mật khẩu 8 ký tự, 1 in hoa, 1 ký tự đặc biệt, không dấu cách';
+                        return false;
+                    }
+                    passwordError.textContent = '';
+                    return true;
+                }
+
+
+                function validateFullName() {
+                    const val = fullName.value.trim();
+                    if (val === '') {
+                        fullNameError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    fullNameError.textContent = '';
+                    return true;
+                }
+
+                function validateDob() {
+                    const val = dateOfBirth.value.trim();
+                    if (val === '') {
+                        dateOfBirthError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    const dob = new Date(val);
+                    const today = new Date();
+                    if (dob > today) {
+                        dateOfBirthError.textContent = 'Không được chọn ngày trong tương lai';
+                        return false;
+                    }
+                    dateOfBirthError.textContent = '';
+                    return true;
+                }
+
+
+
+                function validateAddress() {
+                    const val = address.value.trim();
+                    if (val === '') {
+                        addressError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    addressError.textContent = '';
+                    return true;
+                }
+
+                function validatePhone() {
+                    const val = phoneNumber.value.trim();
+                    if (val === '') {
+                        phoneNumberError.textContent = 'Không được để trống';
+                        return false;
+                    }
+                    if (!/^[0-9]{9,12}$/.test(val)) {
+                        phoneNumberError.textContent = 'Số điện thoại chỉ chứa số, từ 9-12 ký tự';
+                        return false;
+                    }
+                    phoneNumberError.textContent = '';
+                    return true;
+                }
+
+
+
+
+// Sự kiện realtime
+                imageUpload.addEventListener('input', validateImageUpload);
+                email.addEventListener('input', validateEmail);
+                username.addEventListener('input', validateUsername);
+                password.addEventListener('input', validatePassword);
+                fullName.addEventListener('input', validateFullName);
+                dateOfBirth.addEventListener('input', validateDob);
+                address.addEventListener('input', validateAddress);
+                phoneNumber.addEventListener('input', validatePhone);
+
+                validateImageUpload();
+                validateEmail();
+                validateUsername();
+                validatePassword();
+                validateFullName();
+                validateDob();
+                validateAddress();
+                validatePhone();
+
+                document.getElementById('staffForm').addEventListener('submit', function (e) {
+                    let valid = true;
+                    if (!validateImageUpload())
+                        valid = false;
+
+                    if (!validateEmail())
+                        valid = false;
+                    if (!validateUsername())
+                        valid = false;
+                    if (!validatePassword())
+                        valid = false;
+                    if (!validateFullName())
+                        valid = false;
+                    if (!validateDob())
+                        valid = false;
+                    if (!validateAddress())
+                        valid = false;
+                    if (!validatePhone())
+                        valid = false;
+                    if (!valid)
+                        e.preventDefault();
+                });
+            };
+
+
         </script>
     </head>
     <body>
@@ -102,8 +283,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageStaff"><i class="bi bi-person-badge"></i> Quản lí nhân viên</a></li>
-                                <li><a class="dropdown-item" href="manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
-                                <li><a class="dropdown-item" href="managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
                             </ul>
                         </li>
 
@@ -122,26 +303,24 @@
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body">
                                         <h5 class="card-title mb-4"><i class="bi bi-person-lines-fill"></i> Cập nhật thông tin</h5>
-                                        <%
-                                 String message = request.getParameter("message");
-                                 if (message != null && !message.isEmpty()) {
-                                     boolean success = "Update successfully".equals(message);
-                                        %>
-                                        <div class="alert alert-<%= success ? "success" : "danger" %> mt-2"><%= message %></div>
-                                        <%
-                                            }
-                                        %>
-                                        <form action="updateStaff" method="post" enctype="multipart/form-data" >
+
+                                        <c:if test="${not empty param.message}">
+                                            <div class="alert alert-${param.message eq 'Update successfully' ? 'success' : 'danger'}">${param.message}</div>
+                                        </c:if>
+
+                                        <form id="staffForm" action="updateStaff" method="post" enctype="multipart/form-data" >
 
                                             <div class="mb-3">
                                                 <label class="form-label">Id</label>
-                                                <input name="id" class="form-control" value="<%=staff.getId()%>" required>
+                                                <input name="id" class="form-control" value="${staff.id}" required>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label class="form-label">Image:</label>
                                                 <c:if test="${not empty staff.imageUrl}">
                                                     <img class="form-control" src="${staff.imageUrl}" alt="Current Image" class="image-preview" id="imagePreview">
+                                                        <input type="hidden" name="currentImageUrl" value="${staff.imageUrl}">
+
                                                 </c:if>
                                                 <c:if test="${empty staff.imageUrl}">
                                                     <img src="" alt="Preview Image" class="image-preview" id="imagePreview" style="display: none;">
@@ -151,19 +330,48 @@
 
                                             <div class="mb-3">
                                                 <label class="form-label">Email</label>
-                                                <input name="email" class="form-control" value="<%=staff.getEmail()%>" required>
+                                                <div class="d-flex align-items-center">
+                                                    <input id="email" name="email" class="form-control" value="${staff.email}">
+                                                </div>
+                                                <span class="error-message" id="email-error"></span>
+
                                             </div>
+
                                             <div class="mb-3">
                                                 <label class="form-label">Username</label>
-                                                <input name="username" class="form-control" value="<%=staff.getUsername()%>" >
+                                                <div class="d-flex align-items-center">
+                                                    <input id="username" name="username" class="form-control" value="${staff.username}">
+                                                </div>
+                                                <span class="error-message" id="username-error"></span>
+
                                             </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <div class="d-flex align-items-center">
+                                                    <input id="password" name="password" type="text"  class="form-control" value="${staff.password}">
+                                                </div>
+                                                <span class="error-message" id="password-error"></span>
+
+                                            </div>
+
                                             <div class="mb-3">
                                                 <label class="form-label">Họ tên</label>
-                                                <input name="fullName" class="form-control" value="<%=staff.getFullName()%>" required>
+                                                <div class="d-flex align-items-center">
+                                                    <input id="fullName" name="fullName" class="form-control" value="${staff.fullName}">
+                                                </div>
+                                                <span class="error-message" id="fullName-error"></span>
                                             </div>
+
+
+
+
                                             <div class="mb-3">
                                                 <label class="form-label">Ngày sinh</label>
-                                                <input type="date" name="dateOfBirth" class="form-control" value="<%=staff.getDateOfBirth() != null ? staff.getDateOfBirth().toString() : ""%>">
+                                                <div class="d-flex align-items-center">
+                                                    <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" value="${staff.dateOfBirth != null ? staff.dateOfBirth.toString() : ""}">
+                                                </div>
+                                                <span class="error-message" id="dateOfBirth-error"></span>
                                             </div>
 
                                             <div class="mb-3">
@@ -172,18 +380,28 @@
                                                     <option value="Nữ"    ${staff.gender eq 'Nữ'    ? 'selected' : ''}>Nữ</option>
                                                     <option value="Khác"  ${staff.gender eq 'Khác'  ? 'selected' : ''}>Khác</option>
                                                 </select>
+                                                <span class="error-message" id="gender-error"></span>
                                             </div>
+
                                             <div class="mb-3">
                                                 <label class="form-label">Địa chỉ</label>
-                                                <input name="address" class="form-control" value="<%=staff.getAddress()%>">
-                                            </div>
+                                                <input id="address" name="address" class="form-control" value="${staff.address}">
+                                                <span class="error-message" id="address-error"></span>
+                                            </div> 
+
+
                                             <div class="mb-3">
                                                 <label class="form-label">Số điện thoại</label>
-                                                <input name="phoneNumber" class="form-control" value="<%=staff.getPhoneNumber()%>">
+                                                <div class="d-flex align-items-center">
+                                                    <input id="phoneNumber" name="phoneNumber" class="form-control"  value="${staff.phoneNumber}">
+                                                </div>
+                                                <span class="error-message" id="phoneNumber-error"></span>
                                             </div>
+
+
                                             <div class="mb-3">
                                                 <label class="form-label">Vai trò</label>
-                                                <input name="role" class="form-control" value="<%=staff.getRole()%>" readonly>
+                                                <input name="role" class="form-control" value="${staff.role}" readonly>
                                             </div>
                                             <button type="submit" class="btn btn-primary mt-2 px-4">
                                                 <i class="bi bi-save"></i> Save changes
@@ -198,33 +416,38 @@
                                     <div class="card-body">
                                         <h5 class="card-title mb-4"><i class="bi bi-shield-lock"></i> Trạng thái tài khoản</h5>
                                         <form action="changeStaffStatus" method="post">
-                                            <input type="hidden" name="id" value="<%=staff.getId()%>">
+                                            <input type="hidden" name="id" value="${staff.id}">
                                             <div class="mb-4">
                                                 <label class="form-label">Trạng thái hiện tại:</label><br>
-                                                <% if (staff.isStatus()) { %>
-                                                <span class="badge bg-success fs-6">Đang hoạt động</span>
-                                                <% } else { %>
-                                                <span class="badge bg-danger fs-6">Đã khóa</span>
-                                                <% } %>
+                                                <c:choose>
+                                                    <c:when test="${staff.status}">
+                                                        <span class="badge bg-success fs-6">Đang hoạt động</span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="badge bg-danger fs-6">Đã khóa</span>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
-                                            <button type="submit" name="status" value="<%=staff.isStatus() ? 0 : 1%>"
-                                                    class="btn <%=staff.isStatus() ? "btn-danger" : "btn-success"%> px-4">
-                                                <i class="bi <%=staff.isStatus() ? "bi-person-x-fill" : "bi-person-check-fill"%>"></i>
-                                                <%=staff.isStatus() ? "Deactivate" : "Active"%>
+                                            <button type="submit" name="status"
+                                                    value="${staff.status ? 0 : 1}"
+                                                    class="btn ${staff.status ? 'btn-danger' : 'btn-success'} px-4">
+                                                <i class="bi ${staff.status ? 'bi-person-x-fill' : 'bi-person-check-fill'}"></i>
+                                                ${staff.status ? 'Deactivate' : 'Active'}
                                             </button>
                                         </form>
                                     </div>
                                 </div>
+                                             
                             </div>
+
+                             <!-- Back button -->
+                            <a href="<%=request.getContextPath()%>/manageStaff" class="btn btn-link mt-4">
+                                <i class="bi bi-arrow-left"></i> Quay lại danh sách
+                            </a>
                         </div>
-                        <!-- Back button -->
-                        <a href="<%=request.getContextPath()%>/manageStaff" class="btn btn-link mt-4">
-                            <i class="bi bi-arrow-left"></i> Quay lại danh sách
-                        </a>
                     </div>
                 </div>
             </div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

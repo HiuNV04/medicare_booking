@@ -4,6 +4,9 @@
  */
 package controller.admin;
 
+import dal.DoctorDAO;
+import dal.DoctorLevelDAO;
+import dal.SpecializationDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,28 +21,33 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import model.DoctorLevel;
 
 /**
  *
  * @author ADMIN
  */
-@WebServlet(urlPatterns = {"/updateStaff"})
+@WebServlet(urlPatterns = {"/updateDoctor"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 3, // 3MB
         maxFileSize = 1024 * 1024 * 40, // 40MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 
-public class UpdateStaffController extends HttpServlet {
+public class UpdateDoctorController extends HttpServlet {
 
     private static final String UPLOAD_DIRECTORY = "uploads";
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
-
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        DoctorLevelDAO doc = new DoctorLevelDAO();
+//        SpecializationDAO spec = new SpecializationDAO();
+//        request.setAttribute("doctorLevel", doc.getDoctorLevel());
+//        request.setAttribute("specialization", spec.getSpecialization());
+//        request.getRequestDispatcher("/admin/viewDoctorDetail.jsp").forward(request, response);
+//
+//    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,6 +59,9 @@ public class UpdateStaffController extends HttpServlet {
         String gender = request.getParameter("gender");
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
+        int specializationId = Integer.parseInt(request.getParameter("specializationId"));
+        int doctorLevelId = Integer.parseInt(request.getParameter("doctorLevelId"));
+
         LocalDate dateOfBirth = null;
         String imageUrl = null;
 
@@ -66,7 +77,7 @@ public class UpdateStaffController extends HttpServlet {
                 if (fileName != null && !fileName.isEmpty()) {
                     if (!fileName.matches("(?i).*\\.(jpg|jpeg|png|gif)$")) { // Thêm (?i) để không phân biệt hoa thường
                         String encodedMsg = java.net.URLEncoder.encode("Only image files (jpg, jpeg, png, gif) are allowed.", "UTF-8");
-                        response.sendRedirect("viewStaffDetail?id=" + id + "&message=" + encodedMsg);
+                        response.sendRedirect("viewDoctorDetail?id=" + id + "&message=" + encodedMsg);
 
                         return;
                     }
@@ -86,14 +97,14 @@ public class UpdateStaffController extends HttpServlet {
             imageUrl = request.getParameter("currentImageUrl");
         }
 
-        StaffDAO dao = new StaffDAO();
-        boolean updated = dao.updateStaff(id, email, imageUrl, username, fullName, address, dateOfBirth, gender, address, phoneNumber);
+        DoctorDAO dao = new DoctorDAO();
+        boolean updated = dao.updateDoctor(id, email, imageUrl, username, fullName, address, dateOfBirth, gender, address, phoneNumber, doctorLevelId, specializationId);
         if (updated) {
             String encodedMsg = java.net.URLEncoder.encode("Update successfully", "UTF-8");
-            response.sendRedirect("viewStaffDetail?id=" + id + "&message=" + encodedMsg);
+            response.sendRedirect("viewDoctorDetail?id=" + id + "&message=" + encodedMsg);
         } else {
             String encodedMsg = java.net.URLEncoder.encode("Update failed", "UTF-8");
-            response.sendRedirect("viewStaffDetail?id=" + id + "&message=" + encodedMsg);
+            response.sendRedirect("viewDoctorDetail?id=" + id + "&message=" + encodedMsg);
         }
 
     }

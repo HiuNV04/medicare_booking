@@ -14,7 +14,7 @@ import model.Specialization;
  */
 public class SpecializationDAO extends MyDAO {
 
-    public List<Specialization> getAll() {
+    public List<Specialization> getSpecialization() {
         List<Specialization> list = new ArrayList<>();
         xSql = "SELECT id, name, description FROM specialization";
         try {
