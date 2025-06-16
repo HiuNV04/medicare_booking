@@ -1,0 +1,33 @@
+{
+  "modules": [
+    {
+      "name": "medicare_booking",
+      "path": "d:\\Project\\medicare_booking\\",
+      "sources": [
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\LoginController.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\ManagerChangePasswordServlet.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\ManagerHomeServlet.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\ManagerProfileServlet.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\RegisterController.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\RoomDetailServlet.java",
+        "d:\\Project\\medicare_booking\\src\\java\\controller\\RoomManagementServlet.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\DBContext.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\DoctorDAO.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\MyDAO.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\RoomDAO.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\RoomDoctorDAO.java",
+        "d:\\Project\\medicare_booking\\src\\java\\dal\\UserDAO.java",
+        "d:\\Project\\medicare_booking\\src\\java\\model\\Doctor.java",
+        "d:\\Project\\medicare_booking\\src\\java\\model\\Room.java",
+        "d:\\Project\\medicare_booking\\src\\java\\model\\Specialization.java",
+        "d:\\Project\\medicare_booking\\src\\java\\model\\User.java",
+        "d:\\Project\\medicare_booking\\src\\java\\util\\PasswordUtil.java"
+      ],
+      "testSources": [],
+      "generatedSources": [],
+      "classpath": [
+        "C:\\Users\\jackd\\AppData\\Roaming\\Cursor\\User\\workspaceStorage\\3e712809f549f6365c2b5e9fa25b4e9c\\redhat.java\\jdt_ws\\medicare_booking_d615d597\\bin"
+      ]
+    }
+  ]
+}

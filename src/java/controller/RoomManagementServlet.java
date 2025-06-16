@@ -2,8 +2,10 @@ package controller;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
+import dal.RoomDoctorDAO;
 import model.Room;
 import model.Doctor;
+import model.Specialization;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,47 +22,95 @@ public class RoomManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         RoomDAO roomDAO = new RoomDAO();
         DoctorDAO doctorDAO = new DoctorDAO();
+        RoomDoctorDAO roomDoctorDAO = new RoomDoctorDAO();
         List<Room> roomList = roomDAO.getAllRooms();
-        String roomIdParam = request.getParameter("roomId");
-        int roomId = -1;
-        if (roomIdParam != null) {
-            try { roomId = Integer.parseInt(roomIdParam); } catch (Exception ignored) {}
+        List<Specialization> specializationList = roomDAO.getAllSpecializations();
+        // Lọc theo tên phòng
+        String search = request.getParameter("search");
+        if (search != null && !search.trim().isEmpty()) {
+            String normalizedSearch = normalize(search);
+            roomList = roomList.stream().filter(r -> normalize(r.getName()).contains(normalizedSearch)).collect(Collectors.toList());
         }
-        List<Doctor> doctorsInRoom = null;
-        List<Doctor> availableDoctors = null;
-        if (roomId > 0) {
-            doctorsInRoom = roomDAO.getDoctorsByRoomId(roomId);
-            List<Doctor> allDoctors = doctorDAO.getAllDoctors();
-            if (doctorsInRoom != null && !doctorsInRoom.isEmpty()) {
-                int specializationId = doctorsInRoom.get(0).getSpecializationId();
-                availableDoctors = allDoctors.stream()
-                    .filter(d -> d.getRoomId() == 0 && d.getSpecializationId() == specializationId)
-                    .collect(Collectors.toList());
-            } else {
-                availableDoctors = allDoctors.stream()
-                    .filter(d -> d.getRoomId() == 0)
-                    .collect(Collectors.toList());
-            }
+        // Lọc theo chuyên khoa
+        String specializationIdStr = request.getParameter("specializationId");
+        if (specializationIdStr != null && !specializationIdStr.isEmpty()) {
+            int specializationId = Integer.parseInt(specializationIdStr);
+            roomList = roomList.stream().filter(r -> r.getSpecializationId() == specializationId).collect(Collectors.toList());
         }
-        request.setAttribute("roomList", roomList);
-        request.setAttribute("selectedRoomId", roomId);
-        request.setAttribute("doctorsInRoom", doctorsInRoom);
-        request.setAttribute("availableDoctors", availableDoctors);
+        // Phân trang
+        int pageSize = 10;
+        int currentPage = 1;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null) {
+            try { currentPage = Integer.parseInt(pageStr); } catch (Exception ignored) {}
+        }
+        int totalRooms = roomList.size();
+        int totalPages = (int) Math.ceil((double) totalRooms / pageSize);
+        int fromIndex = (currentPage - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalRooms);
+        List<Room> pagedRoomList = roomList.subList(fromIndex, toIndex);
+        request.setAttribute("pagedRoomList", pagedRoomList);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("specializationList", specializationList);
+        request.setAttribute("pageSize", pageSize);
         request.getRequestDispatcher("/auth/room_management.jsp").forward(request, response);
+    }
+
+    private String normalize(String input) {
+        if (input == null) return "";
+        return java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .replaceAll("[ _]", "")
+                .toLowerCase();
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RoomDAO roomDAO = new RoomDAO();
+        RoomDoctorDAO roomDoctorDAO = new RoomDoctorDAO();
         String action = request.getParameter("action");
-        int roomId = Integer.parseInt(request.getParameter("roomId"));
-        int doctorId = Integer.parseInt(request.getParameter("doctorId"));
-        if ("add".equals(action)) {
-            roomDAO.addDoctorToRoom(doctorId, roomId);
-        } else if ("remove".equals(action)) {
-            roomDAO.removeDoctorFromRoom(doctorId);
+        if ("addRoom".equals(action)) {
+            int specializationId = Integer.parseInt(request.getParameter("specializationId"));
+            String name = request.getParameter("name");
+            // Kiểm tra trùng tên phòng (không phân biệt hoa thường, loại bỏ khoảng trắng)
+            List<Room> allRooms = roomDAO.getAllRooms();
+            String normalizedNewName = normalize(name);
+            boolean exists = allRooms.stream().anyMatch(r -> normalize(r.getName()).equals(normalizedNewName));
+            if (exists) {
+                request.setAttribute("error", "Tên phòng đã tồn tại!");
+                // Truyền lại các list cần thiết để hiển thị lại trang
+                List<Room> roomList = roomDAO.getAllRooms();
+                List<Specialization> specializationList = roomDAO.getAllSpecializations();
+                request.setAttribute("pagedRoomList", roomList);
+                request.setAttribute("currentPage", 1);
+                request.setAttribute("totalPages", 1);
+                request.setAttribute("specializationList", specializationList);
+                request.setAttribute("pageSize", roomList.size());
+                request.getRequestDispatcher("/auth/room_management.jsp").forward(request, response);
+                return;
+            }
+            roomDAO.addRoom(specializationId, name);
+        } else if ("editRoom".equals(action)) {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            int specializationId = Integer.parseInt(request.getParameter("specializationId"));
+            String name = request.getParameter("name");
+            roomDAO.updateRoom(roomId, specializationId, name);
+        } else if ("deleteRoom".equals(action)) {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            roomDAO.deleteRoom(roomId);
+        } else if ("addDoctor".equals(action)) {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            int doctorId = Integer.parseInt(request.getParameter("doctorId"));
+            if (roomDoctorDAO.countDoctorsInRoom(roomId) < 2) {
+                roomDoctorDAO.addDoctorToRoom(roomId, doctorId);
+            }
+        } else if ("removeDoctor".equals(action)) {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            int doctorId = Integer.parseInt(request.getParameter("doctorId"));
+            roomDoctorDAO.removeDoctorFromRoom(roomId, doctorId);
         }
-        response.sendRedirect("rooms?roomId=" + roomId);
+        response.sendRedirect("rooms" + (request.getParameter("roomId") != null ? ("?roomId=" + request.getParameter("roomId")) : ""));
     }
 } 

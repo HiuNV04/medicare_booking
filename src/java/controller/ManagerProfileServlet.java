@@ -5,8 +5,8 @@
 
 package controller;
 
-import dal.UserDAO;
-import model.User;
+import dal.StaffDAO;
+import model.Staff;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,9 +28,10 @@ public class ManagerProfileServlet extends HttpServlet {
 //            return;
 //        }
 
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUserById(2);
-        request.setAttribute("user", user);
+        StaffDAO staffDAO = new StaffDAO();
+        Staff manager = staffDAO.getManagerById(2);
+        request.setAttribute("user", manager);
+        request.getSession().setAttribute("user", manager);
         request.getRequestDispatcher("/auth/manager_profile.jsp").forward(request, response);
     }
 
@@ -45,16 +46,16 @@ public class ManagerProfileServlet extends HttpServlet {
         String imageUrl = request.getParameter("imageUrl");
         java.sql.Date dob = java.sql.Date.valueOf(request.getParameter("dateOfBirth"));
 
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.getUserById(userId);
-        user.setFullName(fullName);
-        user.setAddress(address);
-        user.setPhoneNumber(phone);
-        user.setGender(gender);
-        user.setImageUrl(imageUrl);
-        user.setDateOfBirth(dob);
-        // TODO: Thêm hàm updateUser(user) trong UserDAO để cập nhật DB
-        // userDAO.updateUser(user);
+        StaffDAO staffDAO = new StaffDAO();
+        Staff manager = staffDAO.getManagerById(userId);
+        manager.setFullName(fullName);
+        manager.setAddress(address);
+        manager.setPhoneNumber(phone);
+        manager.setGender(gender);
+        manager.setImageUrl(imageUrl);
+        manager.setDateOfBirth(dob);
+        staffDAO.updateManager(manager);
+        request.getSession().setAttribute("user", manager);
         response.sendRedirect("home");
     }
     

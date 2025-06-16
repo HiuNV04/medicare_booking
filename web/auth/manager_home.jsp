@@ -79,13 +79,13 @@
             <c:forEach var="p" items="${peopleList}" varStatus="loop">
                 <tr>
                     <td>${(currentPage-1)*10 + loop.index + 1}</td>
+                    <td>${p[0]}</td>
                     <td>${p[1]}</td>
                     <td>${p[2]}</td>
                     <td>${p[3]}</td>
                     <td>${p[4]}</td>
                     <td>${p[5]}</td>
-                    <td>${p[6]}</td>
-                    <td><img src="${p[7]}" alt="avatar" width="50" height="50"/></td>
+                    <td><img src="${p[6]}" alt="avatar" width="50" height="50"/></td>
                 </tr>
             </c:forEach>
             </tbody>

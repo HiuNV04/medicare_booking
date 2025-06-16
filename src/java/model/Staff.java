@@ -1,7 +1,7 @@
 package model;
 import java.sql.Date;
 
-public class User {
+public class Staff {
     private int id;
     private String imageUrl;
     private String email;
@@ -13,9 +13,25 @@ public class User {
     private String gender;
     private String address;
     private String phoneNumber;
-    private boolean status;
+    private int status;
 
-    // Getter & Setter
+    public Staff() {}
+
+    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, int status) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.status = status;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getImageUrl() { return imageUrl; }
@@ -38,6 +54,6 @@ public class User {
     public void setAddress(String address) { this.address = address; }
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public boolean isStatus() { return status; }
-    public void setStatus(boolean status) { this.status = status; }
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
 } 

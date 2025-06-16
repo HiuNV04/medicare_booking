@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quản lý phòng</title>
+    <title>Quản lý phòng chuyên ngành</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background: #f8f9fa; }
@@ -32,83 +32,91 @@
         <a href="#">Quản lý lịch</a>
         <a href="#">Báo cáo</a>
         <a href="#">Cài đặt</a>
-        <!-- Thêm các mục khác sau -->
     </div>
     <!-- Main Content -->
     <div class="main-content flex-grow-1 p-4">
-        <h2 class="mb-4">Quản lý phòng</h2>
-        <form method="get" class="mb-4">
-            <div class="row g-2 align-items-center">
-                <div class="col-auto">
-                    <label for="roomId" class="form-label mb-0">Chọn phòng:</label>
-                </div>
-                <div class="col-auto">
-                    <select name="roomId" id="roomId" class="form-select" onchange="this.form.submit()">
-                        <option value="">-- Chọn phòng --</option>
-                        <c:forEach var="r" items="${roomList}">
-                            <option value="${r.id}" ${selectedRoomId == r.id ? 'selected' : ''}>${r.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
+        <h2 class="mb-4">Quản lý phòng chuyên ngành</h2>
+        <!-- Form tìm kiếm và filter -->
+        <form method="get" class="row g-2 mb-4 align-items-end">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="search" placeholder="Tìm theo tên phòng" value="${param.search}">
+            </div>
+            <div class="col-md-4">
+                <select name="specializationId" class="form-select">
+                    <option value="">-- Tất cả chuyên khoa --</option>
+                    <c:forEach var="s" items="${specializationList}">
+                        <option value="${s.id}" ${param.specializationId == s.id ? 'selected' : ''}>${s.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
             </div>
         </form>
-        <c:if test="${selectedRoomId > 0}">
-            <div class="row">
-                <div class="col-lg-7 mb-4 mb-lg-0">
-                    <h4>Bác sĩ trong phòng</h4>
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>STT</th>
-                                <th>Họ tên</th>
-                                <th>Chuyên ngành</th>
-                                <th>Ngày sinh</th>
-                                <th>Giới tính</th>
-                                <th>Ảnh</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach var="d" items="${doctorsInRoom}" varStatus="loop">
-                            <tr>
-                                <td>${loop.index + 1}</td>
-                                <td>${d.fullName}</td>
-                                <td>${d.specializationId}</td>
-                                <td>${d.dateOfBirth}</td>
-                                <td>${d.gender}</td>
-                                <td><img src="${d.imageUrl}" width="40" height="40"/></td>
-                                <td>
-                                    <form method="post" style="display:inline">
-                                        <input type="hidden" name="action" value="remove"/>
-                                        <input type="hidden" name="roomId" value="${selectedRoomId}"/>
-                                        <input type="hidden" name="doctorId" value="${d.id}"/>
-                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-lg-5">
-                    <h5>Thêm bác sĩ vào phòng (cùng chuyên ngành)</h5>
-                    <form method="post" class="row g-2 align-items-center">
-                        <input type="hidden" name="action" value="add"/>
-                        <input type="hidden" name="roomId" value="${selectedRoomId}"/>
-                        <div class="col-12 mb-2">
-                            <select name="doctorId" class="form-select" required>
-                                <option value="">-- Chọn bác sĩ --</option>
-                                <c:forEach var="d" items="${availableDoctors}">
-                                    <option value="${d.id}">${d.fullName} (Chuyên ngành: ${d.specializationId})</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-success w-100">Thêm vào phòng</button>
-                        </div>
-                    </form>
-                </div>
+        <!-- Form thêm phòng -->
+        <form method="post" class="row g-2 mb-4 align-items-end">
+            <input type="hidden" name="action" value="addRoom"/>
+            <div class="col-md-4">
+                <label class="form-label">Tên phòng</label>
+                <input type="text" class="form-control" name="name" required>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Chuyên khoa</label>
+                <select name="specializationId" class="form-select" required>
+                    <option value="">-- Chọn chuyên khoa --</option>
+                    <c:forEach var="s" items="${specializationList}">
+                        <option value="${s.id}">${s.name}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">Thêm phòng</button>
+            </div>
+        </form>
+        <!-- Danh sách phòng -->
+        <table class="table table-bordered table-hover bg-white mb-4">
+            <thead class="table-light">
+                <tr>
+                    <th>STT</th>
+                    <th>Tên phòng</th>
+                    <th>Chuyên khoa</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="r" items="${pagedRoomList}" varStatus="loop">
+                <tr>
+                    <td>${(currentPage-1)*pageSize + loop.index + 1}</td>
+                    <td>${r.name}</td>
+                    <td>
+                        <c:forEach var="s" items="${specializationList}">
+                            <c:if test="${s.id == r.specializationId}">${s.name}</c:if>
+                        </c:forEach>
+                    </td>
+                    <td>
+                        <form method="post" style="display:inline">
+                            <input type="hidden" name="action" value="deleteRoom"/>
+                            <input type="hidden" name="roomId" value="${r.id}"/>
+                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                        </form>
+                        <a href="room_detail?roomId=${r.id}" class="btn btn-primary btn-sm ms-2">Chi tiết</a>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+        <!-- Phân trang -->
+        <nav>
+            <ul class="pagination">
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                        <a class="page-link" href="?page=${i}&search=${param.search}&specializationId=${param.specializationId}">${i}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
         </c:if>
     </div>
 </div>
