@@ -75,13 +75,34 @@
             <div class="d-grid mb-3">
                 <button type="submit" class="btn btn-primary">Đăng nhập</button>
             </div>
+            <!-- Link Quên mật khẩu -->
+<div class="text-center mb-3">
+    <a href="forgot-password" class="text-decoration-none">Quên mật khẩu?</a>
+</div>
         </form>
 
-<!--        <div class="g-divider">hoặc</div>-->
+        <div class="g-divider">hoặc</div>
 
+        <!-- Google Sign-In JS -->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+        <!-- Google Sign-In button -->
+        <div id="g_id_onload"
+             data-client_id="20495276859-asgm8cn4636ehlrsktoc6klk7ldujrp5.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="redirect"
+             data-login_uri="http://localhost:9999/MediCare_Booking/oauth2handler"
+             data-auto_prompt="false">
+        </div>
 
-        
+        <div class="g_id_signin"
+             data-type="standard"
+             data-size="large"
+             data-theme="outline"
+             data-text="sign_in_with"
+             data-shape="rectangular"
+             data-logo_alignment="left">
+        </div>
 
         <!-- Nút chuyển đến trang đăng ký -->
         <div class="text-center mt-4">

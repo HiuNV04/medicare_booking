@@ -66,7 +66,7 @@
                                                             <i class="fab fa-youtube"></i>
                                                         </a>-->
 
-                            <a href="<%= request.getContextPath() %>/auth/login.jsp" class="nav-item nav-link">Đăng nhập</a>
+                            <a href="<%= request.getContextPath() %>/login.jsp" class="nav-item nav-link">Đăng nhập</a>
                         </div>
                     </div>
                 </div>

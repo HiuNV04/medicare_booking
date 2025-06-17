@@ -11,7 +11,8 @@ import java.util.Date;
  * @author ADMIN
  */
 public class Account {
-  private int id;
+
+    private int id;
     private String email;
     private String username;
     private String password;
@@ -20,6 +21,7 @@ public class Account {
     private String resetToken;
     private Date resetTokenExpiry;
     private boolean status;
+
 
     public Account() {
     }
@@ -113,5 +115,4 @@ public class Account {
         return "Account{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", passwordHash=" + passwordHash + ", roleId=" + roleId + ", resetToken=" + resetToken + ", resetTokenExpiry=" + resetTokenExpiry + ", status=" + status + '}';
     }
 
-    
 }

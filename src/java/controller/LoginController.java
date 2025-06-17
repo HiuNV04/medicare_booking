@@ -5,6 +5,7 @@
 package controller;
 
 import dal.AccountDAO;
+import dal.PatientDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Patient;
 
 /**
  *
@@ -77,12 +79,12 @@ public class LoginController extends HttpServlet {
         String loginId = request.getParameter("loginId");
         String password = request.getParameter("password");
 
-        AccountDAO dao = new AccountDAO();
-        Account acc = dao.checkLogin(loginId, password);
+        PatientDAO dao = new PatientDAO();
+        Patient patient = dao.checkLogin(loginId, password);
 
-        if (acc != null) {
+        if (patient != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("account", acc);
+            session.setAttribute("patient", patient);
             response.sendRedirect("home");
         } else {
             request.setAttribute("error", "Sai email/tên đăng nhập hoặc mật khẩu.");
@@ -90,7 +92,11 @@ public class LoginController extends HttpServlet {
         }
     }
 
-   
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

@@ -1,117 +1,145 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dal.AccountDAO;
+import dal.PatientDAO;
+import model.Patient;
+
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
-/**
- *
- * @author ADMIN
- */
+@WebServlet(name = "RegisterController", urlPatterns = {"/register"})
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024,      // 1MB
+    maxFileSize = 5 * 1024 * 1024,        // 5MB
+    maxRequestSize = 10 * 1024 * 1024     // 10MB
+)
 public class RegisterController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    private static final String UPLOAD_DIR = "uploads/avatars";
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
+        // Hiện trang đăng ký
         request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
 
+        // Lấy các trường form text
+        String imageUrl = request.getParameter("image_url");
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
+        String fullName = request.getParameter("full_name");
+        String dateOfBirthStr = request.getParameter("date_of_birth");
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phone_number");
+        String identityNumber = request.getParameter("identity_number");
+        String insuranceNumber = request.getParameter("insurance_number");
+        String statusStr = request.getParameter("status");
+        boolean status = "1".equals(statusStr);
 
-        if (!password.equals(confirmPassword)) {
-            request.setAttribute("error", "Mật khẩu không khớp.");
+        // Validate cơ bản
+        if (email == null || email.isEmpty() ||
+            username == null || username.isEmpty() ||
+            password == null || password.isEmpty() ||
+            confirmPassword == null || confirmPassword.isEmpty() ||
+            !password.equals(confirmPassword)) {
+            request.setAttribute("error", "Vui lòng nhập đủ thông tin và mật khẩu lặp lại phải khớp.");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        AccountDAO dao = new AccountDAO();
+        PatientDAO dao = new PatientDAO();
 
-        if (dao.isEmailExist(email)) {
-            request.setAttribute("error", "Email đã được sử dụng.");
+        // Kiểm tra trùng email/username
+        if (dao.getPatientByEmail(email) != null) {
+            request.setAttribute("error", "Email đã được sử dụng!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            return;
+        }
+        if (dao.getPatientByUsername(username) != null) {
+            request.setAttribute("error", "Tên đăng nhập đã tồn tại!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        if (dao.isUsernameExist(username)) {
-            request.setAttribute("error", "Tên đăng nhập đã được sử dụng.");
+        // Xử lý upload file ảnh nếu có
+        String fileUrl = null;
+        Part imagePart = request.getPart("image_file");
+        if (imagePart != null && imagePart.getSize() > 0) {
+            String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            String appPath = getServletContext().getRealPath("");
+            String savePath = appPath + File.separator + UPLOAD_DIR;
+            File uploadDir = new File(savePath);
+            if (!uploadDir.exists()) uploadDir.mkdirs();
+
+            String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+            String filePath = savePath + File.separator + uniqueFileName;
+            imagePart.write(filePath);
+
+            // Đường dẫn để lưu vào DB
+            fileUrl = UPLOAD_DIR + "/" + uniqueFileName;
+        }
+
+        // Ưu tiên ảnh upload, nếu không có thì lấy link nhập
+        String finalImageUrl = (fileUrl != null) ? fileUrl : imageUrl;
+
+        // Parse ngày sinh
+        LocalDate dob = null;
+        try {
+            if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty())
+                dob = LocalDate.parse(dateOfBirthStr);
+        } catch (Exception e) {
+            request.setAttribute("error", "Ngày sinh không hợp lệ!");
             request.getRequestDispatcher("register.jsp").forward(request, response);
             return;
         }
 
-        int defaultRoleId = 5; 
-        dao.insertAccount(email, username, password, defaultRoleId);
+        // Tạo Patient object
+        Patient patient = new Patient();
+        patient.setImageUrl(finalImageUrl);
+        patient.setEmail(email);
+        patient.setUsername(username);
+        patient.setPassword(password); // (Khuyến nghị mã hóa trước khi lưu)
+        patient.setRole("Patient");
+        patient.setFullName(fullName);
+        patient.setDateOfBirth(dob);
+        patient.setGender(gender);
+        patient.setAddress(address);
+        patient.setPhoneNumber(phoneNumber);
+        patient.setIdentityNumber(identityNumber);
+        patient.setInsuranceNumber(insuranceNumber);
+        patient.setStatus(status);
 
-        request.setAttribute("success", "Đăng ký thành công!");
+        // Thêm vào DB
+        boolean result = dao.addPatient(patient);
+        if (result) {
+            request.setAttribute("success", "Đăng ký thành công! Bạn có thể đăng nhập.");
+        } else {
+            request.setAttribute("error", "Đăng ký thất bại. Vui lòng thử lại.");
+        }
         request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "RegisterController - Xử lý đăng ký bệnh nhân";
+    }
 }
