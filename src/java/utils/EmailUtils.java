@@ -6,8 +6,8 @@ import java.util.Properties;
 
 public class EmailUtils {
 
-    private static final String FROM_EMAIL = "trungkien2981412@gmail.com";
-    private static final String APP_PASSWORD = "jssa nrmt rbwm jphj";
+    private static final String FROM_EMAIL = "thupvhe182136@fpt.edu.vn";
+    private static final String APP_PASSWORD = "muro qblh bfgc qsbp";
 
     // Hàm gửi email chung
     public static boolean sendEmail(String to, String subject, String content) {
