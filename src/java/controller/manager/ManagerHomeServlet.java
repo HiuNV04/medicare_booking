@@ -33,19 +33,19 @@ public class ManagerHomeServlet extends HttpServlet {
         List<model.Doctor> doctorList = doctorDAO.getAllDoctors();
         List<Object[]> peopleList = new java.util.ArrayList<>();
         for (model.Staff m : managerList) {
-            peopleList.add(new Object[]{m.getFullName(), m.getRole(), m.getDateOfBirth(), m.getGender(), m.getAddress(), m.getPhoneNumber(), m.getImageUrl()});
+            peopleList.add(new Object[]{m.getId(), m.getRole(), m.getFullName(), m.getDateOfBirth(), m.getGender(), m.getAddress(), m.getPhoneNumber(), m.getImageUrl()});
         }
         for (model.Staff r : receptionistList) {
-            peopleList.add(new Object[]{r.getFullName(), r.getRole(), r.getDateOfBirth(), r.getGender(), r.getAddress(), r.getPhoneNumber(), r.getImageUrl()});
+            peopleList.add(new Object[]{r.getId(), r.getRole(), r.getFullName(), r.getDateOfBirth(), r.getGender(), r.getAddress(), r.getPhoneNumber(), r.getImageUrl()});
         }
         for (model.Doctor d : doctorList) {
-            peopleList.add(new Object[]{d.getFullName(), d.getRole(), d.getDateOfBirth(), d.getGender(), d.getAddress(), d.getPhoneNumber(), d.getImageUrl()});
+            peopleList.add(new Object[]{d.getId(), d.getRole(), d.getFullName(), d.getDateOfBirth(), d.getGender(), d.getAddress(), d.getPhoneNumber(), d.getImageUrl()});
         }
         // Tìm kiếm
         String search = request.getParameter("search");
         if (search != null && !search.trim().isEmpty()) {
             String searchNormalized = normalizeString(search);
-            peopleList = peopleList.stream().filter(p -> normalizeString((String)p[0]).contains(searchNormalized)).collect(java.util.stream.Collectors.toList());
+            peopleList = peopleList.stream().filter(p -> normalizeString((String)p[2]).contains(searchNormalized)).collect(java.util.stream.Collectors.toList());
         }
         // Sort theo vai trò
         String sortRole = request.getParameter("sortRole");

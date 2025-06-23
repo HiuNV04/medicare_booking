@@ -54,11 +54,16 @@ public class RoomManagementServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("specializationList", specializationList);
         request.setAttribute("pageSize", pageSize);
-        // Handle success message from session
+        // Handle success and error messages from session
         Object successMsg = request.getSession().getAttribute("success");
         if (successMsg != null) {
             request.setAttribute("success", successMsg);
             request.getSession().removeAttribute("success");
+        }
+        Object errorMsg = request.getSession().getAttribute("error");
+        if (errorMsg != null) {
+            request.setAttribute("error", errorMsg);
+            request.getSession().removeAttribute("error");
         }
         request.getRequestDispatcher("/manager/room_management.jsp").forward(request, response);
     }
@@ -107,7 +112,15 @@ public class RoomManagementServlet extends HttpServlet {
             roomDAO.updateRoom(roomId, specializationId, name);
         } else if ("deleteRoom".equals(action)) {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
-            roomDAO.deleteRoom(roomId);
+            // Kiểm tra phòng còn bác sĩ không
+            int doctorCount = roomDoctorDAO.countDoctorsInRoom(roomId);
+            if (doctorCount > 0) {
+                // Nếu còn bác sĩ, không xóa và thông báo lỗi
+                request.getSession().setAttribute("error", "Không thể xóa phòng vì vẫn còn bác sĩ trực thuộc!");
+            } else {
+                roomDAO.deleteRoom(roomId);
+                request.getSession().setAttribute("success", "Xóa phòng thành công!");
+            }
         } else if ("addDoctor".equals(action)) {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int doctorId = Integer.parseInt(request.getParameter("doctorId"));

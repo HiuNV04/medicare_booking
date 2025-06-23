@@ -73,6 +73,20 @@ public class StaffDAO extends MyDAO {
         return list;
     }
 
+    public Staff getReceptionistById(int id) {
+        Staff s = null;
+        String sql = "SELECT * FROM staff WHERE id = ? AND role = 'Receptionist' AND status = 1";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                s = extractStaff(rs);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return s;
+    }
+
     private Staff extractStaff(ResultSet rs) throws SQLException {
         Staff s = new Staff();
         s.setId(rs.getInt("id"));

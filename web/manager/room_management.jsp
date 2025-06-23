@@ -35,6 +35,12 @@
     </div>
     <!-- Main Content -->
     <div class="main-content flex-grow-1 p-4">
+        <c:if test="${not empty success}">
+            <div class="alert alert-success">${success}</div>
+        </c:if>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">${error}</div>
+        </c:if>
         <h2 class="mb-4">Quản lý phòng chuyên ngành</h2>
         <!-- Form tìm kiếm và filter -->
         <form method="get" class="row g-2 mb-4 align-items-end">
@@ -115,12 +121,6 @@
                 </c:forEach>
             </ul>
         </nav>
-        <c:if test="${not empty success}">
-            <div class="alert alert-success">${success}</div>
-        </c:if>
-        <c:if test="${not empty error}">
-            <div class="alert alert-danger">${error}</div>
-        </c:if>
     </div>
 </div>
 </body>

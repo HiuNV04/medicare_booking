@@ -1,6 +1,5 @@
 package dal;
 import model.Room;
-import model.Doctor;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
@@ -22,49 +21,6 @@ public class RoomDAO extends MyDAO {
             }
         } catch (Exception e) { e.printStackTrace(); }
         return list;
-    }
-
-    public List<Doctor> getDoctorsByRoomId(int roomId) {
-        List<Doctor> list = new ArrayList<>();
-        xSql = "SELECT * FROM doctor WHERE room_id = ?";
-        try {
-            ps = con.prepareStatement(xSql);
-            ps.setInt(1, roomId);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Doctor d = new Doctor();
-                d.setId(rs.getInt("id"));
-                d.setFullName(rs.getString("full_name"));
-                d.setSpecializationId(rs.getInt("specialization_id"));
-                d.setImageUrl(rs.getString("image_url"));
-                d.setDateOfBirth(rs.getDate("date_of_birth"));
-                d.setGender(rs.getString("gender"));
-                d.setAddress(rs.getString("address"));
-                d.setPhoneNumber(rs.getString("phone_number"));
-                d.setStatus(rs.getBoolean("status"));
-                list.add(d);
-            }
-        } catch (Exception e) { e.printStackTrace(); }
-        return list;
-    }
-
-    public void addDoctorToRoom(int doctorId, int roomId) {
-        xSql = "UPDATE doctor SET room_id = ? WHERE id = ?";
-        try {
-            ps = con.prepareStatement(xSql);
-            ps.setInt(1, roomId);
-            ps.setInt(2, doctorId);
-            ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    public void removeDoctorFromRoom(int doctorId) {
-        xSql = "UPDATE doctor SET room_id = NULL WHERE id = ?";
-        try {
-            ps = con.prepareStatement(xSql);
-            ps.setInt(1, doctorId);
-            ps.executeUpdate();
-        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public Room getRoomById(int id) {

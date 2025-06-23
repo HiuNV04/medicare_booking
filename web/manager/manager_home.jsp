@@ -73,6 +73,7 @@
                     <th>Địa chỉ</th>
                     <th>Số điện thoại</th>
                     <th>Ảnh đại diện</th>
+                    <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,6 +87,7 @@
                     <td>${p[4]}</td>
                     <td>${p[5]}</td>
                     <td><img src="${p[6]}" alt="avatar" width="50" height="50"/></td>
+                    <td><a href="${pageContext.request.contextPath}/manager/staff-detail?id=${p[0]}&role=${p[1]}" class="btn btn-info btn-sm">Xem chi tiết</a></td>
                 </tr>
             </c:forEach>
             </tbody>
