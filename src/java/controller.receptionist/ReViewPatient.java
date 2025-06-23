@@ -4,15 +4,14 @@
  */
 package controller;
 
+import dal.PatientDAO;
 import dal.ReceptionistDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Patient;
@@ -25,22 +24,12 @@ import model.Patient;
 public class ReViewPatient extends HttpServlet {
 
     ReceptionistDAO rdao = new ReceptionistDAO();
+    PatientDAO pdao = new PatientDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Patient> list = rdao.getListPatient();
-        HttpSession session = request.getSession();
-        session.setAttribute("list", list);
-        request.getRequestDispatcher("/receptionist/reViewPatient.jsp").forward(request, response);
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        String identity = request.getParameter("identity");
         String field = request.getParameter("field");
         String order = request.getParameter("order");
 
@@ -48,25 +37,51 @@ public class ReViewPatient extends HttpServlet {
         request.setAttribute("field", field);
         request.setAttribute("order", order);
 
-        List<Patient> list = new ArrayList<>();
+        try {
+            String indexPage = request.getParameter("index");
+            if (indexPage == null) {
+                indexPage = "1";
+            }
+            int index = Integer.parseInt(indexPage);
+            int count = pdao.getTotalPatient();
+            int endPage = count / 8;
+            if (count % 8 != 0) {
+                endPage++;
+            }
+            List<Patient> list;
+            if ((field != null && order != null)
+                    && (field.equals("id") || field.equals("full_name"))
+                    && (order.equals("asc") || order.equals("desc"))) {
+                list = pdao.getSortedPatientsWithPaging(field, order, index);
+            } else {
+                list = pdao.pagingPatient(index);
+            }
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("listA", list);
+
+            request.getRequestDispatcher("/receptionist/reViewPatient.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String identity = request.getParameter("identity");
 
         if (identity != null && !identity.trim().isEmpty()) {
+            // Nếu search theo identity, chỉ trả về đúng 1 bệnh nhân (nếu có)
             Patient p = rdao.getAPatientByIdentity(identity.trim());
+            List<Patient> list = new ArrayList<>();
             if (p != null) {
                 list.add(p);
             } else {
                 request.setAttribute("error", "Không tìm thấy bệnh nhân với số CMND/CCCD: " + identity);
             }
-        } else {
-            if ((field != null && order != null)
-                    && (field.equals("id") || field.equals("name"))
-                    && (order.equals("asc") || order.equals("desc"))) {
-                list = rdao.getListPatientSorted(field, order);
-            } else {
-                list = rdao.getListPatient(); // fallback nếu không có gì
-            }
+            request.setAttribute("endPage", 1);
+            request.setAttribute("listA", list);
+            request.getRequestDispatcher("/receptionist/reViewPatient.jsp").forward(request, response);
         }
-        session.setAttribute("list", list);
-        request.getRequestDispatcher("/receptionist/reViewPatient.jsp").forward(request, response);
     }
 }

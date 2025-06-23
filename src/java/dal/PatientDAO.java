@@ -4,6 +4,8 @@ import model.*;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDAO extends DBContext {
 
@@ -16,7 +18,7 @@ public class PatientDAO extends DBContext {
             st.setString(2, username);
             st.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 
@@ -38,7 +40,7 @@ public class PatientDAO extends DBContext {
             st.setString(8, p.getAddress());
             st.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
     }
 
@@ -65,11 +67,11 @@ public class PatientDAO extends DBContext {
                         rs.getString(12));
             }
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return null;
     }
-    
+
     //hàm lấy 1 bệnh nhân bằng username
     public Patient getAPatientByUsername(String username) {
         String sql = "select p.id, p.email, p.username, p.password, p.full_name, \n"
@@ -94,11 +96,11 @@ public class PatientDAO extends DBContext {
                         rs.getString(12));
             }
         } catch (SQLException e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return null;
     }
-    
+
     //hàm cập nhật thông tin của chính mình
     public void updatePatient(Patient p, int id) throws ParseException {
         String sql = "UPDATE [dbo].[patient]\n"
@@ -127,7 +129,38 @@ public class PatientDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
+    //hàm lễ tân cập nhật thông tin của Patient
+    public void reUpdatePatient(Patient p, int id) throws ParseException {
+        String sql = "UPDATE [dbo].[patient]\n"
+                + "SET [full_name] = ?,\n" // SỬA Ở ĐÂY
+                + "    [date_of_birth] = ?,\n"
+                + "    [gender] = ?,\n"
+                + "    [identity_number] = ?,\n"
+                + "    [insurance_number] = ?,\n"
+                + "    [phone_number] = ?,\n"
+                + "    [address] = ?,\n"
+                + "    [image_url] = ?\n"
+                + "WHERE id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date parsedDate = sdf.parse(p.getDob());
+            st.setString(1, p.getFullname());
+            st.setDate(2, new java.sql.Date(parsedDate.getTime()));
+            st.setString(3, p.getGender());
+            st.setString(4, p.getIdentity());
+            st.setString(5, p.getInsurance());
+            st.setString(6, p.getPhone());
+            st.setString(7, p.getAddress());
+            st.setString(8, p.getImg());
+            st.setInt(9, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //hàm lấy id bệnh nhân bằng cccd
     public int getIdFromIdentity(String identity) {
         String sql = "SELECT id FROM patient WHERE identity_number = ?";
@@ -142,7 +175,7 @@ public class PatientDAO extends DBContext {
         }
         return -1;
     }
-    
+
     //hàm lấy tên bệnh nhân bằng id
     public String getNameFromId(int id) {
         String sql = "SELECT full_name FROM patient WHERE id = ?";
@@ -156,5 +189,182 @@ public class PatientDAO extends DBContext {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    //hàm này lấy bệnh nhân theo id(Update bệnh nhân của Lễ tân)
+    public Patient getAPatientById(int id) {
+        String sql = "select p.id, p.full_name,p.gender,\n"
+                + "p.date_of_birth,  p.identity_number, p.insurance_number,\n"
+                + "p.phone_number,p.address, p.image_url from patient p where p.id = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return new Patient(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //hàm xóa 1 bệnh nhân
+    public void reDeletePatient(int id) {
+        String sql = "Delete from patient where id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    //đếm số lượng patient trong db
+    public int getTotalPatient() {
+        String sql = "select count(*) from patient";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public List<Patient> pagingPatient(int index) {
+        List<Patient> list = new ArrayList();
+        String sql = "select p.id, p.full_name,p.gender,\n"
+                + "p.date_of_birth,  p.identity_number, p.insurance_number,\n"
+                + "p.phone_number,p.address, p.image_url from patient p\n"
+                + "ORDER BY p.id OFFSET ? ROWS FETCH NEXT 8 ROWS ONLY;";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, (index - 1) * 8);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Patient p = new Patient(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9));
+                list.add(p);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    public List<Patient> getSortedPatientsWithPaging(String field, String order, int index) {
+        List<Patient> list = new ArrayList<>();
+        String sql = "SELECT p.id, p.full_name,p.gender,\n"
+                + "p.date_of_birth,  p.identity_number, p.insurance_number,\n"
+                + "p.phone_number,p.address, p.image_url FROM patient p \n"
+                + "ORDER BY " + field + " " + order + " OFFSET ? ROWS FETCH NEXT 8 ROWS ONLY";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, (index - 1) * 8);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Patient p = new Patient(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9));
+                list.add(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //hàm thêm 1 cuộc hẹn (CHƯA XONG VẪN ĐANG LỖI)
+    public List<Doctor> getListDoctor() {
+        List<Doctor> list = new ArrayList();
+        String sql = "select d.id, d.full_name, s.name, s.description, r.name\n"
+                + "from doctor d join specialization s on d.specialization_id = s.id\n"
+                + "join room r on s.id = r.specialization_id";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Doctor d = new Doctor(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5));
+                list.add(d);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    //hàm lấy danh sách cuộc hẹn
+    public List<Appointment> getListAppointment(int id) {
+        List<Appointment> list = new ArrayList();
+        String sql = "select a.id ,d.full_name, s.name, s.description ,dss.date,\n"
+                + "CONVERT(varchar(8), dss.slot_start_time, 108) as startTime, CONVERT(varchar(8), dss.slot_end_time, 108) as endTime,\n"
+                + "r.name, a.confirmation_status from \n"
+                + "appointment_schedule a join doctor d on a.doctor_id = d.id\n"
+                + "join room r on a.room_id = r.id \n"
+                + "join doctor_shift_slot dss on a.doctor_shift_id = dss.id\n"
+                + "join specialization s on d.specialization_id = s.id\n"
+                + "where a.patient_id = ?";
+        try {
+            PreparedStatement st = connection.prepareCall(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Appointment a = new Appointment(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getString(6),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getString(9));
+                list.add(a);
+            }
+        } catch (Exception e) {
+        }
+
+        return list;
+    }
+
+    public static void main(String[] args) {
+        PatientDAO pdao = new PatientDAO();
+        Patient p1 = pdao.getAPatientByEmail("pat1@gmail.com");
+        Patient p = pdao.getAPatientById(1);
+        System.out.println(p1.toString());
+
+        //Test paging
+//        int cnt = pdao.getTotalPatient();
+//        System.out.println(cnt);
+//        List<Patient> list = pdao.pagingPatient(2);
+//        for (Patient patient : list) {
+//            System.out.println(patient.toString());
+//        }
     }
 }

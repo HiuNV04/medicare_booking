@@ -9,32 +9,32 @@ package model;
  * @author ptson
  */
 public class Appointment {
-   
     private int id;
-
-    private int patientId;
-    private String patientName; 
-
-    private int doctorId;
-    private String doctorName;  
-
-    private int doctorShiftId;
+    private int doctorID;
+    private String doctorName;
+    private int specializationId;
+    private String specializationName;
+    private String description;
     private String date;
     private String startTime;
     private String endTime;
-
+    private int roomId;
+    private String roomName;
     private String status;
-    
-    public Appointment(int id,  String patientName,  String doctorName, int doctorShiftId, String date, String startTime, String endTime, String status) {
+
+    public Appointment(int id, String doctorName, String specializationName, String description, String date, String startTime, String endTime, String roomName, String status) {
         this.id = id;
-        this.patientName = patientName;
         this.doctorName = doctorName;
-        this.doctorShiftId = doctorShiftId;
+        this.specializationName = specializationName;
+        this.description = description;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.roomName = roomName;
         this.status = status;
     }
+    
+    
 
     public int getId() {
         return id;
@@ -44,28 +44,12 @@ public class Appointment {
         this.id = id;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public int getDoctorID() {
+        return doctorID;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getPatientName() {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
     }
 
     public String getDoctorName() {
@@ -76,12 +60,28 @@ public class Appointment {
         this.doctorName = doctorName;
     }
 
-    public int getDoctorShiftId() {
-        return doctorShiftId;
+    public int getSpecializationId() {
+        return specializationId;
     }
 
-    public void setDoctorShiftId(int doctorShiftId) {
-        this.doctorShiftId = doctorShiftId;
+    public void setSpecializationId(int specializationId) {
+        this.specializationId = specializationId;
+    }
+
+    public String getSpecializationName() {
+        return specializationName;
+    }
+
+    public void setSpecializationName(String specializationName) {
+        this.specializationName = specializationName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDate() {
@@ -108,6 +108,22 @@ public class Appointment {
         this.endTime = endTime;
     }
 
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -115,7 +131,6 @@ public class Appointment {
     public void setStatus(String status) {
         this.status = status;
     }
-    
     
     
 }

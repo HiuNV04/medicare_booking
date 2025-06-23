@@ -19,15 +19,7 @@
                 </a>
                 <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/receptionist/receptionist.jsp">Home</a>
                 
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddPatient">Add Patient</a>
-
                 <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reViewPatient">List Patient</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddAppointment">Add Appointment</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reViewAppointment">List Appointment</a>
-                
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">View Feedback</a>
 
                 <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showReceptionist">Receptionist Profile</a>
 
@@ -36,7 +28,7 @@
 
             <div class="content">
                 <div class="card">Number of Patient: ${sessionScope.totalPatients}</div>
-                <div class="card">Number of Appointment: 0</div> 
+                <div class="card">Number of Appointment: ${sessionScope.totalAppointments}</div> 
             </div>
         </div>
     </body>

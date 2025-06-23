@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Patient Page</title>
-       <link href="${pageContext.request.contextPath}/css/style2.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/css/style2.css" rel="stylesheet">
     </head>
     <body>
         <div class="header">
@@ -24,14 +24,16 @@
                     <img src="/MediCare_Booking/img/pic9.jpg" alt="" style="width:100%;">
                 </a>
                 <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/patient/patient.jsp">Home</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showPatient">Patient Profile</a>
                 
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/changePassPatient">Change Password</a>
+                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/paAddAppointment">Add Appointment</a>  
                 
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">View Appointment</a>
+                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/paListAppointment">List Appointment</a>   
                 
                 <a style="margin-bottom: 12%;  font-size: 121%;" href="#">History Feedback</a>
+
+                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showPatient">Patient Profile</a>
+
+                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/changePassPatient">Change Password</a>
             </div>
 
             <div class="content">

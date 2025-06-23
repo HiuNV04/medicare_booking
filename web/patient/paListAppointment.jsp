@@ -5,7 +5,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>List Patient</title>
+        <title>Patient Change Pass</title>
+        <link href="${pageContext.request.contextPath}/css/style2.css" rel="stylesheet">
         <style>
             * {
                 box-sizing: border-box;
@@ -48,7 +49,7 @@
             }
 
             .sidebar {
-                width: 280px;
+                width: 226px;
                 background-color: #ffffff;
                 padding: 20px;
                 border-right: 1px solid #ddd;
@@ -150,7 +151,7 @@
 
 
             table {
-                width: 100%;
+                width: 85%;
                 border-collapse: collapse;
                 background-color: #fff;
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -236,106 +237,53 @@
                 cursor: default;
                 box-shadow: none;
             }
-
         </style>
     </head>
     <body>
         <div class="header">
             <h2>Profile</h2>
-            <a href="/MediCare_Booking/auth/home.jsp">Trang chủ</a>
         </div>
 
         <div class="container">
-            <div class="sidebar">
-                <a style="margin-bottom: 12%;" href="/MediCare_Booking/img/pic9.jpg">
-                    <img src="/MediCare_Booking/img/pic9.jpg" alt="Avatar" style="width:100%;">
-                </a>
-                <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/receptionist/receptionist.jsp">Home</a>
+            <%@ include file="sidebar.jsp" %>
+            <div class="content">
+                <table id="patientTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Doctor Name</th>
+                            <th>Specialization</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Room</th>
+                            <th>Status</th>
+                            <th>Action</th> 
+                        </tr>
+                    </thead>
 
-<!--                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddPatient">Add Patient</a>-->
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reViewPatient">List Patient</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showReceptionist">Receptionist Profile</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/changePassReceptionist">Change Password</a>
+                    <c:forEach var="i" items="${requestScope.list}">
+                        <tr>
+                            <td>${i.getId()}</td>
+                            <td>${i.getDoctorName()}</td>
+                            <td>${i.getSpecializationName()}</td>
+                            <td>${i.getDescription()}</td>
+                            <td>${i.getDate()}</td>
+                            <td>${i.getStartTime()}</td>
+                            <td>${i.getEndTime()}</td>          
+                            <td>${i.getRoomName()}</td>
+                            <td>${i.getStatus()}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="?id=${i.getId()}" class="btn-submit">Update</a>
+                                    <a href="?id=${i.getId()}" class="btn-submit">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
             </div>
-
-            <div style="margin-left: 5%;">
-                <div class="search-bar">
-                    <c:set var="i" value="${requestScope.identity}"/>
-                    <form action="reViewPatient" method="post">
-                        <input type="text" name="identity" placeholder="Search patient by identity number" value="${i.getIdentity()}"/>
-                        <input type="submit" value="SEARCH" class="btn-submit"/> 
-                    </form>
-                </div>
-                <div class="sort-bar" style="margin-bottom: 2%; margin-top: -1%;">
-                    <form action="reViewPatient" method="get">
-                        <select name="field">
-                            <option value="id" ${requestScope.field == 'id' ? 'selected' : ''}>ID</option>
-                            <option value="full_name" ${requestScope.field == 'name' ? 'selected' : ''}>Name</option>
-                        </select>
-                        <select name="order">
-                            <option value="asc" ${requestScope.order == 'asc' ? 'selected' : ''}>ASC</option>
-                            <option value="desc" ${requestScope.order == 'desc' ? 'selected' : ''}>DESC</option>
-                        </select>
-                        <input type="submit" value="SORT" class="btn-submit"/>
-                        <a href="${pageContext.request.contextPath}/reAddPatient" class="btn-submit" style="margin-left: 10px;text-decoration: none;font-size: 16px;">Add Patient</a>
-                    </form>
-                </div>
-                <div style="margin-left: -6%; margin-right: -1%">
-                    <table id="patientTable" border="1">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Full Name</th>
-                                <th>Gender</th>
-                                <th>Date of Birth</th>
-                                <th>Identity Number</th>
-                                <th>Insurance Number</th>
-                                <th>Phone Number</th>
-                                <th>Address</th>
-                                <th>Image</th>
-                                <th>Action</th> 
-                            </tr>
-                        </thead>
-
-                        <c:forEach var="i" items="${listA}">
-                            <tr>
-                                <td>${i.getId()}</td>
-                                <td>${i.getFullname()}</td>
-                                <td>${i.getGender()}</td>
-                                <td>${i.getDob()}</td>
-                                <td>${i.getIdentity()}</td>
-                                <td>${i.getInsurance()}</td>
-                                <td>${i.getPhone()}</td>
-                                <td>${i.getAddress()}</td>
-                                <td><img src="${i.getImg()}" alt="Patient Image"/></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="reUpdatePatient?id=${i.getId()}" class="btn-submit">Update</a>
-                                        <a href="reDeletePatient?id=${i.getId()}" class="btn-submit">Delete</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                    <div class="pagination">
-                        <c:forEach begin="1" end="${endPage}" var="i">
-                            <c:url var="pageUrl" value="reViewPatient">
-                                <c:param name="index" value="${i}" />
-                                <c:if test="${not empty field}">
-                                    <c:param name="field" value="${field}" />
-                                </c:if>
-                                <c:if test="${not empty order}">
-                                    <c:param name="order" value="${order}" />
-                                </c:if>
-                            </c:url>
-                            <a href="${pageUrl}" class="${param.index == i ? 'active' : ''}">${i}</a>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>          
         </div>
     </body>
 </html>

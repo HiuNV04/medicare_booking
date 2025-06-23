@@ -18,7 +18,7 @@ public class ChangePassPatient extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/auth/patientChangePass.jsp").forward(request, response);
+        request.getRequestDispatcher("/patient/patientChangePass.jsp").forward(request, response);
     }
 
     @Override

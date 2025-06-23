@@ -14,21 +14,7 @@
         </div>
 
         <div class="container">
-            <div class="sidebar">
-                <a style="margin-bottom: 12%;" href="/MediCare_Booking/img/pic9.jpg">
-                    <img src="/MediCare_Booking/img/pic9.jpg" alt="Avatar" style="width:100%;">
-                </a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/patient/patient.jsp">Home</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showPatient">Patient Profile</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/changePassPatient">Change Password</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">View Appointment</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">History Feedback</a>
-            </div>
+            <%@ include file="sidebar.jsp" %>
             <div>
                 <c:set var="i" value="${sessionScope.patient}"/>
                 <form action="changePassPatient" method="post" style="margin-right: -108%;">

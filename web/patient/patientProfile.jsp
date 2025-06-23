@@ -28,27 +28,13 @@
         </div>
 
         <div class="container">
-            <div class="sidebar">
-                <c:set var="i" value="${sessionScope.user}"/>
-                <a style="margin-bottom: 12%;" href="${i.getImg()}">
-                    <img src="${i.getImg()}" alt="Avatar" style="width:100%;">
-                </a>
-                <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/patient/patient.jsp">Home</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showPatient">Patient Profile</a>
-
-                <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/changePassPatient">Change Password</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">View Appointment</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">History Feedback</a>
-            </div>
+            <%@ include file="sidebar.jsp" %>
             <div>
                 <c:set var="i" value="${sessionScope.patient}"/>
-                <form action="showPatient" method="post" style="margin-right:-197%">
+                <form action="showPatient" method="post" enctype="multipart/form-data" style="margin-right: -105%;">
                     <div class="form-group">
-                        <label>ID: </label>
-                        <input type="text" class="form-control" name="id" value="${i.getId()}" readonly=""/>
+                        <!--                        <label>ID: </label>-->
+                        <input type="hidden" class="form-control" name="id" value="${i.getId()}" readonly=""/>
                     </div>
                     <div class="form-group">
                         <label>Username: </label>
@@ -71,11 +57,15 @@
                     </div>
                     <div class="form-group">
                         <label>Date of birth: </label>
-                        <input type="text" class="form-control" name="dob" value="${i.getDob()}" required=""/>
+                        <input type="date" class="form-control" name="dob" value="${i.getDob()}" required=""/>
                     </div>
                     <div class="form-group">
-                        <label>Gender: </label>
-                        <input type="text" class="form-control" name="gender" value="${i.getGender()}" required=""/>
+                        <label for="gender">Gender:</label>
+                        <select name="gender" required="" style="padding: 10px 15px;font-size: 16px;border: 1px solid #ccc; border-radius: 6px;outline: none;width: 100%;">
+                            <option value="Male" ${i.getGender() == 'Male' ? 'selected' : ''}>Male</option>
+                            <option value="Female" ${i.getGender() == 'Female' ? 'selected' : ''}>Female</option>
+                            <option value="Other" ${i.getGender() == 'Other' ? 'selected' : ''}>Other</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Identity Number: </label>
@@ -95,12 +85,14 @@
                     </div>
                     <div class="form-group">
                         <label>Image: </label>
-                        <input type="file" class="form-control" name="image" value="${i.getImg()}" required=""/>
+                        <img src="${i.getImg()}" width="100" />
+                        <input type="file" name="image" />
                     </div>
                     <div style="margin-left: 39%;">
                         <input type="submit" value="SAVE">
                         <input type="reset" value="RESET"/>
                     </div>
+                    <h3 style="color:red">${error}</h3>
                 </form>
             </div>
         </div>

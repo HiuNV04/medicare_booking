@@ -2,6 +2,8 @@ package util;
 
 import dal.PatientDAO;
 import dal.ReceptionistDAO;
+import jakarta.servlet.http.Part;
+import java.nio.file.Paths;
 import java.util.List;
 import model.Patient;
 import model.Receptionist;
@@ -9,7 +11,6 @@ import model.Receptionist;
 public class Exception {
 
     private static ReceptionistDAO rdao = new ReceptionistDAO();
-    private static PatientDAO pdao = new PatientDAO();
 
     public static String getPasswordFormatForPatient(Patient p, String oldPass, String password, String cfPass) {
         String msg = "";
@@ -174,11 +175,49 @@ public class Exception {
             error = "identity not exceed 12 number";
             return error;
         }
+        if (!insurance.matches("^(BHYT|bhyt)\\d{3}$")) {
+            error = "BHYTXXX(X is a digit)";
+            return error;
+        }
+        return null;
+    }
+
+    public static boolean checkImage(Part filePart) {
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString().toLowerCase();
+
+        return fileName.endsWith(".jpg")
+                || fileName.endsWith(".jpeg")
+                || fileName.endsWith(".png")
+                || fileName.endsWith(".gif")
+                || fileName.endsWith(".webp");
+    }
+    
+    public static String checkPhoneNumber(String phone) {
+        String error = "";
+         
+        if (!phone.matches("^0\\d{9}$")) {
+            error = "PhoneNumber is exceed 10 number: 09xxxxxxxx";
+            return error;
+        }
+        
+        return null;
+    }
+    
+    public static String checkIdentityAndInsuranceAndPhone(String identity, String insurance, String phone) {
+        String error = "";
+
+        if (!phone.matches("^0\\d{9}$")) {
+            error = "phone number not exceed 10 number";
+            return error;
+        }
+        if (!identity.matches("^\\d{12}$")) {
+            error = "identity not exceed 12 number";
+            return error;
+        }
         if (!insurance.matches("^\\d{10}$")) {
             error = "insurance not exceed 10 number";
             return error;
         }
         return null;
     }
-
 }

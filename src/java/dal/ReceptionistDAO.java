@@ -6,11 +6,7 @@ package dal;
 
 import model.Receptionist;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import model.Doctor;
-import model.DoctorShiftSlot;
 import model.Patient;
 
 /**
@@ -149,8 +145,8 @@ public class ReceptionistDAO extends DBContext {
 
     //hàm tìm kiếm bệnh nhân theo cccd
     public Patient getAPatientByIdentity(String identity) {
-        String sql = "select p.id, p.full_name,\n"
-                + " p.gender, p.identity_number, \n"
+        String sql = "select p.id, p.full_name, \n"
+                + " p.gender, p.date_of_birth ,p.identity_number, \n"
                 + "p.insurance_number, p.phone_number, p.address, p.image_url\n"
                 + "from patient p where p.identity_number = ?";
         try {
@@ -165,7 +161,8 @@ public class ReceptionistDAO extends DBContext {
                         rs.getString(5),
                         rs.getString(6),
                         rs.getString(7),
-                        rs.getString(8));
+                        rs.getString(8),
+                        rs.getString(9));
             }
         } catch (SQLException e) {
         }
@@ -222,73 +219,17 @@ public class ReceptionistDAO extends DBContext {
         return false;
     }
 
-    //hàm lấy danh sách doctor và chuyên khoa (support cho trang reAddAppointment)
-    public List<Doctor> getDoctorAndSpecialization() {
-        List<Doctor> list = new ArrayList();
-        String sql = "select d.full_name, s.name, r.name from doctor d join specialization s on d.specialization_id = s.id join room r on r.specialization_id = s.id";
+    //hàm lấy tổng số lịch hẹn
+    public int getTotalAppoinment() {
+        String sql = "select count(*) from appointment_schedule";
         try {
             PreparedStatement st = connection.prepareCall(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Doctor d = new Doctor(rs.getString(1),
-                        rs.getString(2),
-                                      rs.getString(3));
-                list.add(d);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-    
-    //hàm lấy room qua specizationId
-    public String getRoom(int specialization) {
-        String sql = "select r.name from room r join doctor d on r.specialization_id = d.specialization_id where d.id = ?";
-        try {
-            PreparedStatement st = connection.prepareCall(sql);
-            st.setInt(1, specialization);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return rs.getString(1);
+                return rs.getInt(1);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
         }
-        return null;
-    }
-
-    //thêm mới 1 slot khám của 1 bác sĩ (doctor_shift_slot)
-    public void insertSlot(DoctorShiftSlot dfs) {
-        String sql = "INSERT INTO [dbo].[doctor_shift_slot]\n"
-                + "           ([doctor_id]\n"
-                + "           ,[slot_start_time]\n"
-                + "           ,[slot_end_time]\n"
-                + "           ,[date]\n"
-                + "           ,[is_booked]) VALUES (?, ?, ?, ?, ?)";
-
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            // Chuyển đổi String sang Time và Date
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date parsedDate = sdf.parse(dfs.getDate());
-            Time startTime = Time.valueOf(dfs.getSlotStartTime());
-            Time endTime = Time.valueOf(dfs.getSlotEndTime());
-
-            st.setInt(1, dfs.getDoctocId());
-            st.setTime(2, startTime);
-            st.setTime(3, endTime);
-            st.setDate(4, new java.sql.Date(parsedDate.getTime()));
-            st.setBoolean(5, dfs.isIsBooked()); // dfs.getIsBooked() trả về boolean
-
-            st.executeUpdate();
-        } catch (SQLException | ParseException e) {
-        }
-    }
-    
-    public static void main(String[] args) {
-        ReceptionistDAO rdao = new ReceptionistDAO();
-        List<Doctor> d = rdao.getDoctorAndSpecialization();
-        for (Doctor doctor : d) {
-            System.out.println(doctor.toString());
-        }
+        return 0;
     }
 }

@@ -1,6 +1,4 @@
-
 package model;
-
 
 public class Patient {
 
@@ -9,15 +7,18 @@ public class Patient {
     private String email;
     private String username;
     private String password;
-    private String fullname, gender, dob ,identity, insurance, phone, address;
+    private String fullname, gender, dob, identity, insurance, phone, address;
     private String img;
+
+    public Patient() {
+    }
     
     public Patient(String username) {
         this.username = username;
     }
 
     //cái này để update 1 thông tin bệnh nhân
-    public Patient(String gender, String dob, String identity, String insurance, String phone, String address, String img) {
+    public Patient(String dob, String gender, String identity, String insurance, String phone, String address, String img) {
         this.gender = gender;
         this.dob = dob;
         this.identity = identity;
@@ -25,8 +26,8 @@ public class Patient {
         this.phone = phone;
         this.address = address;
         this.img = img;
-    }   
-    
+    }
+
     //constructor này để lấy danh sách bệnh nhân bên lễ tân
     public Patient(int id, String fullname, String gender, String identity, String insurance, String phone, String address, String img) {
         this.id = id;
@@ -37,9 +38,22 @@ public class Patient {
         this.phone = phone;
         this.address = address;
         this.img = img;
-    }  
-    
-            //constructor này để thêm mới 1 bệnh nhân bên lễ tân
+    }
+
+    //constructor này để lấy 1 bệnh nhân bên lễ tân ra update
+    public Patient(int id, String fullname, String gender, String dob, String identity, String insurance, String phone, String address, String img) {
+        this.id = id;
+        this.fullname = fullname;
+        this.gender = gender;
+        this.dob = dob;
+        this.identity = identity;
+        this.insurance = insurance;
+        this.phone = phone;
+        this.address = address;
+        this.img = img;
+    }
+
+    //constructor này để thêm mới 1 bệnh nhân bên lễ tân
     public Patient(String role, String fullname, String dob, String gender, String identity, String insurance, String phone, String address) {
         this.role = role;
         this.fullname = fullname;
@@ -49,7 +63,7 @@ public class Patient {
         this.insurance = insurance;
         this.phone = phone;
         this.address = address;
-    } 
+    }
 
     public Patient(int id, String email, String username, String password, String fullname, String gender, String dob, String identity, String insurance, String phone, String address, String img) {
         this.id = id;
@@ -169,11 +183,9 @@ public class Patient {
     public void setRole(String role) {
         this.role = role;
     }
-    
-    
 
     @Override
     public String toString() {
-        return "Patient{" + "id=" + id + ", email=" + email + ", username=" + username + ", password=" + password + ", fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", identity=" + identity + ", insurance=" + insurance + ", phone=" + phone + ", address=" + address + ", img=" + img + '}';
+        return "Patient{" + "id=" + id + "fullname=" + fullname + ", gender=" + gender + ", dob=" + dob + ", identity=" + identity + ", insurance=" + insurance + ", phone=" + phone + ", address=" + address + ", img=" + img + '}';
     }
 }

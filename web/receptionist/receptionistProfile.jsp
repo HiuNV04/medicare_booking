@@ -39,15 +39,9 @@
                 </a>
                 <a style="margin-bottom: 12%; font-size: 121%;" href="/MediCare_Booking/receptionist/receptionist.jsp">Home</a>
 
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddPatient">Add Patient</a>
+<!--                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddPatient">Add Patient</a>-->
 
                 <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reViewPatient">List Patient</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reAddAppointment">Add Appointment</a>
-
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="${pageContext.request.contextPath}/reViewAppointment">List Appointment</a>
-                
-                <a style="margin-bottom: 12%;  font-size: 121%;" href="#">History Feedback</a>
 
                 <a style="margin-bottom: 12%; font-size: 121%;" href="${pageContext.request.contextPath}/showReceptionist">Receptionist Profile</a>
 
@@ -55,14 +49,12 @@
             </div>
             <div>
                 <c:set var="i" value="${sessionScope.receptionist}"/>
-                <form class="form1" action="showReceptionist" method="post" style="margin-right: -197%; margin-left: 12%;">
+                <form class="form1" action="showReceptionist" method="post" enctype="multipart/form-data" style="margin-right: -118%; margin-left: 12%;">
                     <div class="form-group">
-                        <label>ID: </label>
-                        <input type="text" class="form-control" name="id" value="${i.getId()}" readonly=""/>
+                        <input type="hidden" class="form-control" name="id" value="${i.getId()}" readonly=""/>
                     </div>
                     <div class="form-group">
-                        <label>Role: </label>
-                        <input type="text" class="form-control" name="role" value="${i.getRole()}" readonly=""/>
+                        <input type="hidden" class="form-control" name="role" value="${i.getRole()}" readonly=""/>
                     </div>
                     <div class="form-group">
                         <label>Email: </label>
@@ -88,8 +80,10 @@
                         <input type="text" class="form-control" name="dob" value="${i.getDob()}" readonly=""/>
                     </div>
                     <div class="form-group">
-                        <label>Gender: </label>
-                        <input type="text" class="form-control" name="gender" value="${i.getGender()}" required=""/>
+                        <label>Gender: </label> 
+                        <input type="radio" name="gender" required="" value="Nam" ${i.getGender() == 'Nam' ? 'checked' : ''}/> Nam 
+                        <input type="radio" name="gender" required="" value="Nữ" ${i.getGender() == 'Nữ' ? 'checked' : ''}/> Nữ
+                        <input type="radio" name="gender" required="" value="Other" ${i.getGender() == 'Other' ? 'checked' : ''}/> Other 
                     </div>
                     <div class="form-group">
                         <label>Phone Number: </label>
@@ -100,6 +94,7 @@
                         <input type="text" class="form-control" name="address" value="${i.getAddress()}" required=""/>
                     </div>
                     <div class="form-group">
+                        <label>Image: </label>
                         <img src="${i.getImg()}" width="100" />
                         <input type="file" name="image" />
                     </div>
@@ -107,6 +102,7 @@
                         <input type="submit" value="SAVE">
                         <input type="reset" value="RESET"/>
                     </div>
+                    <h3>${error}</h3>
                 </form>
             </div>
         </div>
