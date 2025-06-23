@@ -1,4 +1,4 @@
-package controller;
+package controllerlogin;
 
 import dal.PatientDAO;
 import model.Patient;
