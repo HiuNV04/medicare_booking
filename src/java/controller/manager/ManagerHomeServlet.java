@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class ManagerHomeServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("search", search == null ? "" : search);
         request.setAttribute("sortRole", sortRole == null ? "all" : sortRole);
-        request.getRequestDispatcher("/auth/manager_home.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/manager_home.jsp").forward(request, response);
     }
     
     @Override

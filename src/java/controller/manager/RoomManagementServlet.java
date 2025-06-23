@@ -1,4 +1,4 @@
-package controller;
+package controller.manager;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
@@ -54,7 +54,13 @@ public class RoomManagementServlet extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("specializationList", specializationList);
         request.setAttribute("pageSize", pageSize);
-        request.getRequestDispatcher("/auth/room_management.jsp").forward(request, response);
+        // Handle success message from session
+        Object successMsg = request.getSession().getAttribute("success");
+        if (successMsg != null) {
+            request.setAttribute("success", successMsg);
+            request.getSession().removeAttribute("success");
+        }
+        request.getRequestDispatcher("/manager/room_management.jsp").forward(request, response);
     }
 
     private String normalize(String input) {
@@ -88,10 +94,12 @@ public class RoomManagementServlet extends HttpServlet {
                 request.setAttribute("totalPages", 1);
                 request.setAttribute("specializationList", specializationList);
                 request.setAttribute("pageSize", roomList.size());
-                request.getRequestDispatcher("/auth/room_management.jsp").forward(request, response);
+                request.getRequestDispatcher("/manager/room_management.jsp").forward(request, response);
                 return;
             }
             roomDAO.addRoom(specializationId, name);
+            // Set success message in session
+            request.getSession().setAttribute("success", "Thêm phòng thành công!");
         } else if ("editRoom".equals(action)) {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int specializationId = Integer.parseInt(request.getParameter("specializationId"));

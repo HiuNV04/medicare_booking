@@ -1,4 +1,4 @@
-package controller;
+package controller.manager;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
@@ -57,7 +57,7 @@ public class RoomDetailServlet extends HttpServlet {
         request.setAttribute("selectedRoom", selectedRoom);
         request.setAttribute("doctorsInRoom", doctorsInRoom);
         request.setAttribute("availableDoctors", availableDoctors);
-        request.getRequestDispatcher("/auth/room_detail.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/room_detail.jsp").forward(request, response);
     }
 
     @Override

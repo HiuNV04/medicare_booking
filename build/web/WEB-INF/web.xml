@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>RegisterController</servlet-name>
-        <servlet-class>controller.RegisterController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterController</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>LoginController</servlet-name>
         <servlet-class>controller.LoginController</servlet-class>
     </servlet>
@@ -18,7 +10,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ManagerHomeServlet</servlet-name>
-        <servlet-class>controller.ManagerHomeServlet</servlet-class>
+        <servlet-class>controller.manager.ManagerHomeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ManagerHomeServlet</servlet-name>
@@ -26,7 +18,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ManagerProfileServlet</servlet-name>
-        <servlet-class>controller.ManagerProfileServlet</servlet-class>
+        <servlet-class>controller.manager.ManagerProfileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ManagerProfileServlet</servlet-name>
@@ -34,7 +26,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>ManagerChangePasswordServlet</servlet-name>
-        <servlet-class>controller.ManagerChangePasswordServlet</servlet-class>
+        <servlet-class>controller.manager.ManagerChangePasswordServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ManagerChangePasswordServlet</servlet-name>

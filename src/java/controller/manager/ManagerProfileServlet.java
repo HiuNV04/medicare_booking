@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.manager;
 
 import dal.StaffDAO;
 import model.Staff;
@@ -32,7 +32,7 @@ public class ManagerProfileServlet extends HttpServlet {
         Staff manager = staffDAO.getManagerById(2);
         request.setAttribute("user", manager);
         request.getSession().setAttribute("user", manager);
-        request.getRequestDispatcher("/auth/manager_profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/manager_profile.jsp").forward(request, response);
     }
 
     

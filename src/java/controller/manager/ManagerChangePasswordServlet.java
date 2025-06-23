@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.manager;
 
 import util.PasswordUtil;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class ManagerChangePasswordServlet extends HttpServlet {
             model.Staff manager = staffDAO.getManagerById(2); // Hardcode id=2
             request.getSession().setAttribute("user", manager);
         }
-        request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
     }
 
     
@@ -43,12 +43,12 @@ public class ManagerChangePasswordServlet extends HttpServlet {
 
         if (!util.PasswordUtil.hashSHA256(oldPass).equals(manager.getPassword())) {
             request.setAttribute("error", "Mật khẩu cũ không đúng");
-            request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
             return;
         }
         if (!newPass.equals(confirmPass)) {
             request.setAttribute("error", "Mật khẩu mới không khớp");
-            request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
             return;
         }
         String newHash = util.PasswordUtil.hashSHA256(newPass);
@@ -57,7 +57,7 @@ public class ManagerChangePasswordServlet extends HttpServlet {
         staffDAO.updateManagerPassword(manager.getId(), newHash); // Cập nhật mật khẩu vào staff
         session.setAttribute("user", manager);
         request.setAttribute("success", "Đổi mật khẩu thành công");
-        request.getRequestDispatcher("/auth/manager_change_password.jsp").forward(request, response);
+        request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
     }
     
     
