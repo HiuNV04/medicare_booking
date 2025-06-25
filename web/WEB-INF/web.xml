@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-   
-   
+    
+    <welcome-file-list>       
+        <welcome-file>doctor/login_doctor.jsp</welcome-file>
+  
+       
+        
+        <welcome-file>doctor/prescription/create_prescription.jsp</welcome-file>
+        <welcome-file>doctor/prescription/view_prescription.jsp</welcome-file>
+        <welcome-file>doctor/prescription/history_prescription.jsp</welcome-file>
+        <welcome-file>doctor/schedule/appointment_list.jsp</welcome-file>
+        <welcome-file>doctor/schedule/appointment_pending.jsp</welcome-file>
+        <welcome-file>doctor/schedule/appointment_history.jsp</welcome-file>
+        <welcome-file>doctor/patient/patient_profile.jsp</welcome-file>
+        <welcome-file>doctor/profile/detail_profile.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
+
+   
