@@ -86,9 +86,7 @@
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item mt-3">
-                            <a class="nav-link" href="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
-                        </li>
+                      
                     </ul>
                 </nav>
 

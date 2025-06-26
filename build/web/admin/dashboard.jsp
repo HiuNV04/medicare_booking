@@ -80,9 +80,7 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item mt-3">
-                            <a class="nav-link" href="logout"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
-                        </li>
+                        
                     </ul>
                 </nav>
                 <!-- Main content -->
