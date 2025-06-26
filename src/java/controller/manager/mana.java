@@ -3,11 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-<<<<<<<< HEAD:src/java/controller/admin/a.java
-package controller.admin;
-========
-package controller.receptionist;
->>>>>>>> master:src/java/controller/receptionist/recep.java
+package controller.manager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,13 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author ADMIN
  */
-<<<<<<<< HEAD:src/java/controller/admin/a.java
-@WebServlet(name="a", urlPatterns={"/a"})
-public class a extends HttpServlet {
-========
-@WebServlet(name="recep", urlPatterns={"/recep"})
-public class recep extends HttpServlet {
->>>>>>>> master:src/java/controller/receptionist/recep.java
+@WebServlet(name="mana", urlPatterns={"/mana"})
+public class mana extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -44,17 +35,10 @@ public class recep extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-<<<<<<<< HEAD:src/java/controller/admin/a.java
-            out.println("<title>Servlet a</title>");  
+            out.println("<title>Servlet mana</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet a at " + request.getContextPath () + "</h1>");
-========
-            out.println("<title>Servlet recep</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet recep at " + request.getContextPath () + "</h1>");
->>>>>>>> master:src/java/controller/receptionist/recep.java
+            out.println("<h1>Servlet mana at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
