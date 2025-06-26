@@ -12,8 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-<<<<<<< HEAD
-        <h1>Hello World!</h1>
+         <h1>Hello World!</h1>
 =======
         <div class="container-fluid">
             <div class="row">
@@ -47,6 +46,5 @@
         </div>
         <!-- Bootstrap JS and Icons -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
->>>>>>> huy
-    </body>
+     </body>
 </html>
