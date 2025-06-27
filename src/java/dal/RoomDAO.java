@@ -8,6 +8,7 @@ package dal;
  *
  * @author ADMIN
  */
+
 public class RoomDAO extends MyDAO {
     
 }

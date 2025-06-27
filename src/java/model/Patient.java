@@ -4,8 +4,8 @@
  */
 package model;
 
-import java.util.Date;
-
+import java.time.LocalDate;
+ 
 /**
  *
  * @author ADMIN
@@ -18,7 +18,7 @@ public class Patient {
     private String password;
     private String role;
     private String fullName;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String gender;
     private String address;
     private String phoneNumber;
@@ -29,7 +29,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, String identityNumber, String insuranceNumber, boolean status) {
+    public Patient(int id, String imageUrl, String email, String username, String password, String role, String fullName, LocalDate dateOfBirth, String gender, String address, String phoneNumber, String identityNumber, String insuranceNumber, boolean status) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -102,11 +102,11 @@ public class Patient {
         this.fullName = fullName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
