@@ -5,7 +5,7 @@
 package model;
 
 import java.time.LocalDate;
-
+ 
 /**
  *
  * @author ADMIN
@@ -136,6 +136,11 @@ public class Staff {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Staff{" + "id=" + id + ", imageUrl=" + imageUrl + ", email=" + email + ", username=" + username + ", password=" + password + ", role=" + role + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", address=" + address + ", phoneNumber=" + phoneNumber + ", status=" + status + '}';
     }
     
 }

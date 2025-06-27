@@ -118,6 +118,9 @@
                             <div class="col-lg-7">
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body">
+                                           <c:if test="${not empty param.message}">
+                                               <div style="text-align: center" class="alert alert-${param.message eq 'Thay đổi trạng thái thành công' ? 'success' : 'danger'}">${param.message}</div>
+                                        </c:if>
                                         <h5 class="card-title mb-4"><i class="bi bi-person-lines-fill"></i> Cập nhật thông tin</h5>
                                         <div class="mb-3">
                                             <label class="form-label">Id</label>
@@ -148,7 +151,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Username</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="username" name="username" class="form-control" value="${patient.username}">
+                                                <input id="username" name="username" class="form-control" value="${patient.username}" readonly>
                                             </div>
 
                                         </div>
@@ -156,7 +159,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Password</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="password" name="password" type="text"  class="form-control" value="${patient.password}">
+                                                <input id="password" name="password" type="text"  class="form-control" value="${patient.password}" readonly>
                                             </div>
 
                                         </div>
@@ -164,14 +167,14 @@
                                         <div class="mb-3">
                                             <label class="form-label">Họ tên</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="fullName" name="fullName" class="form-control" value="${patient.fullName}">
+                                                <input id="fullName" name="fullName" class="form-control" value="${patient.fullName}" readonly>
                                             </div>
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Ngày sinh</label>
                                             <div class="d-flex align-items-center">
-                                                <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" value="${patient.dateOfBirth != null ? patient.dateOfBirth.toString() : ""}">
+                                                <input id= "dateOfBirth" name="dateOfBirth" class="form-control" type="date" value="${patient.dateOfBirth != null ? patient.dateOfBirth.toString() : ""}" readonly>
                                             </div>
                                         </div>
 
@@ -186,14 +189,14 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Địa chỉ</label>
-                                            <input id="address" name="address" class="form-control" value="${patient.address}">
+                                            <input id="address" name="address" class="form-control" value="${patient.address}" readonly>
                                         </div> 
 
 
                                         <div class="mb-3">
                                             <label class="form-label">Số điện thoại</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="phoneNumber" name="phoneNumber" class="form-control"  value="${patient.phoneNumber}">
+                                                <input id="phoneNumber" name="phoneNumber" class="form-control"  value="${patient.phoneNumber}" readonly>
                                             </div>
                                         </div>
 
@@ -208,13 +211,13 @@
                                         <div class="mb-3">
                                             <label class="form-label">Căn cước công dân</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="identityNumber" name="identityNumber" class="form-control" value="${patient.identityNumber}">
+                                                <input id="identityNumber" name="identityNumber" class="form-control" value="${patient.identityNumber}" readonly> 
                                             </div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Bảo hiểm Y tế</label>
                                             <div class="d-flex align-items-center">
-                                                <input id="insuranceNumber" name="insuranceNumber" class="form-control" value="${patient.insuranceNumber}">
+                                                <input id="insuranceNumber" name="insuranceNumber" class="form-control" value="${patient.insuranceNumber}" readonly>
                                             </div>
                                         </div>
 

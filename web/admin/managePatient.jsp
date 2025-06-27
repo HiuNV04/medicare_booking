@@ -3,9 +3,7 @@
 
 <%@page import="java.util.List"%>
 <%@page import="model.Staff"%>
-<%
-    List<Staff> staffs = (List<Staff>) request.getAttribute("staffs");
-%>
+
 <html>
     <head>
         <meta charset="UTF-8">

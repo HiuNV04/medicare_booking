@@ -7,13 +7,62 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+   <head>
+        <meta charset="UTF-8">
+        <!-- Bootstrap 5 CDN -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <style>
+            body {
+                min-height: 100vh;
+                background: #f8f9fa;
+            }
+            .sidebar {
+                min-height: 100vh;
+                background: #222a35;
+            }
+            .sidebar .nav-link {
+                color: #adb5bd;
+                font-weight: 500;
+                margin-bottom: 7px;
+                transition: background 0.15s, color 0.15s;
+            }
+            .sidebar .nav-link.active,
+            .sidebar .nav-link:hover,
+            .sidebar .nav-link:focus {
+                background: #30425d;
+                color: #fff !important;
+                border-radius: 6px;
+            }
+            /* Dropdown menu for sidebar */
+            .sidebar .dropdown-menu {
+                background: #263143;
+                border-radius: 8px;
+                border: none;
+                margin-left: 10px;
+                margin-top: 3px;
+                min-width: 210px;
+                box-shadow: 0 3px 15px rgba(0,0,0,0.10);
+            }
+            .sidebar .dropdown-menu .dropdown-item {
+                color: #adb5bd;
+                font-weight: 500;
+                border-radius: 5px;
+                transition: background 0.15s, color 0.15s;
+            }
+            .sidebar .dropdown-menu .dropdown-item:hover,
+            .sidebar .dropdown-menu .dropdown-item.active {
+                background: #355581;
+                color: #fff;
+            }
+            .sidebar .dropdown-toggle::after {
+                float: right;
+                margin-top: 9px;
+            }
+        </style>
     </head>
     <body>
-         <h1>Hello World!</h1>
-=======
+         
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->

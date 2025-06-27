@@ -20,8 +20,6 @@ public class DBContext {
         }
     }
     
-    public static void main(String[] args) {
-        DBContext d = new DBContext();
-    }
+    
 
 }

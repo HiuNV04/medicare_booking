@@ -303,7 +303,7 @@
                                         <h5 class="card-title mb-4"><i class="bi bi-person-lines-fill"></i> Cập nhật thông tin</h5>
 
                                         <c:if test="${not empty param.message}">
-                                            <div class="alert alert-${param.message eq 'Update successfully' ? 'success' : 'danger'}">${param.message}</div>
+                                            <div style="text-align: center" class="alert alert-${param.message.contains("successfully") ? 'success' : 'danger'}">${param.message}</div>
                                         </c:if>
 
                                         <form id="staffForm" action="updateDoctor" method="post" enctype="multipart/form-data" >
