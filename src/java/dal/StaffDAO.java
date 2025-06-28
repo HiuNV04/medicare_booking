@@ -61,16 +61,18 @@ public class StaffDAO extends MyDAO {
     }
 
     public List<Staff> getReceptionists() {
-        List<Staff> list = new ArrayList<>();
-        String sql = "SELECT * FROM staff WHERE role = 'Receptionist' AND status = 1";
+        List<Staff> receptionists = new ArrayList<>();
+        String query = "SELECT * FROM staff WHERE role = 'Receptionist'";
         try {
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(extractStaff(rs));
+                receptionists.add(extractStaff(rs));
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        return list;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return receptionists;
     }
 
     public Staff getReceptionistById(int id) {
@@ -87,20 +89,48 @@ public class StaffDAO extends MyDAO {
         return s;
     }
 
+    public Staff getStaffById(int id) {
+        String query = "SELECT * FROM staff WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return extractStaff(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateStaff(Staff staff) {
+        String query = "UPDATE staff SET full_name = ?, date_of_birth = ?, gender = ?, address = ?, phone_number = ?, image_url = ? WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, staff.getFullName());
+            ps.setDate(2, new java.sql.Date(staff.getDateOfBirth().getTime()));
+            ps.setString(3, staff.getGender());
+            ps.setString(4, staff.getAddress());
+            ps.setString(5, staff.getPhoneNumber());
+            ps.setString(6, staff.getImageUrl());
+            ps.setInt(7, staff.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Staff extractStaff(ResultSet rs) throws SQLException {
-        Staff s = new Staff();
-        s.setId(rs.getInt("id"));
-        s.setImageUrl(rs.getString("image_url"));
-        s.setEmail(rs.getString("email"));
-        s.setUsername(rs.getString("username"));
-        s.setPassword(rs.getString("password"));
-        s.setRole(rs.getString("role"));
-        s.setFullName(rs.getString("full_name"));
-        s.setDateOfBirth(rs.getDate("date_of_birth"));
-        s.setGender(rs.getString("gender"));
-        s.setAddress(rs.getString("address"));
-        s.setPhoneNumber(rs.getString("phone_number"));
-        s.setStatus(rs.getInt("status"));
-        return s;
+        Staff staff = new Staff();
+        staff.setId(rs.getInt("id"));
+        staff.setFullName(rs.getString("full_name"));
+        staff.setDateOfBirth(rs.getDate("date_of_birth"));
+        staff.setGender(rs.getString("gender"));
+        staff.setAddress(rs.getString("address"));
+        staff.setPhoneNumber(rs.getString("phone_number"));
+        staff.setImageUrl(rs.getString("image_url"));
+        staff.setRole(rs.getString("role"));
+        return staff;
     }
 } 

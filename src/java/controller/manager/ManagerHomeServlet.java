@@ -26,6 +26,15 @@ public class ManagerHomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        // Ensure manager info is in session for the header
+        if (request.getSession().getAttribute("user") == null) {
+            StaffDAO staffDAOForManager = new StaffDAO();
+            // Assuming manager ID is 2, based on other servlets. This should be improved with real login logic.
+            Staff manager = staffDAOForManager.getManagerById(2); 
+            request.getSession().setAttribute("user", manager);
+        }
+
         dal.StaffDAO staffDAO = new dal.StaffDAO();
         dal.DoctorDAO doctorDAO = new dal.DoctorDAO();
         List<model.Staff> managerList = staffDAO.getManagers();

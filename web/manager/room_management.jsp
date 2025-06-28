@@ -28,8 +28,9 @@
     <div class="sidebar flex-shrink-0">
         <h4 class="mb-4">Quản lý</h4>
         <a href="${pageContext.request.contextPath}/manager/home">Trang chủ</a>
-        <a href="#" class="active">Quản lý phòng</a>
-        <a href="#">Quản lý lịch</a>
+        <a href="${pageContext.request.contextPath}/manager/rooms" class="active">Quản lý phòng</a>
+        <a href="${pageContext.request.contextPath}/manager/schedule-management" >Quản lý lịch</a>
+        <a href="${pageContext.request.contextPath}/manager/shift-list">Quản lý ca khám</a>
         <a href="#">Báo cáo</a>
         <a href="#">Cài đặt</a>
     </div>
@@ -60,18 +61,18 @@
             </div>
         </form>
         <!-- Form thêm phòng -->
-        <form method="post" class="row g-2 mb-4 align-items-end">
+        <form method="post" action="${pageContext.request.contextPath}/manager/rooms" class="row g-2 mb-4 align-items-end">
             <input type="hidden" name="action" value="addRoom"/>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <label class="form-label">Tên phòng</label>
                 <input type="text" class="form-control" name="name" required>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Chuyên khoa</label>
-                <select name="specializationId" class="form-select" required>
-                    <option value="">-- Chọn chuyên khoa --</option>
-                    <c:forEach var="s" items="${specializationList}">
-                        <option value="${s.id}">${s.name}</option>
+            <div class="col-md-5">
+                <label class="form-label">Bác sĩ trực</label>
+                <select name="doctorId" class="form-select" required>
+                    <option value="">-- Chọn bác sĩ --</option>
+                    <c:forEach var="d" items="${availableDoctors}">
+                        <option value="${d.id}">${d.fullName}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -95,9 +96,20 @@
                     <td>${(currentPage-1)*pageSize + loop.index + 1}</td>
                     <td>${r.name}</td>
                     <td>
-                        <c:forEach var="s" items="${specializationList}">
-                            <c:if test="${s.id == r.specializationId}">${s.name}</c:if>
+                        <c:set var="foundDoctor" value="${false}"/>
+                        <c:forEach var="d" items="${doctorList}">
+                            <c:if test="${d.id == r.doctorId}">
+                                <c:forEach var="s" items="${specializationList}">
+                                    <c:if test="${s.id == d.specializationId}">
+                                        ${s.name}
+                                        <c:set var="foundDoctor" value="${true}"/>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
                         </c:forEach>
+                        <c:if test="${not foundDoctor}">
+                            Trống
+                        </c:if>
                     </td>
                     <td>
                         <form method="post" style="display:inline">

@@ -29,20 +29,34 @@
         <h4 class="mb-4">Quản lý</h4>
         <a href="#" class="active">Trang chủ</a>
         <a href="${pageContext.request.contextPath}/manager/rooms">Quản lý phòng</a>
-        <a href="#">Quản lý lịch</a>
+        <a href="${pageContext.request.contextPath}/manager/schedule-management">Quản lý lịch</a>
+        <a href="${pageContext.request.contextPath}/manager/shift-list">Quản lý ca khám</a>
         <a href="#">Báo cáo</a>
         <a href="#">Cài đặt</a>
         <!-- Thêm các mục khác sau -->
     </div>
     <!-- Main Content -->
     <div class="main-content flex-grow-1 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Danh sách nhân sự</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div class="d-flex align-items-center">
+                <c:if test="${not empty sessionScope.user.imageUrl}">
+                    <img src="${pageContext.request.contextPath}/${sessionScope.user.imageUrl}" class="rounded-circle me-3" alt="Avatar" style="width: 60px; height: 60px; object-fit: cover;">
+                </c:if>
+                <c:if test="${empty sessionScope.user.imageUrl}">
+                    <img src="https://via.placeholder.com/60" class="rounded-circle me-3" alt="Avatar">
+                </c:if>
+                <div>
+                    <h4 class="mb-0">Chào mừng, ${sessionScope.user.fullName}!</h4>
+                    <p class="text-muted mb-0">Chúc bạn một ngày làm việc hiệu quả.</p>
+                </div>
+            </div>
             <div>
                 <a href="${pageContext.request.contextPath}/manager/profile" class="btn btn-outline-primary me-2">Chỉnh sửa thông tin</a>
                 <a href="${pageContext.request.contextPath}/manager/change-password" class="btn btn-outline-warning">Đổi mật khẩu</a>
             </div>
         </div>
+
+        <h2 class="mb-3">Danh sách nhân sự</h2>
         <!-- Search & Sort -->
         <form class="row g-2 mb-3" method="get" action="">
             <div class="col-md-4">
@@ -80,14 +94,30 @@
             <c:forEach var="p" items="${peopleList}" varStatus="loop">
                 <tr>
                     <td>${(currentPage-1)*10 + loop.index + 1}</td>
-                    <td>${p[0]}</td>
-                    <td>${p[1]}</td>
                     <td>${p[2]}</td>
+                    <td>${p[1]}</td>
                     <td>${p[3]}</td>
                     <td>${p[4]}</td>
                     <td>${p[5]}</td>
-                    <td><img src="${p[6]}" alt="avatar" width="50" height="50"/></td>
-                    <td><a href="${pageContext.request.contextPath}/manager/staff-detail?id=${p[0]}&role=${p[1]}" class="btn btn-info btn-sm">Xem chi tiết</a></td>
+                    <td>${p[6]}</td>
+                    <td>
+                        <c:if test="${not empty p[7]}">
+                            <img src="${pageContext.request.contextPath}/${p[7]}" alt="avatar" style="max-width: 50px; max-height: 50px; object-fit: contain;"/>
+                        </c:if>
+                        <c:if test="${empty p[7]}">
+                            <img src="https://via.placeholder.com/50" alt="avatar" width="50" height="50"/>
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${sessionScope.user.id == p[0] && sessionScope.user.role == p[1]}">
+                                <a href="${pageContext.request.contextPath}/manager/profile" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/manager/staff-detail?id=${p[0]}&role=${p[1]}" class="btn btn-info btn-sm">Xem chi tiết</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>

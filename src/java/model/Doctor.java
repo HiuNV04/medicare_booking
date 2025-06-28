@@ -15,8 +15,26 @@ public class Doctor {
     private String phoneNumber;
     private int doctorLevelId;
     private int specializationId;
-    private boolean status;
     private int roomId;
+
+    public Doctor() {
+    }
+
+    public Doctor(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, int specializationId, int doctorLevelId) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.fullName = fullName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.specializationId = specializationId;
+        this.doctorLevelId = doctorLevelId;
+    }
 
     // Getter & Setter
     public int getId() { return id; }
@@ -45,8 +63,6 @@ public class Doctor {
     public void setDoctorLevelId(int doctorLevelId) { this.doctorLevelId = doctorLevelId; }
     public int getSpecializationId() { return specializationId; }
     public void setSpecializationId(int specializationId) { this.specializationId = specializationId; }
-    public boolean getStatus() { return status; }
-    public void setStatus(boolean status) { this.status = status; }
     public int getRoomId() { return roomId; }
     public void setRoomId(int roomId) { this.roomId = roomId; }
 } 

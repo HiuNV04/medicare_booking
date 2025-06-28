@@ -13,11 +13,10 @@ public class Staff {
     private String gender;
     private String address;
     private String phoneNumber;
-    private int status;
 
     public Staff() {}
 
-    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, int status) {
+    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -29,7 +28,6 @@ public class Staff {
         this.gender = gender;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.status = status;
     }
 
     public int getId() { return id; }
@@ -54,6 +52,4 @@ public class Staff {
     public void setAddress(String address) { this.address = address; }
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public int getStatus() { return status; }
-    public void setStatus(int status) { this.status = status; }
 } 

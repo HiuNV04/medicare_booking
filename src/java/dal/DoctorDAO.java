@@ -22,18 +22,29 @@ public class DoctorDAO extends MyDAO {
     }
 
     public List<Doctor> getAllDoctors() {
-        List<Doctor> list = new ArrayList<>();
-        xSql = "SELECT * FROM doctor";
+        List<Doctor> doctors = new ArrayList<>();
+        String query = "SELECT * FROM doctor";
         try {
-            ps = con.prepareStatement(xSql);
-            rs = ps.executeQuery();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(extractDoctor(rs));
+                Doctor d = new Doctor();
+                d.setId(rs.getInt("id"));
+                d.setFullName(rs.getString("full_name"));
+                d.setDateOfBirth(rs.getDate("date_of_birth"));
+                d.setGender(rs.getString("gender"));
+                d.setAddress(rs.getString("address"));
+                d.setPhoneNumber(rs.getString("phone_number"));
+                d.setImageUrl(rs.getString("image_url"));
+                d.setSpecializationId(rs.getInt("specialization_id"));
+                d.setDoctorLevelId(rs.getInt("doctor_level_id"));
+                d.setRole("Doctor");
+                doctors.add(d);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return doctors;
     }
 
     private Doctor extractDoctor(ResultSet rs) throws SQLException {
@@ -51,7 +62,23 @@ public class DoctorDAO extends MyDAO {
         d.setPhoneNumber(rs.getString("phone_number"));
         d.setDoctorLevelId(rs.getInt("doctor_level_id"));
         d.setSpecializationId(rs.getInt("specialization_id"));
-        d.setStatus(rs.getBoolean("status"));
         return d;
+    }
+
+    public void updateDoctor(Doctor doctor) {
+        String query = "UPDATE doctor SET full_name = ?, date_of_birth = ?, gender = ?, address = ?, phone_number = ?, image_url = ? WHERE id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, doctor.getFullName());
+            ps.setDate(2, new java.sql.Date(doctor.getDateOfBirth().getTime()));
+            ps.setString(3, doctor.getGender());
+            ps.setString(4, doctor.getAddress());
+            ps.setString(5, doctor.getPhoneNumber());
+            ps.setString(6, doctor.getImageUrl());
+            ps.setInt(7, doctor.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 } 

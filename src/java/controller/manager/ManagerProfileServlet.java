@@ -9,12 +9,20 @@ import dal.StaffDAO;
 import model.Staff;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
+@MultipartConfig
 @WebServlet(name="ManagerProfileServlet", urlPatterns={"/manager/profile"})
 public class ManagerProfileServlet extends HttpServlet {
     
@@ -43,8 +51,28 @@ public class ManagerProfileServlet extends HttpServlet {
         String address = request.getParameter("address");
         String phone = request.getParameter("phoneNumber");
         String gender = request.getParameter("gender");
-        String imageUrl = request.getParameter("imageUrl");
         java.sql.Date dob = java.sql.Date.valueOf(request.getParameter("dateOfBirth"));
+        String existingImageUrl = request.getParameter("existingImageUrl");
+
+        Part filePart = request.getPart("imageFile");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String imageUrl;
+
+        if (fileName != null && !fileName.isEmpty()) {
+            String uploadPath = getServletContext().getRealPath("") + File.separator + "img";
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            File file = new File(uploadPath + File.separator + fileName);
+            try (InputStream fileContent = filePart.getInputStream()) {
+                Files.copy(fileContent, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            imageUrl = "img/" + fileName;
+        } else {
+            imageUrl = existingImageUrl;
+        }
 
         StaffDAO staffDAO = new StaffDAO();
         Staff manager = staffDAO.getManagerById(userId);

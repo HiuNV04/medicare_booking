@@ -2,13 +2,10 @@ package controller.manager;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
-import dal.RoomDoctorDAO;
 import model.Room;
 import model.Doctor;
-import model.Specialization;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,60 +19,62 @@ public class RoomDetailServlet extends HttpServlet {
             throws ServletException, IOException {
         RoomDAO roomDAO = new RoomDAO();
         DoctorDAO doctorDAO = new DoctorDAO();
-        RoomDoctorDAO roomDoctorDAO = new RoomDoctorDAO();
         
-        List<Specialization> specializationList = roomDAO.getAllSpecializations();
-        request.setAttribute("specializationList", specializationList);
-
         String roomIdParam = request.getParameter("roomId");
-        int roomId = -1;
-        if (roomIdParam != null) {
-            try { roomId = Integer.parseInt(roomIdParam); } catch (Exception ignored) {}
+        if (roomIdParam == null) {
+            response.sendRedirect(request.getContextPath() + "/manager/rooms");
+            return;
         }
 
-        Room selectedRoom = null;
-        List<Doctor> doctorsInRoom = null;
-        List<Doctor> availableDoctors = null;
+        int roomId = Integer.parseInt(roomIdParam);
+        Room room = roomDAO.getRoomById(roomId);
         
-        if (roomId > 0) {
-            selectedRoom = roomDAO.getRoomById(roomId);
-            doctorsInRoom = roomDoctorDAO.getDoctorsByRoomId(roomId);
-            int count = roomDoctorDAO.countDoctorsInRoom(roomId);
-            
-            // Make doctorsInRoom effectively final for lambda
-            final List<Doctor> finalDoctorsInRoom = doctorsInRoom;
-            final int finalSpecializationId = selectedRoom != null ? selectedRoom.getSpecializationId() : -1; 
-
-            availableDoctors = doctorDAO.getAllDoctors().stream()
-                .filter(d -> d.getSpecializationId() == finalSpecializationId &&
-                             finalDoctorsInRoom.stream().noneMatch(doc -> doc.getId() == d.getId()))
-                .collect(Collectors.toList());
-            request.setAttribute("canAddDoctor", count < 2);
+        if (room == null) {
+            response.sendRedirect(request.getContextPath() + "/manager/rooms");
+            return;
         }
 
-        request.setAttribute("selectedRoomId", roomId);
-        request.setAttribute("selectedRoom", selectedRoom);
-        request.setAttribute("doctorsInRoom", doctorsInRoom);
+        Doctor currentDoctor = null;
+        if (room.getDoctorId() > 0) {
+            currentDoctor = doctorDAO.getDoctorById(room.getDoctorId());
+        }
+
+        List<Room> allRooms = roomDAO.getAllRooms();
+        java.util.Set<Integer> assignedDoctorIds = allRooms.stream()
+                .filter(r -> r.getId() != roomId) // Exclude current room's doctor
+                .map(Room::getDoctorId)
+                .filter(id -> id > 0)
+                .collect(java.util.stream.Collectors.toSet());
+
+        List<Doctor> availableDoctors = doctorDAO.getAllDoctors().stream()
+                .filter(d -> !assignedDoctorIds.contains(d.getId()))
+                .collect(java.util.stream.Collectors.toList());
+        
+        request.setAttribute("room", room);
+        request.setAttribute("currentDoctor", currentDoctor);
         request.setAttribute("availableDoctors", availableDoctors);
+        
+        Object successMsg = request.getSession().getAttribute("success");
+        if (successMsg != null) {
+            request.setAttribute("success", successMsg);
+            request.getSession().removeAttribute("success");
+        }
+
         request.getRequestDispatcher("/manager/room_detail.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDoctorDAO roomDoctorDAO = new RoomDoctorDAO();
+        RoomDAO roomDAO = new RoomDAO();
         String action = request.getParameter("action");
         int roomId = Integer.parseInt(request.getParameter("roomId"));
 
-        if ("addDoctor".equals(action)) {
-            int doctorId = Integer.parseInt(request.getParameter("doctorId"));
-            if (roomDoctorDAO.countDoctorsInRoom(roomId) < 2) {
-                roomDoctorDAO.addDoctorToRoom(roomId, doctorId);
-            }
-        } else if ("removeDoctor".equals(action)) {
-            int doctorId = Integer.parseInt(request.getParameter("doctorId"));
-            roomDoctorDAO.removeDoctorFromRoom(roomId, doctorId);
+        if ("changeDoctor".equals(action)) {
+            int newDoctorId = Integer.parseInt(request.getParameter("newDoctorId"));
+            roomDAO.assignDoctorToRoom(roomId, newDoctorId);
+            request.getSession().setAttribute("success", "Thay đổi bác sĩ thành công!");
         }
-        response.sendRedirect("room_detail?roomId=" + roomId);
+        response.sendRedirect(request.getContextPath() + "/manager/room_detail?roomId=" + roomId);
     }
 } 
