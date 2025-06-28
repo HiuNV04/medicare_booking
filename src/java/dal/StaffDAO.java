@@ -217,8 +217,5 @@ public class StaffDAO extends MyDAO {
         }
     }
 
-    public static void main(String[] args) {
-
-    }
-
+     
 }
