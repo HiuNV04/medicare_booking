@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-   <head>
+    <head>
         <meta charset="UTF-8">
         <!-- Bootstrap 5 CDN -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -62,7 +62,7 @@
         </style>
     </head>
     <body>
-         
+
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
@@ -84,10 +84,12 @@
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageStaff"><i class="bi bi-person-badge"></i> Quản lí nhân viên</a></li>
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/manageDoctor"><i class="bi bi-person-vcard"></i> Quản lí bác sĩ</a></li>
                                 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
+                                <li><a class="dropdown-item" href="<%=request.getContextPath()%>/managePatient"><i class="bi bi-person"></i> Quản lí bệnh nhân</a></li>
+
                             </ul>
                         </li>
 
-                        
+
                     </ul>
                 </nav>
                 <!-- Main content -->
@@ -95,5 +97,5 @@
         </div>
         <!-- Bootstrap JS and Icons -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-     </body>
+    </body>
 </html>
