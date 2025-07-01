@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package model;
+package model_doctor;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 
 /**
  *
- * @author ADMIN
+ * @author Admin
  */
-public class DoctorShiftSlot {
+public class Slot {
 
     private int slotId;
     private int doctorId;
@@ -20,7 +20,7 @@ public class DoctorShiftSlot {
 
     private Time start;
     private Time end;
-    private java.sql.Date slotDate;
+    private Date slotDate;
     private boolean booked;
 
     // Thêm cho hiển thị
@@ -28,10 +28,10 @@ public class DoctorShiftSlot {
     private String specializationName;
     private String levelName;
 
-    public DoctorShiftSlot() {
+    public Slot() {
     }
 
-    public DoctorShiftSlot(int slotId, int doctorId, int specializationId, int levelId, Time start, Time end, java.sql.Date slotDate, boolean booked, String doctorName, String specializationName, String levelName) {
+    public Slot(int slotId, int doctorId, int specializationId, int levelId, Time start, Time end, Date slotDate, boolean booked, String doctorName, String specializationName, String levelName) {
         this.slotId = slotId;
         this.doctorId = doctorId;
         this.specializationId = specializationId;
@@ -93,11 +93,11 @@ public class DoctorShiftSlot {
         this.end = end;
     }
 
-    public java.sql.Date getSlotDate() {
+    public Date getSlotDate() {
         return slotDate;
     }
 
-    public void setSlotDate(java.sql.Date slotDate) {
+    public void setSlotDate(Date slotDate) {
         this.slotDate = slotDate;
     }
 
@@ -133,6 +133,9 @@ public class DoctorShiftSlot {
         this.levelName = levelName;
     }
 
+    
+
+    
     
 
 }

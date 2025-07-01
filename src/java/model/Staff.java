@@ -4,13 +4,16 @@
  */
 package model;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDate;         // Dành cho biến kiểu LocalDate
+import java.sql.Date;
 
 /**
  *
  * @author ADMIN
  */
 public class Staff {
+
     private int id;
     private String imageUrl;
     private String email;
@@ -137,5 +140,5 @@ public class Staff {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
 }
