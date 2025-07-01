@@ -15,8 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.Date;
 import model.Doctor;
 
 /**
@@ -71,9 +70,9 @@ public class UpdateDoctorController extends HttpServlet {
         int doctorLevelId = Integer.parseInt(request.getParameter("doctorLevelId"));
 
         // Xử lý ngày sinh
-        LocalDate dateOfBirth = null;
+        Date dateOfBirth = null;
         if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            dateOfBirth = LocalDate.parse(dateOfBirthStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dateOfBirth = java.sql.Date.valueOf(dateOfBirthStr);
         }
 
         // Update staff object

@@ -4,8 +4,9 @@
  */
 package model;
 
-import java.time.LocalDate;
-  
+import java.sql.Date;
+
+   
 /**
  *
  * @author ADMIN
@@ -18,7 +19,7 @@ public class Doctor {
     private String password;
     private String role;
     private String fullName;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String gender;
     private String address;
     private String phoneNumber;
@@ -32,7 +33,7 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(int id, String imageUrl, String email, String username, String password, String role, String fullName, LocalDate dateOfBirth, String gender, String address, String phoneNumber, int doctorLevelId, int specializationId, boolean status, String levelName, String specialization, String note) {
+    public Doctor(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, int doctorLevelId, int specializationId, boolean status, String levelName, String specialization, String note) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -108,11 +109,11 @@ public class Doctor {
         this.fullName = fullName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -187,5 +188,7 @@ public class Doctor {
     public void setNote(String note) {
         this.note = note;
     }
+
+  
     
 }

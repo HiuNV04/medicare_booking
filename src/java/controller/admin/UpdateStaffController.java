@@ -16,8 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.Date;
 import model.Staff;
 
 /**
@@ -67,11 +66,10 @@ public class UpdateStaffController extends HttpServlet {
         }
 
         // Xử lý ngày sinh
-        LocalDate dateOfBirth = null;
+        Date dateOfBirth = null;
         if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            dateOfBirth = LocalDate.parse(dateOfBirthStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dateOfBirth = java.sql.Date.valueOf(dateOfBirthStr);
         }
-
         // Update staff object
         Staff s = new Staff();
         s.setId(id);
@@ -93,7 +91,6 @@ public class UpdateStaffController extends HttpServlet {
         // Trả về lại trang detail
         response.sendRedirect(request.getContextPath() + "/viewStaffDetail?id=" + id + "&message=" + java.net.URLEncoder.encode(message, "UTF-8"));
     }
-
     private String extractFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         if (contentDisp != null && contentDisp.contains("filename=")) {

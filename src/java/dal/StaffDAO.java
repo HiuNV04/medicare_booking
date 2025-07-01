@@ -6,8 +6,7 @@ package dal;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import model.Staff;
 
@@ -122,7 +121,7 @@ public class StaffDAO extends MyDAO {
                 s.setFullName(rs.getString("full_name"));
                 java.sql.Date dob = rs.getDate("date_of_birth");
                 if (dob != null) {
-                    s.setDateOfBirth(dob.toLocalDate());
+                    s.setDateOfBirth(dob);
                 }
                 s.setGender(rs.getString("gender"));
                 s.setAddress(rs.getString("address"));
@@ -144,7 +143,7 @@ public class StaffDAO extends MyDAO {
             ps.setString(3, s.getUsername());
             ps.setString(4, s.getPassword());
             ps.setString(5, s.getFullName());
-            ps.setDate(6, s.getDateOfBirth() == null ? null : java.sql.Date.valueOf(s.getDateOfBirth()));
+            ps.setDate(6, new java.sql.Date(s.getDateOfBirth().getTime()));
             ps.setString(7, s.getGender());
             ps.setString(8, s.getAddress());
             ps.setString(9, s.getPhoneNumber());
@@ -181,7 +180,7 @@ public class StaffDAO extends MyDAO {
             ps.setString(4, s.getPassword());
             ps.setString(5, s.getRole());
             ps.setString(6, s.getFullName());
-            ps.setDate(7, s.getDateOfBirth() == null ? null : java.sql.Date.valueOf(s.getDateOfBirth()));
+            ps.setDate(7, new java.sql.Date(s.getDateOfBirth().getTime()));
             ps.setString(8, s.getGender());
             ps.setString(9, s.getAddress());
             ps.setString(10, s.getPhoneNumber());

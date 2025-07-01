@@ -56,7 +56,6 @@ public class ManageStaffController extends HttpServlet {
         request.setAttribute("staffs", staffs);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("currentPage", page);
-
         request.getRequestDispatcher("/admin/manageStaff.jsp").forward(request, response);
     }
  

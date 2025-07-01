@@ -4,7 +4,7 @@
  */
 package model;
 
-import java.time.LocalDate;
+ import java.sql.Date;
  
 /**
  *
@@ -18,7 +18,7 @@ public class Staff {
     private String password;
     private String role;
     private String fullName;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private String gender;
     private String address;
     private String phoneNumber;
@@ -27,7 +27,7 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, LocalDate dateOfBirth, String gender, String address, String phoneNumber, boolean status) {
+    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -98,11 +98,11 @@ public class Staff {
         this.fullName = fullName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -138,9 +138,6 @@ public class Staff {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Staff{" + "id=" + id + ", imageUrl=" + imageUrl + ", email=" + email + ", username=" + username + ", password=" + password + ", role=" + role + ", fullName=" + fullName + ", dateOfBirth=" + dateOfBirth + ", gender=" + gender + ", address=" + address + ", phoneNumber=" + phoneNumber + ", status=" + status + '}';
-    }
+    
     
 }

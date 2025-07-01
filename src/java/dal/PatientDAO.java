@@ -117,7 +117,7 @@ public class PatientDAO extends MyDAO{
                 s.setFullName(rs.getString("full_name"));
                 java.sql.Date dob = rs.getDate("date_of_birth");
                 if (dob != null) {
-                    s.setDateOfBirth(dob.toLocalDate());
+                    s.setDateOfBirth(dob);
                 }
                 s.setGender(rs.getString("gender"));
                 s.setAddress(rs.getString("address"));

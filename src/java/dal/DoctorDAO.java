@@ -8,10 +8,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.Doctor;
-import java.time.LocalDate;
-import java.sql.Date;
-import model.Doctor;
 import model.DoctorLevel;
 import model.Specialization;
 import model.Doctor;
@@ -126,7 +122,7 @@ public class DoctorDAO extends MyDAO {
                 s.setFullName(rs.getString("full_name"));
                 java.sql.Date dob = rs.getDate("date_of_birth");
                 if (dob != null) {
-                    s.setDateOfBirth(dob.toLocalDate());
+                    s.setDateOfBirth(dob);
                 }
                 s.setGender(rs.getString("gender"));
                 s.setAddress(rs.getString("address"));
@@ -189,7 +185,7 @@ public class DoctorDAO extends MyDAO {
             ps.setString(3, s.getUsername());
             ps.setString(4, s.getPassword());
             ps.setString(5, s.getFullName());
-            ps.setDate(6, s.getDateOfBirth() == null ? null : java.sql.Date.valueOf(s.getDateOfBirth()));
+            ps.setDate(6, new java.sql.Date(s.getDateOfBirth().getTime()));
             ps.setString(7, s.getGender());
             ps.setString(8, s.getAddress());
             ps.setString(9, s.getPhoneNumber());
@@ -241,7 +237,7 @@ public class DoctorDAO extends MyDAO {
         }
     }
      public boolean addDoctor(String imageUrl, String email, String username, String password,
-                             String role, String fullName, LocalDate dateOfBirth, String gender,
+                             String role, String fullName, Date dateOfBirth, String gender,
                              String address, String phoneNumber, int doctorLevelId,
                              int specializationId ) {
         String sql = "INSERT INTO doctor (image_url, email, username, password, role, full_name, date_of_birth, " +
@@ -256,7 +252,7 @@ public class DoctorDAO extends MyDAO {
             ps.setString(5, role);
             ps.setString(6, fullName);
             if (dateOfBirth != null) {
-                ps.setDate(7, Date.valueOf(dateOfBirth));
+                ps.setDate(7, dateOfBirth);
             }
             ps.setString(8, gender);
             ps.setString(9, address);

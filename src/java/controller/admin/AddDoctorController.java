@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.sql.Date;
 import java.util.List;
 import model.*;
 
@@ -73,8 +73,8 @@ public class AddDoctorController extends HttpServlet {
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
         String role = request.getParameter("role");
-         int doctorLevelId = Integer.parseInt(request.getParameter("doctorLevelId"));
-         int specializationId = Integer.parseInt(request.getParameter("specializationId"));
+        int doctorLevelId = Integer.parseInt(request.getParameter("doctorLevelId"));
+        int specializationId = Integer.parseInt(request.getParameter("specializationId"));
         boolean hasError = false;
         // Simple server validation (bạn có thể mở rộng thêm như ở trên)
         if (email == null || email.trim().isEmpty()) {
@@ -134,12 +134,11 @@ public class AddDoctorController extends HttpServlet {
             return;
         }
 
-        LocalDate dateOfBirth = null;
+        Date dateOfBirth = null;
         if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-            dateOfBirth = LocalDate.parse(dateOfBirthStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            dateOfBirth = java.sql.Date.valueOf(dateOfBirthStr);
         }
 
- 
         boolean success = new DoctorDAO().addDoctor(imageUrl, email, username, password, role, fullName, dateOfBirth, gender, address, phoneNumber, doctorLevelId, specializationId);
         String message = success ? "Thêm thành công" : "Thêm thất bại";
         request.setAttribute("message", message);
@@ -158,5 +157,3 @@ public class AddDoctorController extends HttpServlet {
         return null;
     }
 }
-
-

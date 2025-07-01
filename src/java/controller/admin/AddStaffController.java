@@ -11,8 +11,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+ import java.sql.Date;
 
 /**
  *
@@ -124,9 +123,9 @@ public class AddStaffController extends HttpServlet {
                 return;
             }
 
-            LocalDate dateOfBirth = null;
+            Date dateOfBirth = null;
             if (dateOfBirthStr != null && !dateOfBirthStr.isEmpty()) {
-                dateOfBirth = LocalDate.parse(dateOfBirthStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+               dateOfBirth = java.sql.Date.valueOf(dateOfBirthStr);
             }
 
             Staff staff = new Staff(0, imageUrl, email, username, password, role, fullName, dateOfBirth, gender, address, phoneNumber, false);
