@@ -140,7 +140,5 @@ public class Staff {
         this.status = status;
     }
 
-    <<<<<<<HEAD
-
-    =======>>>>>>>origin/an
+  
 }

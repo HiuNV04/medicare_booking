@@ -161,7 +161,7 @@ public class AuthDAO extends MyDAO {
             ps.setString(4, s.getPassword());
             ps.setString(5, s.getRole());
             ps.setString(6, s.getFullName());
-            ps.setDate(7, java.sql.Date.valueOf(s.getDateOfBirth()));
+            ps.setDate(7, s.getDateOfBirth());
             ps.setString(8, s.getGender());
             ps.setString(9, s.getAddress());
             ps.setString(10, s.getPhoneNumber());

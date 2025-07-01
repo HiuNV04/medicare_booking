@@ -17,10 +17,13 @@ import model.Patient;
  * @author ADMIN
  */
 public class PatientDAO extends MyDAO {
+
     public List<Patient> getPatientsByFilter(String search, String role, Boolean status, int page, int pageSize) {
+        List<Patient> list = new ArrayList<>();
         int offset = (page - 1) * pageSize;
         StringBuilder sql = new StringBuilder(
-                "SELECT * FROM patient WHERE 1=1");
+                "SELECT * FROM patient WHERE 1=1"
+        );
         if (search != null && !search.trim().isEmpty()) {
             sql.append("AND (email LIKE ? OR username LIKE ?) ");
         }
@@ -127,8 +130,28 @@ public class PatientDAO extends MyDAO {
                 s.setStatus(rs.getBoolean("status"));
                 s.setInsuranceNumber(rs.getString("insurance_number"));
                 s.setIdentityNumber(rs.getString("identity_number"));
-public class PatientDAO extends MyDAO {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
 
+    public boolean updatePatientStatus(int id, boolean status) {
+        String sql = "UPDATE patient SET status=? WHERE id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setBoolean(1, status);
+            ps.setInt(2, id);
+            int count = ps.executeUpdate();
+            return count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Patient checkLogin(String username, String password) {
         Patient patient = null;
 
         String sql = "SELECT * FROM patient WHERE username = ? AND password = ? AND status = 1";
@@ -181,7 +204,7 @@ public class PatientDAO extends MyDAO {
         }
     }
 
-    // check trùng tài khoản khi đăng kí
+// check trùng tài khoản khi đăng kí
     public boolean isUsernameTaken(String username) {
         String sql = "SELECT 1 FROM patient WHERE username = ?";
         try (Connection con = connection; PreparedStatement ps = con.prepareStatement(sql)) {
@@ -210,22 +233,12 @@ public class PatientDAO extends MyDAO {
                 return p;
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        return s;
-    }
-
-    public boolean updatePatientStatus(int id, boolean status) {
-        String sql = "UPDATE patient SET status=? WHERE id=?";
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setBoolean(1, status);
-            ps.setInt(2, id);
-            int count = ps.executeUpdate();
-            return count > 0;
         return null;
     }
 
-    // cập nhật mật khẩu mới nhận từ mail để mã hóa rồi login
+    // cập nhật mật khẩu mới nhận từ mail để mã hóa rồi login 
     public boolean updatePasswordByEmail(String email, String hashedPassword) {
         String sql = "UPDATE patient SET password = ? WHERE email = ?";
         try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {

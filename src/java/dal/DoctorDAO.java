@@ -274,7 +274,7 @@ public class DoctorDAO extends MyDAO {
             e.printStackTrace();
             return false;
         }
-
+}
     public DoctorDAO() {
         super();
         if (con == null) {
@@ -322,7 +322,7 @@ public class DoctorDAO extends MyDAO {
         return doctors;
     }
 
-    // 2. Rút gọn bác sĩ
+    // 2. Rút gọn bác sĩ 
     public List<Doctor> getListDoctor() {
         List<Doctor> doctors = new ArrayList<>();
         String sql = "SELECT d.id, d.email, d.role, d.full_name, d.date_of_birth, d.gender, d.address, d.phone_number, "
@@ -330,8 +330,7 @@ public class DoctorDAO extends MyDAO {
                 + "FROM doctor d "
                 + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
                 + "LEFT JOIN specialization s ON d.specialization_id = s.id";
-
-        try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Doctor doctor = new Doctor();
                 doctor.setId(rs.getInt("id"));
@@ -355,7 +354,7 @@ public class DoctorDAO extends MyDAO {
     }
 
     // 3. Lấy chi tiết theo id
-    public Doctor getDoctorById(int id) {
+    public Doctor getDoctorById1(int id) {
         String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
                 + "FROM doctor d "
                 + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
@@ -388,7 +387,7 @@ public class DoctorDAO extends MyDAO {
         return null;
     }
 
-    // 4. Đăng nhập
+    // 4. Đăng nhập 
     public Doctor checkLogin(String username, String password) {
         String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
                 + "FROM doctor d "
@@ -423,7 +422,7 @@ public class DoctorDAO extends MyDAO {
         return null;
     }
 
-    public void updateDoctor(Doctor doctor) {
+    public void updateDoctor1(Doctor doctor) {
         String sql = "UPDATE doctor SET full_name=?, image_url=? , address=?, date_of_birth=?, gender=?, "
                 + "phone_number=?, email=?, note=? WHERE id=?";
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -448,7 +447,7 @@ public class DoctorDAO extends MyDAO {
         String sql = "SELECT id, name FROM specialization";
         try (PreparedStatement st = con.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
-                list.add(new String[] { String.valueOf(rs.getInt("id")), rs.getString("name") });
+                list.add(new String[]{String.valueOf(rs.getInt("id")), rs.getString("name")});
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -462,7 +461,7 @@ public class DoctorDAO extends MyDAO {
         String sql = "SELECT id, name FROM doctor_level";
         try (PreparedStatement st = con.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
-                list.add(new String[] { String.valueOf(rs.getInt("id")), rs.getString("name") });
+                list.add(new String[]{String.valueOf(rs.getInt("id")), rs.getString("name")});
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -470,16 +469,17 @@ public class DoctorDAO extends MyDAO {
         return list;
     }
 
-    // 8. Tìm kiếm và lọc bác sĩ
+    // 8. Tìm kiếm và lọc bác sĩ 
     public List<Doctor> searchDoctors(String name, String gender, Integer levelId, Integer specializationId) {
         List<Doctor> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
                 "SELECT d.*, s.name AS specialization_name, l.name AS level_name "
-                        + "FROM doctor d "
-                        + "JOIN specialization s ON d.specialization_id = s.id "
-                        + "JOIN doctor_level l ON d.doctor_level_id = l.id "
-                        + "WHERE 1 = 1");
+                + "FROM doctor d "
+                + "JOIN specialization s ON d.specialization_id = s.id "
+                + "JOIN doctor_level l ON d.doctor_level_id = l.id "
+                + "WHERE 1 = 1"
+        );
 
         if (name != null && !name.trim().isEmpty()) {
             sql.append(" AND LOWER(REPLACE(d.full_name, ' ', '')) LIKE LOWER(REPLACE(?, ' ', ''))");
@@ -528,7 +528,7 @@ public class DoctorDAO extends MyDAO {
                 d.setFullName(rs.getString("full_name"));
                 d.setDateOfBirth(rs.getDate("date_of_birth"));
                 d.setGender(rs.getString("gender"));
-                d.setAddress(rs.getString("address"));
+d.setAddress(rs.getString("address"));
                 d.setPhoneNumber(rs.getString("phone_number"));
                 d.setDoctorLevelId(rs.getInt("doctor_level_id"));
                 d.setSpecializationId(rs.getInt("specialization_id"));
@@ -547,7 +547,7 @@ public class DoctorDAO extends MyDAO {
             list = list.stream().filter(d -> {
                 String fullName = d.getFullName();
                 String fullNameNoAccent = TextUtils.normalizeForFuzzySearch(fullName); // bỏ dấu
-                String fullNameWithAccent = TextUtils.normalizeStrict(fullName); // giữ dấu
+                String fullNameWithAccent = TextUtils.normalizeStrict(fullName);       // giữ dấu
 
                 for (String keyword : keywords) {
                     String keywordNoAccent = TextUtils.normalizeForFuzzySearch(keyword);
@@ -608,18 +608,18 @@ public class DoctorDAO extends MyDAO {
     }
 
     // 10. phân trang
-    public List<Doctor> getDoctorsPage(String name, String gender, Integer levelId, Integer specializationId,
-            int offset, int limit) {
+    public List<Doctor> getDoctorsPage(String name, String gender, Integer levelId, Integer specializationId, int offset, int limit) {
         List<Doctor> doctors = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
                 "SELECT d.id, d.image_url, d.email, d.username, d.password, d.role, d.full_name, "
-                        + "d.date_of_birth, d.gender, d.address, d.phone_number, d.doctor_level_id, d.specialization_id, d.status, d.note, "
-                        + "dl.name AS level_name, s.name AS specialization_name "
-                        + "FROM doctor d "
-                        + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
-                        + "LEFT JOIN specialization s ON d.specialization_id = s.id "
-                        + "WHERE 1=1");
+                + "d.date_of_birth, d.gender, d.address, d.phone_number, d.doctor_level_id, d.specialization_id, d.status, d.note, "
+                + "dl.name AS level_name, s.name AS specialization_name "
+                + "FROM doctor d "
+                + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
+                + "LEFT JOIN specialization s ON d.specialization_id = s.id "
+                + "WHERE 1=1"
+        );
 
         List<Object> params = new ArrayList<>();
 
@@ -667,8 +667,7 @@ public class DoctorDAO extends MyDAO {
                 d.setDoctorLevelId(rs.getInt("doctor_level_id"));
                 d.setSpecializationId(rs.getInt("specialization_id"));
                 d.setStatus(rs.getBoolean("status"));
-                d.setNote(rs.getString("note"));
-                d.setLevelName(rs.getString("level_name"));
+                d.setNote(rs.getString("note")); d.setLevelName(rs.getString("level_name"));
                 d.setSpecialization(rs.getString("specialization_name"));
                 doctors.add(d);
             }
@@ -677,7 +676,7 @@ public class DoctorDAO extends MyDAO {
             e.printStackTrace();
         }
 
-        // Phân trang trong Java
+        //Phân trang trong Java
         int toIndex = Math.min(offset + limit, doctors.size());
         if (offset > doctors.size()) {
             return new ArrayList<>();
@@ -744,12 +743,10 @@ public class DoctorDAO extends MyDAO {
         return null;
     }
 
-    // cập nhật mật khẩu mới nhận từ mail để mã hóa rồi login
+    // cập nhật mật khẩu mới nhận từ mail để mã hóa rồi login 
     public boolean updatePasswordByEmail(String email, String hashedPassword) {
         String sql = "UPDATE doctor SET password = ? WHERE email = ?";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, hashedPassword);
+        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) { ps.setString(1, hashedPassword);
             ps.setString(2, email);
             return ps.executeUpdate() > 0;
 
@@ -758,5 +755,4 @@ public class DoctorDAO extends MyDAO {
             return false;
         }
     }
-
 }

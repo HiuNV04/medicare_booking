@@ -240,7 +240,7 @@ public class StaffDAO extends MyDAO {
                 staff.setPassword(rs.getString("password"));
                 staff.setRole(rs.getString("role"));
                 staff.setFullName(rs.getString("full_name"));
-                staff.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
+                staff.setDateOfBirth(rs.getDate("date_of_birth"));
                 staff.setGender(rs.getString("gender"));
                 staff.setAddress(rs.getString("address"));
                 staff.setPhoneNumber(rs.getString("phone_number"));
