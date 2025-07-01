@@ -246,12 +246,12 @@ public class DoctorDAO extends MyDAO {
     }
 
     public boolean addDoctor(String imageUrl, String email, String username, String password,
-                             String role, String fullName, Date dateOfBirth, String gender,
-                             String address, String phoneNumber, int doctorLevelId,
-                             int specializationId ) {
-        String sql = "INSERT INTO doctor (image_url, email, username, password, role, full_name, date_of_birth, " +
-                "gender, address, phone_number, doctor_level_id, specialization_id, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";  //  
+            String role, String fullName, Date dateOfBirth, String gender,
+            String address, String phoneNumber, int doctorLevelId,
+            int specializationId) {
+        String sql = "INSERT INTO doctor (image_url, email, username, password, role, full_name, date_of_birth, "
+                + "gender, address, phone_number, doctor_level_id, specialization_id, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,1)";  //  
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, imageUrl);
@@ -274,7 +274,8 @@ public class DoctorDAO extends MyDAO {
             e.printStackTrace();
             return false;
         }
-}
+    }
+
     public DoctorDAO() {
         super();
         if (con == null) {
@@ -330,7 +331,7 @@ public class DoctorDAO extends MyDAO {
                 + "FROM doctor d "
                 + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
                 + "LEFT JOIN specialization s ON d.specialization_id = s.id";
-try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Doctor doctor = new Doctor();
                 doctor.setId(rs.getInt("id"));
@@ -387,41 +388,40 @@ try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.exe
         return null;
     }
 
-    // 4. Đăng nhập 
-    public Doctor checkLogin(String username, String password) {
-        String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
-                + "FROM doctor d "
-                + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
-                + "LEFT JOIN specialization s ON d.specialization_id = s.id "
-                + "WHERE d.username = ? AND d.password = ? AND d.status = 1";
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Doctor doctor = new Doctor();
-                doctor.setId(rs.getInt("id"));
-                doctor.setFullName(rs.getString("full_name"));
-                doctor.setImageUrl(rs.getString("image_url"));
-                doctor.setAddress(rs.getString("address"));
-                doctor.setDateOfBirth(rs.getDate("date_of_birth"));
-                doctor.setGender(rs.getString("gender"));
-                doctor.setPhoneNumber(rs.getString("phone_number"));
-                doctor.setEmail(rs.getString("email"));
-                doctor.setStatus(rs.getInt("status") == 1);
-                doctor.setSpecializationId(rs.getInt("specialization_id"));
-                doctor.setDoctorLevelId(rs.getInt("doctor_level_id"));
-                doctor.setSpecialization(rs.getString("specialization_name"));
-                doctor.setLevelName(rs.getString("level_name"));
-                doctor.setNote(rs.getString("note"));
-                return doctor;
-            }
-        } catch (SQLException e) {
-            System.out.println("SQL Error in getDoctorDetail(): " + e.getMessage());
-        }
-        return null;
-    }
-
+//    // 4. Đăng nhập 
+//    public Doctor checkLogin(String username, String password) {
+//        String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
+//                + "FROM doctor d "
+//                + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
+//                + "LEFT JOIN specialization s ON d.specialization_id = s.id "
+//                + "WHERE d.username = ? AND d.password = ? AND d.status = 1";
+//        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+//            stmt.setString(1, username);
+//            stmt.setString(2, password);
+//            ResultSet rs = stmt.executeQuery();
+//            if (rs.next()) {
+//                Doctor doctor = new Doctor();
+//                doctor.setId(rs.getInt("id"));
+//                doctor.setFullName(rs.getString("full_name"));
+//                doctor.setImageUrl(rs.getString("image_url"));
+//                doctor.setAddress(rs.getString("address"));
+//                doctor.setDateOfBirth(rs.getDate("date_of_birth"));
+//                doctor.setGender(rs.getString("gender"));
+//                doctor.setPhoneNumber(rs.getString("phone_number"));
+//                doctor.setEmail(rs.getString("email"));
+//                doctor.setStatus(rs.getInt("status") == 1);
+//                doctor.setSpecializationId(rs.getInt("specialization_id"));
+//                doctor.setDoctorLevelId(rs.getInt("doctor_level_id"));
+//                doctor.setSpecialization(rs.getString("specialization_name"));
+//                doctor.setLevelName(rs.getString("level_name"));
+//                doctor.setNote(rs.getString("note"));
+//                return doctor;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("SQL Error in getDoctorDetail(): " + e.getMessage());
+//        }
+//        return null;
+//    }
     public void updateDoctor1(Doctor doctor) {
         String sql = "UPDATE doctor SET full_name=?, image_url=? , address=?, date_of_birth=?, gender=?, "
                 + "phone_number=?, email=?, note=? WHERE id=?";
@@ -528,7 +528,7 @@ try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.exe
                 d.setFullName(rs.getString("full_name"));
                 d.setDateOfBirth(rs.getDate("date_of_birth"));
                 d.setGender(rs.getString("gender"));
-d.setAddress(rs.getString("address"));
+                d.setAddress(rs.getString("address"));
                 d.setPhoneNumber(rs.getString("phone_number"));
                 d.setDoctorLevelId(rs.getInt("doctor_level_id"));
                 d.setSpecializationId(rs.getInt("specialization_id"));
@@ -584,28 +584,28 @@ d.setAddress(rs.getString("address"));
         }
     }
 
-    // check kí tự đặc biệt , khoảng trắng
-    public List<Doctor> filterByFuzzyName(List<Doctor> inputList, String rawName) {
-        if (rawName == null || rawName.trim().isEmpty()) {
-            return inputList;
-        }
-
-        String cleanName = rawName.replaceAll("\\s+", "");
-        String nameNormalized = TextUtils.normalizeForFuzzySearch(cleanName);
-        String nameStrict = TextUtils.normalizeStrict(cleanName);
-
-        return inputList.stream().filter(d -> {
-            String fullName = d.getFullName();
-            String normalizedFullName = TextUtils.normalizeForFuzzySearch(fullName);
-            String originalFullName = TextUtils.normalizeStrict(fullName);
-
-            if (!nameNormalized.equals(nameStrict)) {
-                return originalFullName.contains(nameStrict);
-            } else {
-                return normalizedFullName.contains(nameNormalized);
-            }
-        }).collect(Collectors.toList());
-    }
+//    // check kí tự đặc biệt , khoảng trắng
+//    public List<Doctor> filterByFuzzyName(List<Doctor> inputList, String rawName) {
+//        if (rawName == null || rawName.trim().isEmpty()) {
+//            return inputList;
+//        }
+//
+//        String cleanName = rawName.replaceAll("\\s+", "");
+//        String nameNormalized = TextUtils.normalizeForFuzzySearch(cleanName);
+//        String nameStrict = TextUtils.normalizeStrict(cleanName);
+//
+//        return inputList.stream().filter(d -> {
+//            String fullName = d.getFullName();
+//            String normalizedFullName = TextUtils.normalizeForFuzzySearch(fullName);
+//            String originalFullName = TextUtils.normalizeStrict(fullName);
+//
+//            if (!nameNormalized.equals(nameStrict)) {
+//                return originalFullName.contains(nameStrict);
+//            } else {
+//                return normalizedFullName.contains(nameNormalized);
+//            }
+//        }).collect(Collectors.toList());
+//    }
 
     // 10. phân trang
     public List<Doctor> getDoctorsPage(String name, String gender, Integer levelId, Integer specializationId, int offset, int limit) {
@@ -667,7 +667,8 @@ d.setAddress(rs.getString("address"));
                 d.setDoctorLevelId(rs.getInt("doctor_level_id"));
                 d.setSpecializationId(rs.getInt("specialization_id"));
                 d.setStatus(rs.getBoolean("status"));
-                d.setNote(rs.getString("note")); d.setLevelName(rs.getString("level_name"));
+                d.setNote(rs.getString("note"));
+                d.setLevelName(rs.getString("level_name"));
                 d.setSpecialization(rs.getString("specialization_name"));
                 doctors.add(d);
             }
@@ -689,26 +690,26 @@ d.setAddress(rs.getString("address"));
         return getDoctorsPage(name, gender, levelId, specializationId, 0, Integer.MAX_VALUE).size();
     }
 
-    public void insert(Doctor doctor) {
-        String sql = "INSERT INTO doctor (full_name, email, username, password, role, status, created_at) "
-                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE())";
-
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, doctor.getFullName());
-            ps.setString(2, doctor.getEmail());
-            ps.setString(3, doctor.getUsername());
-            ps.setString(4, doctor.getPassword());
-            String role = doctor.getRole().toUpperCase().charAt(0) + doctor.getRole().substring(1).toLowerCase();
-            ps.setString(5, role);
-            ps.setBoolean(6, doctor.isStatus());
-
-            ps.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void insert(Doctor doctor) {
+//        String sql = "INSERT INTO doctor (full_name, email, username, password, role, status, created_at) "
+//                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE())";
+//
+//        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setString(1, doctor.getFullName());
+//            ps.setString(2, doctor.getEmail());
+//            ps.setString(3, doctor.getUsername());
+//            ps.setString(4, doctor.getPassword());
+//            String role = doctor.getRole().toUpperCase().charAt(0) + doctor.getRole().substring(1).toLowerCase();
+//            ps.setString(5, role);
+//            ps.setBoolean(6, doctor.isStatus());
+//
+//            ps.executeUpdate();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public boolean isUsernameTaken(String username) {
         String sql = "SELECT 1 FROM doctor WHERE username = ?";
@@ -746,7 +747,8 @@ d.setAddress(rs.getString("address"));
     // cập nhật mật khẩu mới nhận từ mail để mã hóa rồi login 
     public boolean updatePasswordByEmail(String email, String hashedPassword) {
         String sql = "UPDATE doctor SET password = ? WHERE email = ?";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) { ps.setString(1, hashedPassword);
+        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, hashedPassword);
             ps.setString(2, email);
             return ps.executeUpdate() > 0;
 

@@ -1,4 +1,4 @@
-package controller_doctor;
+package controller.doctor;
 
 import java.io.IOException;
 import java.io.PrintWriter;

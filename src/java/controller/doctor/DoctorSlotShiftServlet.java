@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import model.DoctorShiftSlot;
 
-@WebServlet(name = "DoctorSlotShiftServlet", urlPatterns = {"/DoctorSlotShiftServlet"}) 
+//@WebServlet(name = "DoctorSlotShiftServlet", urlPatterns = {"/DoctorSlotShiftServlet"}) 
 public class DoctorSlotShiftServlet extends HttpServlet {
 
     @Override

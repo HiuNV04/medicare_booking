@@ -69,8 +69,8 @@ public class PatientRegisterServlet extends HttpServlet {
             request.setAttribute("error", "Username hoặc Email đã tồn tại!");
             request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
         } else {
-            dao.insertPatient(p);
-
+//            dao.insertPatient(p);
+            dao.insertAccountPatient(p);
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();

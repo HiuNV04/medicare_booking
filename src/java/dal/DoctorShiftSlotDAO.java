@@ -161,4 +161,11 @@ public class DoctorShiftSlotDAO extends MyDAO {
         }
         return 0;
     }
+
+    public static void main(String[] args) {
+        DoctorShiftSlotDAO dao = new DoctorShiftSlotDAO();
+        List<DoctorShiftSlot> slots = dao.getAllSlotShift();
+        System.out.println("Slot: " + slots.size());
+    }
+
 }

@@ -20,7 +20,7 @@ import model.Doctor;
         maxRequestSize = 5 * 1024 * 1024 // 5MB
 )
 
-@WebServlet(name = "DoctorUpdateServlet", urlPatterns = {"/DoctorUpdateServlet"})
+//@WebServlet(name = "DoctorUpdateServlet", urlPatterns = {"/DoctorUpdateServlet"})
 public class DoctorUpdateServlet extends HttpServlet {
 
     @Override

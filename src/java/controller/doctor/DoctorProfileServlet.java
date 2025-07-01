@@ -9,7 +9,7 @@ import dal.DoctorDAO;
 import jakarta.servlet.annotation.WebServlet;
 import model.Doctor;
 
-@WebServlet(name = "DoctorProfileServlet", urlPatterns = {"/DoctorProfileServlet"})
+//@WebServlet(name = "DoctorProfileServlet", urlPatterns = {"/DoctorProfileServlet"})
 public class DoctorProfileServlet extends HttpServlet {
 
     private DoctorDAO dao = new DoctorDAO();

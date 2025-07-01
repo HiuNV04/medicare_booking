@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Doctor;
 
-@WebServlet(name = "DoctorListServlet", urlPatterns = {"/DoctorListServlet"})
+//@WebServlet(name = "DoctorListServlet", urlPatterns = {"/DoctorListServlet"})
 public class DoctorListServlet extends HttpServlet {
 
     @Override

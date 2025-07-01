@@ -14,7 +14,7 @@ import model.Doctor;
         maxFileSize = 2 * 1024 * 1024, // 2MB
         maxRequestSize = 5 * 1024 * 1024 // 5MB
 )
-@WebServlet(name = "DoctorDetailServlet", urlPatterns = {"/DoctorDetailServlet"}) 
+//@WebServlet(name = "DoctorDetailServlet", urlPatterns = {"/DoctorDetailServlet"}) 
 public class DoctorDetailServlet extends HttpServlet {
 
     DoctorDAO dao = new DoctorDAO();

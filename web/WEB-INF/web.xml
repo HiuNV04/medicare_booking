@@ -2,99 +2,99 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>DoctorProfileServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorProfileServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorProfileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorLoginServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorLoginServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorLoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorDetailServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorDetailServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorUpdateServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorUpdateServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorUpdateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorListServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorListServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorChangePasswordServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorChangePasswordServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorChangePasswordServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorSlotShiftServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorSlotShiftServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorSlotShiftServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DoctorDetailSlotServlet</servlet-name>
-        <servlet-class>controller_doctor.DoctorDetailSlotServlet</servlet-class>
+        <servlet-class>controller.doctor.DoctorDetailSlotServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>controller_auth.LoginServlet</servlet-class>
+        <servlet-class>controller.auth.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>controller_auth.RegisterServlet</servlet-class>
+        <servlet-class>controller.auth.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterRoleServlet</servlet-name>
-        <servlet-class>controller_auth.RegisterRoleServlet</servlet-class>
+        <servlet-class>controller.auth.RegisterRoleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ForgetPasswordServlet</servlet-name>
-        <servlet-class>controller_auth.ForgetPasswordServlet</servlet-class>
+        <servlet-class>controller.auth.ForgetPasswordServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ResetPasswordServlet</servlet-name>
-        <servlet-class>controller_auth.ResetPasswordServlet</servlet-class>
+        <servlet-class>controller.auth.ResetPasswordServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ManagerHomeServlet</servlet-name>
-        <servlet-class>controller_manager.ManagerHomeServlet</servlet-class>
+        <servlet-class>controller.manager.ManagerHomeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ReceptionistHomeServlet</servlet-name>
-        <servlet-class>controller_receptionist.ReceptionistHomeServlet</servlet-class>
+        <servlet-class>controller.receptionist.ReceptionistHomeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminHomeServlet</servlet-name>
-        <servlet-class>controller_admin.AdminHomeServlet</servlet-class>
+        <servlet-class>controller.admin.AdminHomeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PatientHomeServlet</servlet-name>
-        <servlet-class>controller_patient.PatientHomeServlet</servlet-class>
+        <servlet-class>controller.patient.PatientHomeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PatientRegisterServlet</servlet-name>
-        <servlet-class>controller_auth.PatientRegisterServlet</servlet-class>
+        <servlet-class>controller.auth.PatientRegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminRegisterRoleServlet</servlet-name>
-        <servlet-class>controller_admin.AdminRegisterRoleServlet</servlet-class>
+        <servlet-class>controller.admin.AdminRegisterRoleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>controller_auth.LogoutServlet</servlet-class>
+        <servlet-class>controller.auth.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ReceptionistDetailServlet</servlet-name>
-        <servlet-class>controller_receptionist.ReceptionistDetailServlet</servlet-class>
+        <servlet-class>controller.receptionist.ReceptionistDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AppointmentListServlet</servlet-name>
-        <servlet-class>controller_receptionist.AppointmentListServlet</servlet-class>
+        <servlet-class>controller.receptionist.AppointmentListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BillListServlet</servlet-name>
-        <servlet-class>controller_receptionist.BillListServlet</servlet-class>
+        <servlet-class>controller.receptionist.BillListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ImageServlet</servlet-name>
-        <servlet-class>controller_doctor.ImageServlet</servlet-class>
+        <servlet-class>controller.doctor.ImageServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DoctorProfileServlet</servlet-name>
@@ -201,6 +201,8 @@
         <welcome-file>admin/register_role.jsp</welcome-file>
         <welcome-file>doctor/login_doctor.jsp</welcome-file>
         <welcome-file>LoginServlet</welcome-file>
+        
+        
         <welcome-file>DoctorProfileServlet</welcome-file>
         <welcome-file>DoctorUpdateServlet</welcome-file>
         <welcome-file>DoctorLoginServlet</welcome-file>
@@ -209,6 +211,25 @@
         <welcome-file>DoctorChangePasswordServlet</welcome-file>
         <welcome-file>DoctorSlotShiftServlet</welcome-file>
         <welcome-file>DoctorDetailSlotServlet</welcome-file>
+        
+        
+        
+        <welcome-file>admin/home_admin.jsp</welcome-file>
+        
+        <welcome-file>auth/register.jsp</welcome-file>
+        <welcome-file>auth/reset.jsp</welcome-file>
+        <welcome-file>auth/forget.jsp</welcome-file>
+        <welcome-file>admin/register_role.jsp</welcome-file>
+        <welcome-file>doctor/login_doctor.jsp</welcome-file>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <welcome-file>doctor/prescription/create_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/view_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/history_prescription.jsp</welcome-file>

@@ -74,7 +74,8 @@ public class RegisterRoleServlet extends HttpServlet {
                 doctor.setRole("doctor");
                 doctor.setStatus(true);
 
-                new DoctorDAO().insert(doctor);
+//                new DoctorDAO().insert(doctor);
+                new AuthDAO().insertAccountDoctor(doctor);
             } else if ("manager".equals(role) || "receptionist".equals(role)) {
                 Staff staff = new Staff();
                 staff.setFullName(fullName);
@@ -84,7 +85,7 @@ public class RegisterRoleServlet extends HttpServlet {
                 staff.setRole(role.toLowerCase());
                 staff.setStatus(true);
 
-                new StaffDAO().insert(staff);
+                new AuthDAO().insertAccountStaff(staff);
             } else {
                 request.setAttribute("error", "Vai trò không hợp lệ.");
                 request.setAttribute("role", role);

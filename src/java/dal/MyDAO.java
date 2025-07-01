@@ -6,24 +6,34 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class MyDAO extends DBContext {
-    
-    public Connection con = null;
-    public PreparedStatement ps = null;
-    public ResultSet rs = null;
-    public String xSql = null;
+
+    protected Connection con;
+    protected PreparedStatement ps;
+    protected ResultSet rs;
+    protected String xSql;
 
     public MyDAO() {
-        con = connection;
+        this.con = connection; // lấy connection từ DBContext
     }
 
-    public void finalize() {
+    /**
+     * Đóng tài nguyên rs và ps sau mỗi truy vấn
+     */
+    public void closeResources() {
         try {
-            if (con != null)
-                con.close();
+            if (rs != null && !rs.isClosed()) {
+                rs.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (ps != null && !ps.isClosed()) {
+                ps.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-   
 }

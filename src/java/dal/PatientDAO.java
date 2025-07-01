@@ -186,23 +186,23 @@ public class PatientDAO extends MyDAO {
         return patient;
     }
 
-    public void insert(Patient patient) {
-        String sql = "INSERT INTO patient (full_name, email, username, password, status) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, patient.getFullName());
-            ps.setString(2, patient.getEmail());
-            ps.setString(3, patient.getUsername());
-            ps.setString(4, patient.getPassword());
-            ps.setBoolean(5, patient.isStatus());
-
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void insert(Patient patient) {
+//        String sql = "INSERT INTO patient (full_name, email, username, password, status) VALUES (?, ?, ?, ?, ?)";
+//
+//        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+//
+//            ps.setString(1, patient.getFullName());
+//            ps.setString(2, patient.getEmail());
+//            ps.setString(3, patient.getUsername());
+//            ps.setString(4, patient.getPassword());
+//            ps.setBoolean(5, patient.isStatus());
+//
+//            ps.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 // check trùng tài khoản khi đăng kí
     public boolean isUsernameTaken(String username) {

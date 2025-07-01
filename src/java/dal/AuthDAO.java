@@ -20,93 +20,88 @@ public class AuthDAO extends MyDAO {
 
     public Object login(String username, String encryptedPassword) {
         try {
-            System.out.println("Check loggin tài khoản: " + username);
+            System.out.println("Check login tài khoản: " + username);
 
-            // 1. Doctor login
-            String sqlDoctor = "SELECT * FROM doctor WHERE username = ? AND password = ? AND status = 1";
-            try (Connection conn = connection; PreparedStatement psDoctor = conn.prepareStatement(sqlDoctor)) {
-                psDoctor.setString(1, username);
-                psDoctor.setString(2, encryptedPassword);
-                try (ResultSet rs = psDoctor.executeQuery()) {
-                    if (rs.next()) {
-                        System.out.println("Đăng nhập thành công dưới vai trò bác sĩ");
-                        Doctor d = new Doctor();
-                        d.setId(rs.getInt("id"));
-                        d.setUsername(username);
-                        d.setRole(rs.getString("role").trim().toLowerCase());
-                        return d;
-                    }
-                }
+            // 1. Doctor
+            xSql = "SELECT * FROM doctor WHERE username = ? AND password = ? AND status = 1";
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, username);
+            ps.setString(2, encryptedPassword);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                System.out.println("Đăng nhập thành công: bác sĩ");
+                Doctor d = new Doctor();
+                d.setId(rs.getInt("id"));
+                d.setUsername(username);
+                d.setRole(rs.getString("role").trim().toLowerCase());
+                return d;
             }
 
-            // 2. Patient login
-            String sqlPatient = "SELECT * FROM patient WHERE username = ? AND password = ? AND status = 1";
-            try (Connection conn = connection; PreparedStatement psPatient = conn.prepareStatement(sqlPatient)) {
-                psPatient.setString(1, username);
-                psPatient.setString(2, encryptedPassword);
-                try (ResultSet rs = psPatient.executeQuery()) {
-                    if (rs.next()) {
-                        System.out.println("Đăng nhập thành công dưới vai trò bệnh nhân");
-                        Patient p = new Patient();
-                        p.setId(rs.getInt("id"));
-                        p.setUsername(username);
-                        p.setRole(rs.getString("role").trim().toLowerCase());
-                        return p;
-                    }
-                }
+            // 2. Patient
+            xSql = "SELECT * FROM patient WHERE username = ? AND password = ? AND status = 1";
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, username);
+            ps.setString(2, encryptedPassword);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                System.out.println("Đăng nhập thành công: bệnh nhân");
+                Patient p = new Patient();
+                p.setId(rs.getInt("id"));
+                p.setUsername(username);
+                p.setRole(rs.getString("role").trim().toLowerCase());
+                return p;
             }
 
-            // 3. Staff login
-            String sqlStaff = "SELECT * FROM staff WHERE username = ? AND password = ? AND status = 1";
-            try (Connection conn = connection; PreparedStatement psStaff = conn.prepareStatement(sqlStaff)) {
-                psStaff.setString(1, username);
-                psStaff.setString(2, encryptedPassword);
-                try (ResultSet rs = psStaff.executeQuery()) {
-                    if (rs.next()) {
-                        System.out.println("Đăng nhập thành công dưới vai trò staff: " + rs.getString("role"));
-                        Staff s = new Staff();
-                        s.setId(rs.getInt("id"));
-                        s.setUsername(rs.getString("username"));
-                        s.setRole(rs.getString("role").trim().toLowerCase());
-                        return s;
-                    }
-                }
+            // 3. Staff
+            xSql = "SELECT * FROM staff WHERE username = ? AND password = ? AND status = 1";
+            ps = con.prepareStatement(xSql);
+            ps.setString(1, username);
+            ps.setString(2, encryptedPassword);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                System.out.println("Đăng nhập thành công: staff " + rs.getString("role"));
+                Staff s = new Staff();
+                s.setId(rs.getInt("id"));
+                s.setUsername(rs.getString("username"));
+                s.setRole(rs.getString("role").trim().toLowerCase());
+                return s;
             }
 
-            System.out.println("Không tìm thấy tài khoản hợp lệ");
-
+            System.out.println("Không tìm thấy tài khoản hợp lệ.");
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
-
         return null;
     }
 
-    // hàm check trùng username và email khi đăng kí tài khoản
     public boolean isUsernameOrEmailTaken(String username, String email) {
         String[] tables = {"doctor", "staff", "patient"};
-        try (Connection conn = connection) {
+        try {
             for (String table : tables) {
-                String sql = "SELECT 1 FROM " + table + " WHERE username = ? OR email = ?";
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setString(1, username);
-                    ps.setString(2, email);
-                    ResultSet rs = ps.executeQuery();
-                    if (rs.next()) {
-                        return true;
-                    }
+                xSql = "SELECT 1 FROM " + table + " WHERE username = ? OR email = ?";
+                ps = con.prepareStatement(xSql);
+                ps.setString(1, username);
+                ps.setString(2, email);
+                rs = ps.executeQuery();
+                if (rs.next()) {
+                    return true;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources(); // ✅ đóng ps, rs sau mỗi vòng lặp
         }
         return false;
     }
 
-    public boolean insertPatient(Patient p) {
-        String sql = "INSERT INTO patient (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, identity_number, insurance_number, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean insertAccountPatient(Patient p) {
+        try {
+            xSql = "INSERT INTO patient (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, identity_number, insurance_number, status) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(xSql);
             ps.setString(1, p.getImageUrl() == null ? "" : p.getImageUrl());
             ps.setString(2, p.getEmail());
             ps.setString(3, p.getUsername());
@@ -123,14 +118,17 @@ public class AuthDAO extends MyDAO {
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return false;
     }
 
-    public boolean insertDoctor(Doctor d) {
-        String sql = "INSERT INTO doctor (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, doctor_level_id, specialization_id, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean insertAccountDoctor(Doctor d) {
+        try {
+            xSql = "INSERT INTO doctor (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, doctor_level_id, specialization_id, status) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(xSql);
             ps.setString(1, d.getImageUrl());
             ps.setString(2, d.getEmail());
             ps.setString(3, d.getUsername());
@@ -147,14 +145,17 @@ public class AuthDAO extends MyDAO {
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return false;
     }
 
-    public boolean insertStaff(Staff s) {
-        String sql = "INSERT INTO staff (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean insertAccountStaff(Staff s) {
+        try {
+            xSql = "INSERT INTO staff (image_url, email, username, password, role, full_name, date_of_birth, gender, address, phone_number, status) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(xSql);
             ps.setString(1, s.getImageUrl());
             ps.setString(2, s.getEmail());
             ps.setString(3, s.getUsername());
@@ -169,6 +170,8 @@ public class AuthDAO extends MyDAO {
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -176,13 +179,16 @@ public class AuthDAO extends MyDAO {
     // kiếm tra email có tồn tại không
     public boolean checkEmailExists(String email, String role) {
         String table = role.equals("doctor") ? "doctor" : role.equals("patient") ? "patient" : "staff";
-        String sql = "SELECT 1 FROM " + table + " WHERE email = ?";
-        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            xSql = "SELECT 1 FROM " + table + " WHERE email = ?";
+            ps = con.prepareStatement(xSql);
             ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return false;
     }
@@ -190,18 +196,22 @@ public class AuthDAO extends MyDAO {
     // mã hóa mật khẩu
     public boolean updatePasswordByUsername(String username, String newEncryptedPassword) {
         String[] tables = {"doctor", "patient", "staff"};
-        for (String table : tables) {
-            String sql = "UPDATE " + table + " SET password = ? WHERE username = ?";
-            try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
+        try {
+            for (String table : tables) {
+                xSql = "UPDATE " + table + " SET password = ? WHERE username = ?";
+                ps = con.prepareStatement(xSql);
                 ps.setString(1, newEncryptedPassword);
                 ps.setString(2, username);
                 if (ps.executeUpdate() > 0) {
                     return true;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
         }
         return false;
     }
+
 }

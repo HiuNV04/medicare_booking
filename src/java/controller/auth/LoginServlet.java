@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
 
             } else if (account instanceof Patient) {
                 session.setAttribute("patient", account);
-                response.sendRedirect("patient/home.jsp");
+                response.sendRedirect("patient/home_patient.jsp");
                 return;
 
             } else if (account instanceof Staff) {
