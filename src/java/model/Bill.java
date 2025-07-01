@@ -12,7 +12,7 @@ public class Bill {
       private int id;
     private int patientId;
     private String patientName;
-    private Timestamp appointmentTime;
+//    private Timestamp appointmentTime;
     private String paymentMethod;
     private String paymentStatus;
     private double amount;
