@@ -3,38 +3,54 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+
 import java.sql.Time;
 import java.util.Date;
+
 /**
  *
  * @author ADMIN
  */
 public class DoctorShiftSlot {
-    private int id;
+
+    private int slotId;
     private int doctorId;
-    private Time slotStartTime;
-    private Time slotEndTime;
-    private Date date;
-    private boolean isBooked;
+    private int specializationId;
+    private int levelId;
+
+    private Time start;
+    private Time end;
+    private java.sql.Date slotDate;
+    private boolean booked;
+
+    // Thêm cho hiển thị
+    private String doctorName;
+    private String specializationName;
+    private String levelName;
 
     public DoctorShiftSlot() {
     }
 
-    public DoctorShiftSlot(int id, int doctorId, Time slotStartTime, Time slotEndTime, Date date, boolean isBooked) {
-        this.id = id;
+    public DoctorShiftSlot(int slotId, int doctorId, int specializationId, int levelId, Time start, Time end, java.sql.Date slotDate, boolean booked, String doctorName, String specializationName, String levelName) {
+        this.slotId = slotId;
         this.doctorId = doctorId;
-        this.slotStartTime = slotStartTime;
-        this.slotEndTime = slotEndTime;
-        this.date = date;
-        this.isBooked = isBooked;
+        this.specializationId = specializationId;
+        this.levelId = levelId;
+        this.start = start;
+        this.end = end;
+        this.slotDate = slotDate;
+        this.booked = booked;
+        this.doctorName = doctorName;
+        this.specializationName = specializationName;
+        this.levelName = levelName;
     }
 
-    public int getId() {
-        return id;
+    public int getSlotId() {
+        return slotId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSlotId(int slotId) {
+        this.slotId = slotId;
     }
 
     public int getDoctorId() {
@@ -45,36 +61,78 @@ public class DoctorShiftSlot {
         this.doctorId = doctorId;
     }
 
-    public Time getSlotStartTime() {
-        return slotStartTime;
+    public int getSpecializationId() {
+        return specializationId;
     }
 
-    public void setSlotStartTime(Time slotStartTime) {
-        this.slotStartTime = slotStartTime;
+    public void setSpecializationId(int specializationId) {
+        this.specializationId = specializationId;
     }
 
-    public Time getSlotEndTime() {
-        return slotEndTime;
+    public int getLevelId() {
+        return levelId;
     }
 
-    public void setSlotEndTime(Time slotEndTime) {
-        this.slotEndTime = slotEndTime;
+    public void setLevelId(int levelId) {
+        this.levelId = levelId;
     }
 
-    public Date getDate() {
-        return date;
+    public Time getStart() {
+        return start;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setStart(Time start) {
+        this.start = start;
     }
 
-    public boolean isIsBooked() {
-        return isBooked;
+    public Time getEnd() {
+        return end;
     }
 
-    public void setIsBooked(boolean isBooked) {
-        this.isBooked = isBooked;
+    public void setEnd(Time end) {
+        this.end = end;
     }
+
+    public java.sql.Date getSlotDate() {
+        return slotDate;
+    }
+
+    public void setSlotDate(java.sql.Date slotDate) {
+        this.slotDate = slotDate;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getSpecializationName() {
+        return specializationName;
+    }
+
+    public void setSpecializationName(String specializationName) {
+        this.specializationName = specializationName;
+    }
+
+    public String getLevelName() {
+        return levelName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
     
+
 }

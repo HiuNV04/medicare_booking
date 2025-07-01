@@ -4,13 +4,14 @@
  */
 package model;
 
- import java.sql.Date;
- 
+import java.sql.Date;
+
 /**
  *
  * @author ADMIN
  */
 public class Staff {
+
     private int id;
     private String imageUrl;
     private String email;
@@ -27,7 +28,8 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName, Date dateOfBirth, String gender, String address, String phoneNumber, boolean status) {
+    public Staff(int id, String imageUrl, String email, String username, String password, String role, String fullName,
+            Date dateOfBirth, String gender, String address, String phoneNumber, boolean status) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.email = email;
@@ -138,6 +140,7 @@ public class Staff {
         this.status = status;
     }
 
-    
-    
+    <<<<<<<HEAD
+
+    =======>>>>>>>origin/an
 }
