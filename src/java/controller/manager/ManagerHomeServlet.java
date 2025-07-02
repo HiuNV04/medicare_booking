@@ -19,6 +19,7 @@ import java.text.Normalizer;
 import dal.StaffDAO;
 import model.Staff;
 import dal.DoctorDAO;
+import dal.ManagerDAO;
 import model.Doctor;
 
 @WebServlet(name="ManagerHomeServlet", urlPatterns={"/manager/home"})
@@ -29,17 +30,16 @@ public class ManagerHomeServlet extends HttpServlet {
         
         // Ensure manager info is in session for the header
         if (request.getSession().getAttribute("user") == null) {
-            StaffDAO staffDAOForManager = new StaffDAO();
+            ManagerDAO staffDAOForManager = new ManagerDAO();
             // Assuming manager ID is 2, based on other servlets. This should be improved with real login logic.
             Staff manager = staffDAOForManager.getManagerById(2); 
             request.getSession().setAttribute("user", manager);
         }
 
-        dal.StaffDAO staffDAO = new dal.StaffDAO();
-        dal.DoctorDAO doctorDAO = new dal.DoctorDAO();
-        List<model.Staff> managerList = staffDAO.getManagers();
-        List<model.Staff> receptionistList = staffDAO.getReceptionists();
-        List<model.Doctor> doctorList = doctorDAO.getAllDoctors();
+        dal.ManagerDAO dao = new dal.ManagerDAO();
+         List<model.Staff> managerList = dao.getManagers();
+        List<model.Staff> receptionistList = dao.getReceptionists();
+        List<model.Doctor> doctorList = dao.getAllDoctors();
         List<Object[]> peopleList = new java.util.ArrayList<>();
         for (model.Staff m : managerList) {
             peopleList.add(new Object[]{m.getId(), m.getRole(), m.getFullName(), m.getDateOfBirth(), m.getGender(), m.getAddress(), m.getPhoneNumber(), m.getImageUrl()});

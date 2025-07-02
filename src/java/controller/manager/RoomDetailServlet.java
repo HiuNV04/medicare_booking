@@ -2,6 +2,7 @@ package controller.manager;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
+import dal.ManagerDAO;
 import model.Room;
 import model.Doctor;
 import java.io.IOException;
@@ -17,8 +18,7 @@ public class RoomDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDAO roomDAO = new RoomDAO();
-        DoctorDAO doctorDAO = new DoctorDAO();
+        ManagerDAO dao = new ManagerDAO();
         
         String roomIdParam = request.getParameter("roomId");
         if (roomIdParam == null) {
@@ -27,7 +27,7 @@ public class RoomDetailServlet extends HttpServlet {
         }
 
         int roomId = Integer.parseInt(roomIdParam);
-        Room room = roomDAO.getRoomById(roomId);
+        Room room = dao.getRoomById(roomId);
         
         if (room == null) {
             response.sendRedirect(request.getContextPath() + "/manager/rooms");
@@ -36,17 +36,17 @@ public class RoomDetailServlet extends HttpServlet {
 
         Doctor currentDoctor = null;
         if (room.getDoctorId() > 0) {
-            currentDoctor = doctorDAO.getDoctorById(room.getDoctorId());
+            currentDoctor = dao.getDoctorById(room.getDoctorId());
         }
 
-        List<Room> allRooms = roomDAO.getAllRooms();
+        List<Room> allRooms = dao.getAllRooms();
         java.util.Set<Integer> assignedDoctorIds = allRooms.stream()
                 .filter(r -> r.getId() != roomId) // Exclude current room's doctor
                 .map(Room::getDoctorId)
                 .filter(id -> id > 0)
                 .collect(java.util.stream.Collectors.toSet());
 
-        List<Doctor> availableDoctors = doctorDAO.getAllDoctors().stream()
+        List<Doctor> availableDoctors = dao.getAllDoctors().stream()
                 .filter(d -> !assignedDoctorIds.contains(d.getId()))
                 .collect(java.util.stream.Collectors.toList());
         
@@ -66,13 +66,13 @@ public class RoomDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDAO roomDAO = new RoomDAO();
+        ManagerDAO dao = new ManagerDAO();
         String action = request.getParameter("action");
         int roomId = Integer.parseInt(request.getParameter("roomId"));
 
         if ("changeDoctor".equals(action)) {
             int newDoctorId = Integer.parseInt(request.getParameter("newDoctorId"));
-            roomDAO.assignDoctorToRoom(roomId, newDoctorId);
+            dao.assignDoctorToRoom(roomId, newDoctorId);
             request.getSession().setAttribute("success", "Thay đổi bác sĩ thành công!");
         }
         response.sendRedirect(request.getContextPath() + "/manager/room_detail?roomId=" + roomId);

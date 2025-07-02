@@ -5,6 +5,7 @@
 
 package controller.manager;
 
+import dal.ManagerDAO;
 import dal.StaffDAO;
 import model.Staff;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class ManagerProfileServlet extends HttpServlet {
 //            return;
 //        }
 
-        StaffDAO staffDAO = new StaffDAO();
+        ManagerDAO staffDAO = new ManagerDAO();
         Staff manager = staffDAO.getManagerById(2);
         request.setAttribute("user", manager);
         request.getSession().setAttribute("user", manager);
@@ -74,7 +75,7 @@ public class ManagerProfileServlet extends HttpServlet {
             imageUrl = existingImageUrl;
         }
 
-        StaffDAO staffDAO = new StaffDAO();
+        ManagerDAO staffDAO = new ManagerDAO();
         Staff manager = staffDAO.getManagerById(userId);
         manager.setFullName(fullName);
         manager.setAddress(address);

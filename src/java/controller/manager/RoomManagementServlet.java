@@ -2,6 +2,7 @@ package controller.manager;
 
 import dal.RoomDAO;
 import dal.DoctorDAO;
+import dal.ManagerDAO;
 import model.Room;
 import model.Doctor;
 import model.Specialization;
@@ -19,11 +20,10 @@ public class RoomManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDAO roomDAO = new RoomDAO();
-        DoctorDAO doctorDAO = new DoctorDAO();
-        List<Room> roomList = roomDAO.getAllRooms();
-        List<Specialization> specializationList = roomDAO.getAllSpecializations();
-        List<Doctor> doctorList = doctorDAO.getAllDoctors();
+         ManagerDAO dao = new ManagerDAO();
+        List<Room> roomList = dao.getAllRooms();
+        List<Specialization> specializationList = dao.getAllSpecializations();
+        List<Doctor> doctorList = dao.getAllDoctors();
 
         // Lấy danh sách ID bác sĩ đã được gán phòng
         java.util.Set<Integer> assignedDoctorIds = roomList.stream()
@@ -98,29 +98,29 @@ public class RoomManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RoomDAO roomDAO = new RoomDAO();
+        ManagerDAO dao = new ManagerDAO();
         String action = request.getParameter("action");
         if ("addRoom".equals(action)) {
             String name = request.getParameter("name");
             int doctorId = Integer.parseInt(request.getParameter("doctorId"));
 
-            List<Room> allRooms = roomDAO.getAllRooms();
+            List<Room> allRooms = dao.getAllRooms();
             String normalizedNewName = normalize(name);
             boolean nameExists = allRooms.stream().anyMatch(r -> normalize(r.getName()).equals(normalizedNewName));
 
             if (nameExists) {
                 request.getSession().setAttribute("error", "Tên phòng đã tồn tại!");
             } else {
-                roomDAO.addRoom(name, doctorId);
+                dao.addRoom(name, doctorId);
                 request.getSession().setAttribute("success", "Thêm phòng thành công!");
             }
         } else if ("deleteRoom".equals(action)) {
             int roomId = Integer.parseInt(request.getParameter("roomId"));
-            Room room = roomDAO.getRoomById(roomId);
+            Room room = dao.getRoomById(roomId);
             if (room != null && room.getDoctorId() > 0) {
                 request.getSession().setAttribute("error", "Không thể xóa phòng vì vẫn còn bác sĩ trực thuộc!");
             } else {
-                roomDAO.deleteRoom(roomId);
+                dao.deleteRoom(roomId);
                 request.getSession().setAttribute("success", "Xóa phòng thành công!");
             }
         }

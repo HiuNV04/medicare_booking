@@ -2,6 +2,7 @@ package controller.manager;
 
 import dal.StaffDAO;
 import dal.DoctorDAO;
+import dal.ManagerDAO;
 import model.Staff;
 import model.Doctor;
 import java.io.IOException;
@@ -44,9 +45,9 @@ public class StaffDetailServlet extends HttpServlet {
             Doctor doctor = doctorDAO.getDoctorById(id);
             request.setAttribute("doctor", doctor);
         } else {
-            StaffDAO staffDAO = new StaffDAO();
-            Staff staff = staffDAO.getManagerById(id);
-            if (staff == null) staff = staffDAO.getReceptionistById(id);
+           ManagerDAO dao = new ManagerDAO();
+            Staff staff = dao.getManagerById(id);
+            if (staff == null) staff = dao.getReceptionistById(id);
             request.setAttribute("staff", staff);
         }
         request.getRequestDispatcher("/manager/staff_detail.jsp").forward(request, response);

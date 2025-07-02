@@ -1,7 +1,7 @@
 package controller.manager;
 
-import dal.DoctorDAO;
-import dal.DoctorShiftSlotDAO;
+ 
+import dal.ManagerDAO;
 import model.Doctor;
 import model.DoctorShiftSlot;
 
@@ -20,8 +20,7 @@ public class ShiftListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DoctorShiftSlotDAO shiftDAO = new DoctorShiftSlotDAO();
-        DoctorDAO doctorDAO = new DoctorDAO();
+      ManagerDAO dao = new ManagerDAO();
         
         String doctorIdStr = request.getParameter("doctorId");
         String dateStr = request.getParameter("date");
@@ -41,14 +40,14 @@ public class ShiftListServlet extends HttpServlet {
         }
         int pageSize = 10;
 
-        List<Doctor> doctorList = doctorDAO.getAllDoctors();
-        int totalShifts = shiftDAO.countShifts(doctorId, date);
+        List<Doctor> doctorList = dao.getAllDoctors();
+        int totalShifts = dao.countShifts(doctorId, date);
         int totalPages = (int) Math.ceil((double) totalShifts / pageSize);
         if (page < 1) page = 1;
         if (page > totalPages && totalPages > 0) page = totalPages;
         int offset = (page - 1) * pageSize;
 
-        List<DoctorShiftSlot> shiftList = shiftDAO.getShiftsPaged(doctorId, date, offset, pageSize);
+        List<DoctorShiftSlot> shiftList = dao.getShiftsPaged(doctorId, date, offset, pageSize);
 
         request.setAttribute("doctorList", doctorList);
         request.setAttribute("shiftList", shiftList);

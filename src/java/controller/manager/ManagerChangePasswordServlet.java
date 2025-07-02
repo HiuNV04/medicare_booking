@@ -5,8 +5,7 @@
 
 package controller.manager;
 
-import util.PasswordUtil;
-import java.io.IOException;
+ import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -24,7 +23,7 @@ public class ManagerChangePasswordServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
-            dal.StaffDAO staffDAO = new dal.StaffDAO();
+            dal.ManagerDAO staffDAO = new dal.ManagerDAO();
             model.Staff manager = staffDAO.getManagerById(2); // Hardcode id=2
             request.getSession().setAttribute("user", manager);
         }
@@ -35,13 +34,15 @@ public class ManagerChangePasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
+                    dal.ManagerDAO dao = new dal.ManagerDAO();
+
         jakarta.servlet.http.HttpSession session = request.getSession();
         model.Staff manager = (model.Staff) session.getAttribute("user");
         String oldPass = request.getParameter("oldPassword");
         String newPass = request.getParameter("newPassword");
         String confirmPass = request.getParameter("confirmPassword");
 
-        if (!util.PasswordUtil.hashSHA256(oldPass).equals(manager.getPassword())) {
+        if (dao.hashSHA256(oldPass).equals(manager.getPassword())) {
             request.setAttribute("error", "Mật khẩu cũ không đúng");
             request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
             return;
@@ -51,10 +52,10 @@ public class ManagerChangePasswordServlet extends HttpServlet {
             request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);
             return;
         }
-        String newHash = util.PasswordUtil.hashSHA256(newPass);
+        String newHash = dao.hashSHA256(newPass);
         manager.setPassword(newHash);
         dal.StaffDAO staffDAO = new dal.StaffDAO();
-        staffDAO.updateManagerPassword(manager.getId(), newHash); // Cập nhật mật khẩu vào staff
+        dao.updateManagerPassword(manager.getId(), newHash); // Cập nhật mật khẩu vào staff
         session.setAttribute("user", manager);
         request.setAttribute("success", "Đổi mật khẩu thành công");
         request.getRequestDispatcher("/manager/manager_change_password.jsp").forward(request, response);

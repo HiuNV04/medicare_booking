@@ -1,8 +1,8 @@
 package controller.manager;
 
-import dal.AppointmentScheduleDAO;
-import dal.DoctorDAO;
+ import dal.DoctorDAO;
 import dal.DoctorShiftSlotDAO;
+import dal.ManagerDAO;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -78,9 +78,8 @@ public class ScheduleManagementServlet extends HttpServlet {
         if (doctorIdStr != null && !doctorIdStr.isEmpty()) {
             int doctorId = Integer.parseInt(doctorIdStr);
             request.setAttribute("selectedDoctorId", doctorId);
-            DoctorShiftSlotDAO shiftDAO = new DoctorShiftSlotDAO();
-            AppointmentScheduleDAO appointmentDAO = new AppointmentScheduleDAO();
-            List<DoctorShiftSlot> shifts = shiftDAO.getShiftsByDoctorForWeek(
+             ManagerDAO dao = new ManagerDAO();
+            List<DoctorShiftSlot> shifts = dao.getShiftsByDoctorForWeek(
                 doctorId,
                 sqlWeekDates.get(0).toLocalDate(),
                 sqlWeekDates.get(6).toLocalDate()
@@ -88,11 +87,11 @@ public class ScheduleManagementServlet extends HttpServlet {
             Map<String, DoctorShiftSlot> shiftMap = new HashMap<>();
             Map<String, String> appointmentMap = new HashMap<>();
             for (DoctorShiftSlot shift : shifts) {
-                String dateKey = sdfKey.format(shift.getDate());
-                int hour = shift.getSlotStartTime().toLocalTime().getHour();
+                String dateKey = sdfKey.format(shift.getSlotDate());
+                int hour = shift.getStart().toLocalTime().getHour();
                 String slotKey = dateKey + "_" + hour;
                 shiftMap.put(slotKey, shift);
-                String status = appointmentDAO.getAppointmentStatusForShift(shift.getId());
+                String status = dao.getAppointmentStatusForShift(shift.getSlotId());
                 if (status != null) {
                     appointmentMap.put(slotKey, status);
                 }
@@ -112,33 +111,32 @@ public class ScheduleManagementServlet extends HttpServlet {
         String messageType = null;
 
         if (action != null && doctorIdStr != null) {
-            DoctorShiftSlotDAO shiftDAO = new DoctorShiftSlotDAO();
-            AppointmentScheduleDAO appointmentDAO = new AppointmentScheduleDAO();
+             ManagerDAO dao = new ManagerDAO();
             if ("create".equals(action)) {
                 String dateStr = request.getParameter("date");
                 String hourStr = request.getParameter("hour");
                 int doctorId = Integer.parseInt(doctorIdStr);
                 Date date = Date.valueOf(dateStr);
                 int hour = Integer.parseInt(hourStr);
-                if (shiftDAO.isShiftExists(doctorId, date, hour)) {
+                if (dao.isShiftExists(doctorId, date, hour)) {
                     message = "Ca làm việc đã tồn tại!";
                     messageType = "danger";
                 } else {
                     // Tạo ca làm việc mới (6-18h, mỗi ca 1 tiếng)
                     Time startTime = Time.valueOf(String.format("%02d:00:00", hour));
                     Time endTime = Time.valueOf(String.format("%02d:00:00", hour+1));
-                    shiftDAO.addShift(doctorId, date, startTime, endTime);
+                    dao.addShift(doctorId, date, startTime, endTime);
                     message = "Tạo ca làm việc thành công!";
                     messageType = "success";
                 }
             } else if ("delete".equals(action)) {
                 String shiftIdStr = request.getParameter("shiftId");
                 int shiftId = Integer.parseInt(shiftIdStr);
-                if (shiftDAO.isShiftBooked(shiftId)) {
+                if (dao.isShiftBooked(shiftId)) {
                     message = "Không thể xóa ca đã có lịch hẹn!";
                     messageType = "danger";
                 } else {
-                    shiftDAO.deleteShift(shiftId);
+                    dao.deleteShift(shiftId);
                     message = "Xóa ca làm việc thành công!";
                     messageType = "success";
                 }

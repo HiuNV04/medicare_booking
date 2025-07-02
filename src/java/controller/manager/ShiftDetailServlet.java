@@ -1,8 +1,6 @@
 package controller.manager;
 
-import dal.DoctorDAO;
-import dal.DoctorShiftSlotDAO;
-import dal.AppointmentScheduleDAO;
+   import dal.ManagerDAO;
 import model.Doctor;
 import model.DoctorShiftSlot;
 import model.AppointmentSchedule;
@@ -26,13 +24,12 @@ public class ShiftDetailServlet extends HttpServlet {
             return;
         }
         int shiftId = Integer.parseInt(shiftIdStr);
-        DoctorShiftSlotDAO shiftDAO = new DoctorShiftSlotDAO();
-        DoctorDAO doctorDAO = new DoctorDAO();
-        AppointmentScheduleDAO appointmentDAO = new AppointmentScheduleDAO();
+     
+        ManagerDAO dao = new ManagerDAO();
 
-        DoctorShiftSlot shift = shiftDAO.getShiftById(shiftId);
-        Doctor doctor = doctorDAO.getDoctorById(shift.getDoctorId());
-        List<AppointmentSchedule> appointments = appointmentDAO.getAppointmentsByShiftId(shiftId);
+        DoctorShiftSlot shift = dao.getShiftById(shiftId);
+        Doctor doctor = dao.getDoctorById(shift.getDoctorId());
+        List<AppointmentSchedule> appointments = dao.getAppointmentsByShiftId(shiftId);
 
         request.setAttribute("shift", shift);
         request.setAttribute("doctor", doctor);
