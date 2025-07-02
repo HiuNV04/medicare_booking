@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 
             if (account instanceof Doctor) {
                 Doctor d = (Doctor) account;
-                Doctor fullDoctor = new DoctorDAO().getDoctorById(d.getId());
+                Doctor fullDoctor = new DoctorDAO().getDoctorById1(d.getId());
 
                 if (fullDoctor == null) {
                     request.setAttribute("error", "Không tìm thấy thông tin bác sĩ trong hệ thống.");

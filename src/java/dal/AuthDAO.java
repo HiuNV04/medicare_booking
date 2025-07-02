@@ -81,6 +81,10 @@ public class AuthDAO extends MyDAO {
 
         return null;
     }
+    public static void main(String[] args) {
+        AuthDAO dao = new AuthDAO();
+        Object a = dao.login("doc1", "abc");
+    }
 
     // hàm check trùng username và email khi đăng kí tài khoản
     public boolean isUsernameOrEmailTaken(String username, String email) {

@@ -30,4 +30,5 @@ public class PasswordEncryptor {
             throw new RuntimeException(ex);
         }
     }
+    
 }

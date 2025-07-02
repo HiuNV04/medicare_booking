@@ -132,10 +132,4 @@ public class Slot {
     public void setLevelName(String levelName) {
         this.levelName = levelName;
     }
-
-    
-
-    
-    
-
 }
