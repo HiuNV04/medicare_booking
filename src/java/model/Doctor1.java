@@ -18,6 +18,7 @@ public class Doctor1 {
     private String roomName;
 
     public Doctor1(int id, String full_name, String specializationName, String description,  String roomName) {
+        this.id = id;
         this.full_name = full_name;
         this.specializationName = specializationName;
         this.description = description;
@@ -79,4 +80,10 @@ public class Doctor1 {
     public void setRoomName(String roomName) {
         this.roomName = roomName;
     }
+
+    @Override
+    public String toString() {
+        return "Doctor1{" + "id=" + id + ", full_name=" + full_name + ", specializationId=" + specializationId + ", specializationName=" + specializationName + ", description=" + description + ", roomId=" + roomId + ", roomName=" + roomName + '}';
+    }
+    
 }

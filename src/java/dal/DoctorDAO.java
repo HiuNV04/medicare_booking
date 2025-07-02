@@ -26,6 +26,43 @@ import model.Doctor;
  */
 public class DoctorDAO extends MyDAO {
 
+    public List<Doctor> getDoctors() {
+    List<Doctor> doctors = new ArrayList<>();
+    String sql = "SELECT d.*, dl.name AS level_name, sp.name AS specialization_name " +
+                 "FROM doctor d " +
+                 "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id " +
+                 "LEFT JOIN specialization sp ON d.specialization_id = sp.id";
+    try {
+         ps = con.prepareStatement(sql);
+         rs = ps.executeQuery();
+    
+        while (rs.next()) {
+            Doctor doctor = new Doctor();
+            doctor.setId(rs.getInt("id"));
+            doctor.setImageUrl(rs.getString("image_url"));
+            doctor.setEmail(rs.getString("email"));
+            doctor.setUsername(rs.getString("username"));
+            doctor.setPassword(rs.getString("password"));
+            doctor.setRole(rs.getString("role"));
+            doctor.setFullName(rs.getString("full_name"));
+            doctor.setDateOfBirth(rs.getDate("date_of_birth")); // nếu bạn dùng java.sql.Date
+            doctor.setGender(rs.getString("gender"));
+            doctor.setAddress(rs.getString("address"));
+            doctor.setPhoneNumber(rs.getString("phone_number"));
+            doctor.setDoctorLevelId(rs.getInt("doctor_level_id"));
+            doctor.setSpecializationId(rs.getInt("specialization_id"));
+            doctor.setStatus(rs.getBoolean("status"));
+            doctor.setLevelName(rs.getString("level_name"));
+            doctor.setSpecialization(rs.getString("specialization_name"));
+            doctor.setNote(rs.getString("note"));
+            doctors.add(doctor);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return doctors;
+}
+
     // Lấy danh sách nhân viên với filter, phân trang
     public List<Doctor> getDoctorsByFilter(String search, String role, Boolean status, int page, int pageSize) {
         List<Doctor> list = new ArrayList<>();
@@ -757,4 +794,5 @@ public class DoctorDAO extends MyDAO {
             return false;
         }
     }
+    
 }

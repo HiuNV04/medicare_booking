@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
+
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import model.Patient;
@@ -18,9 +19,9 @@ import model.Receptionist1;
  *
  * @author ADMIN
  */
-public class SonDAO extends DBContext{
+public class SonDAO extends DBContext {
     //PatientDAO
-       //cật nhật lại mật khẩu cá nhân 
+    //cật nhật lại mật khẩu cá nhân 
     public void updatePass(String username, String newPass) {
         String sql = "UPDATE patient SET password = ? WHERE username = ?";
         try {
@@ -54,7 +55,7 @@ public class SonDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
     //đếm số lượng patient trong db
     public int getTotalPatient() {
         String sql = "select count(*) from patient";
@@ -68,7 +69,7 @@ public class SonDAO extends DBContext{
         }
         return 0;
     }
-    
+
     public Patient1 getAPatientByEmail(String email) {
         String sql = "select p.id, p.email, p.username, p.password, p.full_name, \n"
                 + "p.gender, p.date_of_birth,  p.identity_number, p.insurance_number, p.phone_number,\n"
@@ -254,8 +255,6 @@ public class SonDAO extends DBContext{
         }
     }
 
-    
-
     public List<Patient1> pagingPatient(int index) {
         List<Patient1> list = new ArrayList();
         String sql = "select p.id, p.full_name,p.gender,\n"
@@ -315,8 +314,8 @@ public class SonDAO extends DBContext{
     public List<Doctor1> getListDoctor() {
         List<Doctor1> list = new ArrayList();
         String sql = "select d.id, d.full_name, s.name, s.description, r.name\n"
-                + "from doctor d join specialization s on d.specialization_id = s.id\n"
-                + "join room r on s.id = r.specialization_id";
+                + "                from doctor d join specialization s on d.specialization_id = s.id\n"
+                + "                  join room r on d.id = r.doctor_id";
         try {
             PreparedStatement st = connection.prepareCall(sql);
             ResultSet rs = st.executeQuery();
@@ -331,6 +330,14 @@ public class SonDAO extends DBContext{
         } catch (Exception e) {
         }
         return list;
+    }
+
+    public static void main(String[] args) {
+        SonDAO dao = new SonDAO();
+        List<Doctor1> lst = dao.getListDoctor();
+        for (Doctor1 z : lst) {
+            System.out.println(z);
+        }
     }
 
     //hàm lấy danh sách cuộc hẹn
@@ -365,7 +372,8 @@ public class SonDAO extends DBContext{
 
         return list;
     }
-     //lấy danh sách bệnh nhân
+    //lấy danh sách bệnh nhân
+
     public List<Patient1> getListPatient() {
         List<Patient1> list = new ArrayList<>();
         String sql = "select p.id, p.full_name, p.gender, p.identity_number, p.insurance_number, p.phone_number, p.address, p.image_url from patient p";
@@ -387,7 +395,8 @@ public class SonDAO extends DBContext{
         }
         return list;
     }
-     public Patient1 getAPatientByIdentity(String identity) {
+
+    public Patient1 getAPatientByIdentity(String identity) {
         String sql = "select p.id, p.full_name, \n"
                 + " p.gender, p.date_of_birth ,p.identity_number, \n"
                 + "p.insurance_number, p.phone_number, p.address, p.image_url\n"
@@ -411,7 +420,8 @@ public class SonDAO extends DBContext{
         }
         return null;
     }
-       //lấy thông tin 1 lễ tân
+    //lấy thông tin 1 lễ tân
+
     public Receptionist1 getAReceptionistByEmail(String email) {
         String sql = "select r.id, r.role, r.email, r.username, r.password, r.full_name, r.date_of_birth,\n"
                 + "r.gender, r.phone_number, r.address, r.image_url \n"
@@ -437,7 +447,8 @@ public class SonDAO extends DBContext{
         }
         return null;
     }
-      public int getTotalPatients() {
+
+    public int getTotalPatients() {
         String sql = "select count(*) from patient";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -450,7 +461,8 @@ public class SonDAO extends DBContext{
         }
         return 0;
     }
-       public int getTotalAppoinment() {
+
+    public int getTotalAppoinment() {
         String sql = "select count(*) from appointment_schedule";
         try {
             PreparedStatement st = connection.prepareCall(sql);
@@ -462,7 +474,8 @@ public class SonDAO extends DBContext{
         }
         return 0;
     }
-        //hàm cập nhật thông tin cá nhân của lễ tân
+    //hàm cập nhật thông tin cá nhân của lễ tân
+
     public void update(Receptionist1 r, int id) {
         String sql = "UPDATE [dbo].[staff]\n"
                 + "SET [full_name] = ?,\n"

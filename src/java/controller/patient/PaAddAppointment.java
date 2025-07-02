@@ -27,14 +27,23 @@ import model.Patient1;
 @WebServlet(name = "PaAddAppointment", urlPatterns = {"/paAddAppointment"})
 public class PaAddAppointment extends HttpServlet {
 
-    SonDAO pdao = new SonDAO();
+    SonDAO dao = new SonDAO();
+    PatientDAO pDao = new PatientDAO();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Patient1 p = pdao.getAPatientByEmail("pat1@gmail.com");
-        List<Doctor1> doctorList = pdao.getListDoctor();
+        int patientId = 0;
+        try {
+            patientId = Integer.parseInt(request.getParameter("id"));
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        Patient p = pDao.getPatientById(patientId);
+       
+        List<Doctor1> doctorList = dao.getListDoctor();
         String id_raw = request.getParameter("doctorId");
 
         Doctor1 selectedDoctor = null;

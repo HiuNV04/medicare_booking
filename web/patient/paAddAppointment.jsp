@@ -1,5 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="model.Patient" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,22 +14,33 @@
             <h2>Profile</h2>
             <a href="/MediCare_Booking/auth/home.jsp">Trang chủ</a>
         </div>
+        <script>
+            
+            
+                
+                                 console.log('Id:  ${patient.id}');
 
+
+            
+                 
+        </script>
         <div class="container">
             <%@ include file="sidebar.jsp" %>
             <div>
                 <form action="paAddAppointment" method="post" style="margin-right: -253%;;">
                     <div class="form-group">
                         <!--                        <label>ID: </label>-->
-                        <input type="hidden" class="form-control" name="id" value="${p.getId()}" readonly=""/>
+                        <input type="hidden" class="form-control" name="id" value="${patient.getId()}" readonly=""/>
+                      
                     </div>
                     <div class="form-group">
-                        <label>email: </label>
-                        <input type="text" class="form-control" name="email" value="${p.getEmail()}" readonly=""/>
+                        <label>Email: </label>
+                        <input type="text" class="form-control" name="email" value="${patient.getEmail()}" readonly=""/>
                     </div>
+                    
                     <div class="form-group">
                         <label>Full Name: </label>
-                        <input type="text" class="form-control" name="name" value="${p.getFullname()}" readonly=""/>
+                        <input type="text" class="form-control" name="name" value="${patient.getFullname()}" readonly=""/>
                     </div>
                     <div class="form-group">
                         <label for="doctorId">Select Doctor:</label>
@@ -44,8 +57,7 @@
                         <c:if test="${not empty selectedDoctor}">
                             <p><strong>Specialization:</strong> ${selectedDoctor.specializationName}</p>
                             <p><strong>Room:</strong> ${selectedDoctor.roomName}</p>
-                            <p><strong>Description:</strong> ${selectedDoctor.specializationDescription}</p>
-                        </c:if>
+                         </c:if>
                     </div>
                     <div class="form-group">
                         <label>Date: </label>
