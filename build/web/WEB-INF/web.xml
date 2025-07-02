@@ -96,6 +96,10 @@
         <servlet-name>ImageServlet</servlet-name>
         <servlet-class>controller.doctor.ImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BillDetailServlet</servlet-name>
+        <servlet-class>controller.receptionist.BillDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DoctorProfileServlet</servlet-name>
         <url-pattern>/DoctorProfileServlet</url-pattern>
@@ -192,6 +196,10 @@
         <servlet-name>ImageServlet</servlet-name>
         <url-pattern>/ImageServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BillDetailServlet</servlet-name>
+        <url-pattern>/BillDetailServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>admin/home_admin.jsp</welcome-file>
         <welcome-file>auth/login.jsp</welcome-file>
@@ -201,8 +209,6 @@
         <welcome-file>admin/register_role.jsp</welcome-file>
         <welcome-file>doctor/login_doctor.jsp</welcome-file>
         <welcome-file>LoginServlet</welcome-file>
-        
-        
         <welcome-file>DoctorProfileServlet</welcome-file>
         <welcome-file>DoctorUpdateServlet</welcome-file>
         <welcome-file>DoctorLoginServlet</welcome-file>
@@ -211,25 +217,12 @@
         <welcome-file>DoctorChangePasswordServlet</welcome-file>
         <welcome-file>DoctorSlotShiftServlet</welcome-file>
         <welcome-file>DoctorDetailSlotServlet</welcome-file>
-        
-        
-        
         <welcome-file>admin/home_admin.jsp</welcome-file>
-        
         <welcome-file>auth/register.jsp</welcome-file>
         <welcome-file>auth/reset.jsp</welcome-file>
         <welcome-file>auth/forget.jsp</welcome-file>
         <welcome-file>admin/register_role.jsp</welcome-file>
         <welcome-file>doctor/login_doctor.jsp</welcome-file>
-        
-        
-        
-        
-        
-        
-        
-        
-        
         <welcome-file>doctor/prescription/create_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/view_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/history_prescription.jsp</welcome-file>
@@ -240,5 +233,3 @@
         <welcome-file>doctor/profile/detail_profile.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
-
-

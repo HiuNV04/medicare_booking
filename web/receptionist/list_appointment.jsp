@@ -6,15 +6,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/check/check_receptionist.jsp" %>
+<%@ include file="/check/check_login.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Danh sách lịch hẹn</title>
-        <jsp:include page="/receptionist/head/head.jsp" />
+        <jsp:include page="/frontend/head/head.jsp" />
     </head>
 
     <body>
-        <jsp:include page="/receptionist/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/receptionist/navbar/navbar.jsp" />
 
         <div class="container mt-5">
@@ -67,8 +69,8 @@
             <jsp:include page="/pages.jsp"/>
         </div>
 
-        <jsp:include page="/receptionist/footer/footer.jsp" />
-        <jsp:include page="/receptionist/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 </html>
 

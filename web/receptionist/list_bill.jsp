@@ -8,16 +8,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/check/check_receptionist.jsp" %>
+<%@ include file="/check/check_login.jsp" %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>Danh sách hóa đơn</title>
-        <jsp:include page="/receptionist/head/head.jsp" />
+        <jsp:include page="/frontend/head/head.jsp" />
     </head>
 
     <body>
-        <jsp:include page="/receptionist/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/receptionist/navbar/navbar.jsp" />
 
         <div class="container mt-5">
@@ -41,7 +43,7 @@
                         <tr>
                             <td>${startIndex + loop.index + 1}</td>
                             <td>${b.patientName}</td>
-                            <td><fmt:formatDate value="${b.appointmentTime}" pattern="dd/MM/yyyy HH:mm" /></td>
+                            <td><fmt:formatDate value="${b.appointmentTime}" pattern="dd/MM/yyyy  - HH:mm" /></td>
                             <td>${b.paymentMethod}</td>
                             <td>
                                 <c:choose>
@@ -57,7 +59,8 @@
                                 <fmt:formatNumber value="${b.amount}" type="currency" currencySymbol="₫" groupingUsed="true"/>
                             </td>
                             <td class="text-center">
-                                <a href="${pageContext.request.contextPath}/bill-detail?id=${b.id}" class="btn btn-sm btn-info">Xem</a>
+                                <a href="${pageContext.request.contextPath}/BillDetailServlet?id=${b.id}" class="btn btn-sm btn-info">Xem</a>
+
                             </td>
                         </tr>
                     </c:forEach>
@@ -69,8 +72,8 @@
             <jsp:include page="/pages.jsp"/>
         </div>
 
-        <jsp:include page="/receptionist/footer/footer.jsp" />
-        <jsp:include page="/receptionist/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 
 </html>

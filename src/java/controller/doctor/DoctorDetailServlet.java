@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Doctor;
 
 @MultipartConfig(
@@ -17,40 +18,39 @@ import model.Doctor;
 //@WebServlet(name = "DoctorDetailServlet", urlPatterns = {"/DoctorDetailServlet"}) 
 public class DoctorDetailServlet extends HttpServlet {
 
-    DoctorDAO dao = new DoctorDAO();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Doctor sessionDoctor = (Doctor) request.getSession().getAttribute("doctor");
-
-        // Nếu chưa đăng nhập → chuyển về trang login
+        DoctorDAO dao = new DoctorDAO();
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            return;
+        }
+        Doctor sessionDoctor = (Doctor) session.getAttribute("doctor");
         if (sessionDoctor == null) {
-            response.sendRedirect(request.getContextPath() + "/doctor/login_doctor.jsp");
+            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             return;
         }
 
-        // Lấy dữ liệu bác sĩ mới nhất từ DB
         Doctor latestDoctor = dao.getDoctorById(sessionDoctor.getId());
-        request.setAttribute("doctor", latestDoctor);
+        if (latestDoctor == null) {
+            request.setAttribute("error", "Không tìm thấy thông tin bác sĩ.");
+            request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
+            return;
+        }
 
-        // Kiểm tra quyền (xem có đúng là chủ tài khoản không)
+        request.setAttribute("doctor", latestDoctor);
         boolean isOwner = sessionDoctor.getId() == latestDoctor.getId();
         request.setAttribute("isOwner", isOwner);
-
-        // Forward đến JSP
         request.getRequestDispatcher("/doctor/profile/detail_profile.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Không cần xử lý gì trong POST
+        doGet(request, response);
     }
 
-    @Override
-    public String getServletInfo() {
-        return "Doctor detail profile viewer";
-    }
 }

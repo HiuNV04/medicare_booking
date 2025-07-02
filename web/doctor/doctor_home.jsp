@@ -6,6 +6,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ include file="/check/check_doctor.jsp" %>
+
+
+
 
 <%
     long version = System.currentTimeMillis();
@@ -15,12 +20,12 @@
 <html>
     <head>
         <title>Trang chủ</title>
-        <jsp:include page="/doctor/head/head.jsp" />
+        <jsp:include page="/frontend/head/head.jsp" />
     </head>
     <body> 
-        <jsp:include page="/doctor/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/doctor/navbar/navbar.jsp" />
-        <jsp:include page="/doctor/hero/hero.jsp" />
+        <jsp:include page="/frontend/hero/hero.jsp" />
         <!--        Team Start -->
         <div class="container-fluid py-5">
             <div class="container">
@@ -28,20 +33,28 @@
                     <h5 class="d-inline-block text-primary text-uppercase border-bottom border-5">Các bác sĩ của chúng tôi</h5>
                     <h1 class="display-4">Chuyên gia chăm sóc sức khỏe có trình độ</h1>
                 </div>   
+
                 <c:if test="${not empty doctors}">
                     <div class="container-fluid py-5">
                         <div class="container">
                             <div class="owl-carousel team-carousel position-relative">
-                                <c:forEach var="doctor" items="${doctors}" varStatus="status">         
+                                <c:forEach var="doctor" items="${doctors}" varStatus="status">
+                                    <c:set var="version" value="<%= System.currentTimeMillis() %>" />
+                                    <c:set var="imageUrl" value="${doctor.imageUrl}" />
+                                    <c:choose>
+                                        <c:when test="${fn:startsWith(imageUrl, 'external_images/doctor/')}">
+                                            <c:set var="imageUrl" value="ImageServlet?file=${fn:split(imageUrl, '/')[2]}" />
+                                        </c:when>
+                                    </c:choose>
+
                                     <div class="team-item">
                                         <div class="row g-0 bg-light rounded overflow-hidden">
                                             <!-- Ảnh bác sĩ -->
                                             <div class="col-12 col-sm-5 h-100">
                                                 <img class="img-fluid h-100"
-                                                     src="${pageContext.request.contextPath}/${doctor.imageUrl}?v=<%= version %>"
+                                                     src="${pageContext.request.contextPath}/${imageUrl}&v=${version}"
                                                      alt="Doctor Image"
                                                      style="object-fit: cover;">
-
                                             </div>
 
                                             <!-- Thông tin bác sĩ -->
@@ -57,9 +70,6 @@
                                                     <p class="mb-0 text-muted">
                                                         <strong>Nhận xét:</strong> <c:out value="${doctor.note}" />
                                                     </p>
-
-
-
                                                 </div>
 
                                                 <!-- Mạng xã hội -->
@@ -79,9 +89,10 @@
             </div>
         </div>
 
+
         <jsp:include page="/doctor/testimonial/testimonial.jsp" />
-        <jsp:include page="/doctor/footer/footer.jsp" />
-        <jsp:include page="/doctor/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 </html>
 

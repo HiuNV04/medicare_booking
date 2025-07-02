@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.DoctorLevel;
 import model.Specialization;
-import controller.send.TextUtils;
+import dal.ValidateDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +25,7 @@ import model.Doctor;
  * @author ADMIN
  */
 public class DoctorDAO extends MyDAO {
+<<<<<<< HEAD
 
     public List<Doctor> getDoctors() {
     List<Doctor> doctors = new ArrayList<>();
@@ -313,6 +314,9 @@ public class DoctorDAO extends MyDAO {
         }
     }
 
+=======
+    
+>>>>>>> an
     public DoctorDAO() {
         super();
         if (con == null) {
@@ -321,6 +325,9 @@ public class DoctorDAO extends MyDAO {
             System.out.println("✅ DoctorDAO: Kết nối database thành công");
         }
     }
+
+   
+    
 
     // 1. Lấy toàn bộ bác sĩ
     public List<Doctor> getAllDoctors() {
@@ -392,7 +399,7 @@ public class DoctorDAO extends MyDAO {
     }
 
     // 3. Lấy chi tiết theo id
-    public Doctor getDoctorById1(int id) {
+    public Doctor getDoctorById(int id) {
         String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
                 + "FROM doctor d "
                 + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
@@ -425,41 +432,7 @@ public class DoctorDAO extends MyDAO {
         return null;
     }
 
-//    // 4. Đăng nhập 
-//    public Doctor checkLogin(String username, String password) {
-//        String sql = "SELECT d.*, dl.name AS level_name, s.name AS specialization_name "
-//                + "FROM doctor d "
-//                + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
-//                + "LEFT JOIN specialization s ON d.specialization_id = s.id "
-//                + "WHERE d.username = ? AND d.password = ? AND d.status = 1";
-//        try (PreparedStatement stmt = con.prepareStatement(sql)) {
-//            stmt.setString(1, username);
-//            stmt.setString(2, password);
-//            ResultSet rs = stmt.executeQuery();
-//            if (rs.next()) {
-//                Doctor doctor = new Doctor();
-//                doctor.setId(rs.getInt("id"));
-//                doctor.setFullName(rs.getString("full_name"));
-//                doctor.setImageUrl(rs.getString("image_url"));
-//                doctor.setAddress(rs.getString("address"));
-//                doctor.setDateOfBirth(rs.getDate("date_of_birth"));
-//                doctor.setGender(rs.getString("gender"));
-//                doctor.setPhoneNumber(rs.getString("phone_number"));
-//                doctor.setEmail(rs.getString("email"));
-//                doctor.setStatus(rs.getInt("status") == 1);
-//                doctor.setSpecializationId(rs.getInt("specialization_id"));
-//                doctor.setDoctorLevelId(rs.getInt("doctor_level_id"));
-//                doctor.setSpecialization(rs.getString("specialization_name"));
-//                doctor.setLevelName(rs.getString("level_name"));
-//                doctor.setNote(rs.getString("note"));
-//                return doctor;
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("SQL Error in getDoctorDetail(): " + e.getMessage());
-//        }
-//        return null;
-//    }
-    public void updateDoctor1(Doctor doctor) {
+    public void updateDoctor(Doctor doctor) {
         String sql = "UPDATE doctor SET full_name=?, image_url=? , address=?, date_of_birth=?, gender=?, "
                 + "phone_number=?, email=?, note=? WHERE id=?";
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
@@ -509,48 +482,34 @@ public class DoctorDAO extends MyDAO {
     // 8. Tìm kiếm và lọc bác sĩ 
     public List<Doctor> searchDoctors(String name, String gender, Integer levelId, Integer specializationId) {
         List<Doctor> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
 
-        StringBuilder sql = new StringBuilder(
+        StringBuilder xSql = new StringBuilder(
                 "SELECT d.*, s.name AS specialization_name, l.name AS level_name "
                 + "FROM doctor d "
                 + "JOIN specialization s ON d.specialization_id = s.id "
                 + "JOIN doctor_level l ON d.doctor_level_id = l.id "
-                + "WHERE 1 = 1"
+                + "WHERE 1 = 1 "
         );
 
-        if (name != null && !name.trim().isEmpty()) {
-            sql.append(" AND LOWER(REPLACE(d.full_name, ' ', '')) LIKE LOWER(REPLACE(?, ' ', ''))");
-        }
-
         if (gender != null && !gender.trim().isEmpty()) {
-            sql.append(" AND d.gender = ?");
+            xSql.append("AND d.gender = ? ");
+            params.add(gender);
         }
 
         if (levelId != null) {
-            sql.append(" AND d.doctor_level_id = ?");
+            xSql.append("AND d.doctor_level_id = ? ");
+            params.add(levelId);
         }
 
         if (specializationId != null) {
-            sql.append(" AND d.specialization_id = ?");
+            xSql.append("AND d.specialization_id = ? ");
+            params.add(specializationId);
         }
 
-        try (PreparedStatement st = con.prepareStatement(sql.toString())) {
-            int index = 1;
-
-            if (name != null && !name.trim().isEmpty()) {
-                st.setString(index++, "%" + name.trim() + "%");
-            }
-
-            if (gender != null && !gender.trim().isEmpty()) {
-                st.setString(index++, gender);
-            }
-
-            if (levelId != null) {
-                st.setInt(index++, levelId);
-            }
-
-            if (specializationId != null) {
-                st.setInt(index++, specializationId);
+        try (PreparedStatement st = con.prepareStatement(xSql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 1, params.get(i));
             }
 
             ResultSet rs = st.executeQuery();
@@ -573,36 +532,15 @@ public class DoctorDAO extends MyDAO {
                 d.setLevelName(rs.getString("level_name"));
                 list.add(d);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // ✅ Lọc theo tên bằng Java (dùng Normalize)
         if (name != null && !name.trim().isEmpty()) {
-            String[] keywords = name.trim().split("\\s+");
-
-            list = list.stream().filter(d -> {
-                String fullName = d.getFullName();
-                String fullNameNoAccent = TextUtils.normalizeForFuzzySearch(fullName); // bỏ dấu
-                String fullNameWithAccent = TextUtils.normalizeStrict(fullName);       // giữ dấu
-
-                for (String keyword : keywords) {
-                    String keywordNoAccent = TextUtils.normalizeForFuzzySearch(keyword);
-                    String keywordWithAccent = TextUtils.normalizeStrict(keyword);
-
-                    if (!keyword.equalsIgnoreCase(keywordWithAccent)) {
-                        if (!fullNameWithAccent.contains(keywordWithAccent)) {
-                            return false;
-                        }
-                    } else {
-                        if (!fullNameNoAccent.contains(keywordNoAccent)) {
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }).collect(Collectors.toList());
+            list = list.stream()
+                    .filter(d -> ValidateDAO.fuzzyMatchAllWords(d.getFullName(), name))
+                    .collect(Collectors.toList());
         }
 
         return list;
@@ -620,29 +558,6 @@ public class DoctorDAO extends MyDAO {
             return false;
         }
     }
-
-//    // check kí tự đặc biệt , khoảng trắng
-//    public List<Doctor> filterByFuzzyName(List<Doctor> inputList, String rawName) {
-//        if (rawName == null || rawName.trim().isEmpty()) {
-//            return inputList;
-//        }
-//
-//        String cleanName = rawName.replaceAll("\\s+", "");
-//        String nameNormalized = TextUtils.normalizeForFuzzySearch(cleanName);
-//        String nameStrict = TextUtils.normalizeStrict(cleanName);
-//
-//        return inputList.stream().filter(d -> {
-//            String fullName = d.getFullName();
-//            String normalizedFullName = TextUtils.normalizeForFuzzySearch(fullName);
-//            String originalFullName = TextUtils.normalizeStrict(fullName);
-//
-//            if (!nameNormalized.equals(nameStrict)) {
-//                return originalFullName.contains(nameStrict);
-//            } else {
-//                return normalizedFullName.contains(nameNormalized);
-//            }
-//        }).collect(Collectors.toList());
-//    }
 
     // 10. phân trang
     public List<Doctor> getDoctorsPage(String name, String gender, Integer levelId, Integer specializationId, int offset, int limit) {
@@ -726,27 +641,6 @@ public class DoctorDAO extends MyDAO {
     public int countDoctors(String name, String gender, Integer levelId, Integer specializationId) {
         return getDoctorsPage(name, gender, levelId, specializationId, 0, Integer.MAX_VALUE).size();
     }
-
-//    public void insert(Doctor doctor) {
-//        String sql = "INSERT INTO doctor (full_name, email, username, password, role, status, created_at) "
-//                + "VALUES (?, ?, ?, ?, ?, ?, GETDATE())";
-//
-//        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//            ps.setString(1, doctor.getFullName());
-//            ps.setString(2, doctor.getEmail());
-//            ps.setString(3, doctor.getUsername());
-//            ps.setString(4, doctor.getPassword());
-//            String role = doctor.getRole().toUpperCase().charAt(0) + doctor.getRole().substring(1).toLowerCase();
-//            ps.setString(5, role);
-//            ps.setBoolean(6, doctor.isStatus());
-//
-//            ps.executeUpdate();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public boolean isUsernameTaken(String username) {
         String sql = "SELECT 1 FROM doctor WHERE username = ?";

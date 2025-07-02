@@ -4,6 +4,7 @@
  */
 package controller.admin;
 
+import dal.AdminDAO;
 import dal.DoctorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,7 +34,7 @@ public class ChangeDoctorStatusController extends HttpServlet {
             int id = Integer.parseInt(idRaw);
             boolean status = "1".equals(statusRaw) || "true".equalsIgnoreCase(statusRaw);
 
-            boolean success = new DoctorDAO().updateDoctorStatus(id, status);
+            boolean success = new AdminDAO().updateDoctorStatus(id, status);
             String message = success ? "Update status successfully" : "Update status failed";
             response.sendRedirect(request.getContextPath() + "/viewDoctorDetail?id=" + id + "&message=" + java.net.URLEncoder.encode(message, "UTF-8"));
         } catch (Exception e) {

@@ -4,6 +4,7 @@
  */
 package controller.admin;
 
+import dal.AdminDAO;
 import dal.DoctorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +36,7 @@ public class ViewDoctorDetailController extends HttpServlet {
 
         try {
             int id = Integer.parseInt(idRaw);
-            DoctorDAO dao = new DoctorDAO();
+            AdminDAO dao = new AdminDAO();
             List<DoctorLevel> doctorLevel = dao.getAllDoctorLevel();
             List<Specialization> specialization = dao.getAllSpecialization();
             Doctor doctor = dao.getDoctorById(id);
