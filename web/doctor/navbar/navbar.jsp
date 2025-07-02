@@ -46,7 +46,10 @@
                                     Chi tiết lịch hẹn
                                 </a>
                                 <div class="dropdown-menu m-0">
-                                    <a href="${pageContext.request.contextPath}/doctor/schedule/appointment_list.jsp" class="dropdown-item">
+                                    <a href="${pageContext.request.contextPath}/DoctorDetailSlotServlet" class="dropdown-item">
+                                        <i class="fa fa-clinic-medical me-2 text-info"></i> Ca khám hôm nay
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/DoctorSlotShiftServlet" class="dropdown-item">
                                         <i class="fa fa-list-alt me-2 text-success"></i> Danh sách lịch khám
                                     </a>
                                     <a href="${pageContext.request.contextPath}/doctor/schedule/appointment_pending.jsp" class="dropdown-item">
@@ -73,7 +76,7 @@
                                     </a>    
                                 </div>
                             </div>
-                            <a href="${pageContext.request.contextPath}/doctor/login_doctor.jsp" class="nav-item nav-link">Đăng xuất</a>
+                            <a href="${pageContext.request.contextPath}/auth/login.jsp" class="nav-item nav-link">Đăng xuất</a>
                         </div>
                     </div>
                 </nav>

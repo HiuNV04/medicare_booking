@@ -42,7 +42,7 @@
     </servlet>
     <servlet>
         <servlet-name>RegisterRoleServlet</servlet-name>
-        <servlet-class>controller_auth.RegisterRoleServlet</servlet-class>
+        <servlet-class>controller.auth.RegisterRoleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ForgetPasswordServlet</servlet-name>
@@ -82,7 +82,7 @@
     </servlet>
     <servlet>
         <servlet-name>ReceptionistDetailServlet</servlet-name>
-        <servlet-class>controller_receptionist.ReceptionistDetailServlet</servlet-class>
+        <servlet-class>controller.receptionist.ReceptionistDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AppointmentListServlet</servlet-name>
@@ -201,6 +201,8 @@
         <welcome-file>admin/register_role.jsp</welcome-file>
         <welcome-file>doctor/login_doctor.jsp</welcome-file>
         <welcome-file>LoginServlet</welcome-file>
+        
+        
         <welcome-file>DoctorProfileServlet</welcome-file>
         <welcome-file>DoctorUpdateServlet</welcome-file>
         <welcome-file>DoctorLoginServlet</welcome-file>
@@ -209,6 +211,25 @@
         <welcome-file>DoctorChangePasswordServlet</welcome-file>
         <welcome-file>DoctorSlotShiftServlet</welcome-file>
         <welcome-file>DoctorDetailSlotServlet</welcome-file>
+        
+        
+        
+        <welcome-file>admin/home_admin.jsp</welcome-file>
+        
+        <welcome-file>auth/register.jsp</welcome-file>
+        <welcome-file>auth/reset.jsp</welcome-file>
+        <welcome-file>auth/forget.jsp</welcome-file>
+        <welcome-file>admin/register_role.jsp</welcome-file>
+        <welcome-file>doctor/login_doctor.jsp</welcome-file>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <welcome-file>doctor/prescription/create_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/view_prescription.jsp</welcome-file>
         <welcome-file>doctor/prescription/history_prescription.jsp</welcome-file>
