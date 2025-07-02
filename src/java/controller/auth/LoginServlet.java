@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
 
             } else if (account instanceof Patient) {
                 session.setAttribute("patient", account);
-                response.sendRedirect("patient/home_patient.jsp");
+                response.sendRedirect("patient/patient.jsp");
                 return;
 
             } else if (account instanceof Staff) {
@@ -102,7 +102,7 @@ public class LoginServlet extends HttpServlet {
                         break;
                     case "receptionist":
                         session.setAttribute("receptionist", s);
-                        response.sendRedirect("receptionist/home.jsp");
+                        response.sendRedirect("receptionist/home_receptionist.jsp");
                         break;
                     default:
                         request.setAttribute("error", "Vai trò không hợp lệ: " + role);
