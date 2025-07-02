@@ -5,6 +5,7 @@
 
 package controller.admin;
 
+import dal.AdminDAO;
 import dal.DoctorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,7 +49,7 @@ public class ManageDoctorController extends HttpServlet {
             status = "1".equals(statusStr);
         }
 
-        DoctorDAO dao = new DoctorDAO();
+        AdminDAO dao = new AdminDAO();
 
         int totalRecord = dao.countDoctors(search, role, status);
         int totalPage = (int) Math.ceil((double) totalRecord / pageSize);

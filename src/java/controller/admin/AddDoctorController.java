@@ -4,6 +4,7 @@
  */
 package controller.admin;
 
+import dal.AdminDAO;
 import dal.DoctorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,7 +38,7 @@ public class AddDoctorController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DoctorDAO dao = new DoctorDAO();
+        AdminDAO dao = new AdminDAO();
         List<DoctorLevel> doctorLevel = dao.getAllDoctorLevel();
         List<Specialization> specialization = dao.getAllSpecialization();
         request.setAttribute("doctorLevel", doctorLevel);
@@ -80,7 +81,7 @@ public class AddDoctorController extends HttpServlet {
         if (email == null || email.trim().isEmpty()) {
             request.setAttribute("emailError", "Không được để trống");
             hasError = true;
-        } else if (new DoctorDAO().checkEmailExists(email)) {
+        } else if (new AdminDAO().checkEmailExists(email)) {
             request.setAttribute("emailError", "Email đã tồn tại");
             hasError = true;
         }
@@ -88,7 +89,7 @@ public class AddDoctorController extends HttpServlet {
         if (username == null || username.trim().isEmpty()) {
             request.setAttribute("usernameError", "Không được để trống");
             hasError = true;
-        } else if (new DoctorDAO().checkUsernameExists(username)) {
+        } else if (new AdminDAO().checkUsernameExists(username)) {
             request.setAttribute("usernameError", "Username đã tồn tại");
             hasError = true;
         }
@@ -139,7 +140,7 @@ public class AddDoctorController extends HttpServlet {
             dateOfBirth = java.sql.Date.valueOf(dateOfBirthStr);
         }
 
-        boolean success = new DoctorDAO().addDoctor(imageUrl, email, username, password, role, fullName, dateOfBirth, gender, address, phoneNumber, doctorLevelId, specializationId);
+        boolean success = new AdminDAO().addDoctor(imageUrl, email, username, password, role, fullName, dateOfBirth, gender, address, phoneNumber, doctorLevelId, specializationId);
         String message = success ? "Thêm thành công" : "Thêm thất bại";
         request.setAttribute("message", message);
         if (success) {

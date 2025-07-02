@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <jsp:include page="/doctor/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/doctor/navbar/navbar.jsp" />
 
         <% if (request.getAttribute("success") != null) { %>
@@ -63,7 +63,7 @@
 
 
 
-        <jsp:include page="/doctor/footer/footer.jsp" />
-        <jsp:include page="/doctor/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 </html>

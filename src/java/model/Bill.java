@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  * @author Admin
  */
 public class Bill {
+
     private int id;
     private int patientId;
     private String patientName;
@@ -19,11 +20,15 @@ public class Bill {
     private String paymentStatus;
     private double amount;
 
+    private String testName;
+    private int quantity;
+    private double unitPrice;
+    private double totalTest;
+
     public Bill() {
     }
 
-    public Bill(int id, int patientId, String patientName, Timestamp appointmentTime, String paymentMethod,
-            String paymentStatus, double amount) {
+    public Bill(int id, int patientId, String patientName, Timestamp appointmentTime, String paymentMethod, String paymentStatus, double amount, String testName, int quantity, double unitPrice, double totalTest) {
         this.id = id;
         this.patientId = patientId;
         this.patientName = patientName;
@@ -31,6 +36,10 @@ public class Bill {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.amount = amount;
+        this.testName = testName;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.totalTest = totalTest;
     }
 
     public int getId() {
@@ -87,6 +96,38 @@ public class Bill {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public double getTotalTest() {
+        return totalTest;
+    }
+
+    public void setTotalTest(double totalTest) {
+        this.totalTest = totalTest;
     }
 
 }

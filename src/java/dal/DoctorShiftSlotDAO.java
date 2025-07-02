@@ -6,6 +6,7 @@ package dal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import model.DoctorShiftSlot;
@@ -62,38 +63,51 @@ public class DoctorShiftSlotDAO extends MyDAO {
         return list;
     }
 
-    public List<DoctorShiftSlot> getTodaySlotByDoctorId(int doctorId) {
+    // hiển thi ca khám cho từng bác sĩ 
+    public List<DoctorShiftSlot> getSlotByDoctorTodayId(int doctorId) {
         List<DoctorShiftSlot> list = new ArrayList<>();
 
-        String sql = "SELECT dss.id AS slot_id, dss.slot_start_time, dss.slot_end_time, dss.date, dss.is_booked, "
-                + "d.full_name AS doctor_name, dl.name AS level_name, s.name AS specialization_name "
-                + "FROM doctor_shift_slot dss "
-                + "JOIN doctor d ON dss.doctor_id = d.id "
-                + "LEFT JOIN doctor_level dl ON d.doctor_level_id = dl.id "
-                + "LEFT JOIN specialization s ON d.specialization_id = s.id "
-                + "WHERE d.id = ? AND dss.date = CAST(GETDATE() AS DATE)";
+        xSql = "SELECT s.id AS slot_id, s.doctor_id, s.date, s.slot_start_time, s.slot_end_time, s.is_booked, "
+                + "d.full_name AS doctor_name, sp.name AS specialization_name, l.name AS level_name, "
+                + "p.full_name AS patient_name, a.room_id "
+                + "FROM doctor_shift_slot s "
+                + "JOIN doctor d ON s.doctor_id = d.id "
+                + "JOIN specialization sp ON d.specialization_id = sp.id "
+                + "JOIN doctor_level l ON d.doctor_level_id = l.id " // ✅ sửa dòng này
+                + "LEFT JOIN appointment_schedule a ON s.id = a.doctor_shift_id "
+                + "LEFT JOIN patient p ON a.patient_id = p.id "
+                + "WHERE s.doctor_id = ? "
+                + "ORDER BY s.date, s.slot_start_time";
 
         try {
-            PreparedStatement ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(xSql);
             ps.setInt(1, doctorId);
-            ResultSet rs = ps.executeQuery();
-
+            rs = ps.executeQuery();
             while (rs.next()) {
                 DoctorShiftSlot s = new DoctorShiftSlot();
                 s.setSlotId(rs.getInt("slot_id"));
+                s.setDoctorId(rs.getInt("doctor_id"));
+                s.setSlotDate(rs.getDate("date"));
                 s.setStart(rs.getTime("slot_start_time"));
                 s.setEnd(rs.getTime("slot_end_time"));
-                s.setSlotDate(rs.getDate("date"));
                 s.setBooked(rs.getBoolean("is_booked"));
+
+                // Thông tin thêm
                 s.setDoctorName(rs.getString("doctor_name"));
-                s.setLevelName(rs.getString("level_name"));
                 s.setSpecializationName(rs.getString("specialization_name"));
+                s.setLevelName(rs.getString("level_name"));
+
+                // Có thể null nếu chưa đặt lịch
+                String patientName = rs.getString("patient_name");
+                s.setPatientName(patientName != null ? patientName : "");
+
+                Object roomIdObj = rs.getObject("room_id");
+                s.setRoomId(roomIdObj != null ? (Integer) roomIdObj : null);
 
                 list.add(s);
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Lỗi getSlotByDoctorTodayId: " + e.getMessage());
         }
 
         return list;
@@ -164,8 +178,15 @@ public class DoctorShiftSlotDAO extends MyDAO {
 
     public static void main(String[] args) {
         DoctorShiftSlotDAO dao = new DoctorShiftSlotDAO();
-        List<DoctorShiftSlot> slots = dao.getAllSlotShift();
-        System.out.println("Slot: " + slots.size());
+        List<DoctorShiftSlot> list = dao.getSlotByDoctorTodayId(1);  // test với doctor_id = 1
+
+        for (DoctorShiftSlot s : list) {
+            System.out.println("Ngày: " + s.getSlotDate());
+            System.out.println("Giờ: " + s.getStart() + " - " + s.getEnd());
+            System.out.println("Bệnh nhân: " + s.getPatientName());
+            System.out.println("Phòng: " + s.getRoomId());
+            System.out.println("----------------------");
+        }
     }
 
 }

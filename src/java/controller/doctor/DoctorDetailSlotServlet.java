@@ -31,37 +31,45 @@ public class DoctorDetailSlotServlet extends HttpServlet {
             return;
         }
 
-        DoctorShiftSlotDAO slotDAO = new DoctorShiftSlotDAO();
-        List<DoctorShiftSlot> allSlots = slotDAO.getAllSlotShift();
+        int doctorId = sessionDoctor.getId();
 
-        // Lọc theo bác sĩ đang đăng nhập và 8 ngày tới
-        LocalDate today = LocalDate.now();
-        LocalDate maxDate = today.plusDays(7);
-
-        List<DoctorShiftSlot> filtered = new ArrayList<>();
-        for (DoctorShiftSlot s : allSlots) {
-            if (s.getDoctorId() == sessionDoctor.getId()) {
-                LocalDate slotDate = s.getSlotDate().toLocalDate();
-                if (!slotDate.isBefore(today) && !slotDate.isAfter(maxDate)) {
-                    filtered.add(s);
-                }
-            }
+        // Lấy offset từ request
+        int offset = 0;
+        try {
+            offset = Integer.parseInt(request.getParameter("offset"));
+        } catch (Exception e) {
+            offset = 0;
         }
 
-        // Gộp theo ngày
+        // Tính ngày từ offset (6 ngày)
+        LocalDate fromDate = LocalDate.now().plusDays(offset);
+        LocalDate toDate = fromDate.plusDays(5);
+
+        // Gọi DAO
+        DoctorShiftSlotDAO slotDAO = new DoctorShiftSlotDAO();
+        List<DoctorShiftSlot> allSlots = slotDAO.getSlotByDoctorTodayId(doctorId); // đã JOIN để có patientName
+
+        // Group theo ngày
         Map<String, List<DoctorShiftSlot>> grouped = new LinkedHashMap<>();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        for (int i = 0; i < 8; i++) {
-            String key = today.plusDays(i).format(fmt);
-            grouped.put(key, new ArrayList<>());
+        LocalDate cur = fromDate;
+
+        while (!cur.isAfter(toDate)) {
+            String key = cur.format(fmt);
+            List<DoctorShiftSlot> slotsInDay = new ArrayList<>();
+
+            for (DoctorShiftSlot s : allSlots) {
+                if (s.getSlotDate().toLocalDate().isEqual(cur)) {
+                    slotsInDay.add(s);
+                }
+            }
+
+            grouped.put(key, slotsInDay);
+            cur = cur.plusDays(1);
         }
 
-        for (DoctorShiftSlot slot : filtered) {
-            String key = slot.getSlotDate().toLocalDate().format(fmt);
-            grouped.get(key).add(slot);
-        }
-
-        request.setAttribute("groupedSlotDetail", grouped);
+        request.setAttribute("slotDetail", allSlots);
+        request.setAttribute("offset", offset);
         request.getRequestDispatcher("/doctor/schedule/appointment_detail.jsp").forward(request, response);
     }
 

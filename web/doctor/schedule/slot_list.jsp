@@ -9,11 +9,11 @@
 <html>
     <head>
         <title>Danh sách lịch khám</title>
-        <jsp:include page="/doctor/head/head.jsp" />
+        <jsp:include page="/frontend/head/head.jsp" />
     </head>
 
     <body>
-        <jsp:include page="/doctor/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/doctor/navbar/navbar.jsp" />
         <div class="container mt-5">
             <h2 class="text-center mb-4">Danh sách lịch khám</h2>
@@ -62,8 +62,8 @@
 
         </div>
 
-        <jsp:include page="/doctor/footer/footer.jsp" />
-        <jsp:include page="/doctor/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 </html>
 

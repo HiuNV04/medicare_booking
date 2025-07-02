@@ -14,15 +14,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Trang lễ tân</title>
-        <jsp:include page="/receptionist/head/head.jsp" />
+        <jsp:include page="/frontend/head/head.jsp" />
     </head>
     <body>
-        <jsp:include page="/receptionist/topbar/topbar.jsp" />
+        <jsp:include page="/frontend/topbar/topbar.jsp" />
         <jsp:include page="/receptionist/navbar/navbar.jsp" />
 
 
 
-        <jsp:include page="/receptionist/footer/footer.jsp" />
-        <jsp:include page="/receptionist/script/script.jsp" />
+        <jsp:include page="/frontend/footer/footer.jsp" />
+        <jsp:include page="/frontend/script/script.jsp" />
     </body>
 </html>

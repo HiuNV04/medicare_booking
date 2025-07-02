@@ -4,6 +4,7 @@
  */
 package controller.admin;
 
+import dal.AdminDAO;
 import dal.DoctorDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -91,7 +92,7 @@ public class UpdateDoctorController extends HttpServlet {
         s.setDoctorLevelId(doctorLevelId);
         s.setSpecializationId(specializationId);
 
-        boolean updateSuccess = new DoctorDAO().updateDoctor(s);
+        boolean updateSuccess = new AdminDAO().updateDoctor(s);
 
         String message = updateSuccess ? "Update successfully" : "Update failed";
         // Trả về lại trang detail

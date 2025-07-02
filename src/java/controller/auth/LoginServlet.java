@@ -102,7 +102,7 @@ public class LoginServlet extends HttpServlet {
                         break;
                     case "receptionist":
                         session.setAttribute("receptionist", s);
-                        response.sendRedirect("receptionist/home.jsp");
+                        response.sendRedirect("receptionist/home_receptionist.jsp");
                         break;
                     default:
                         request.setAttribute("error", "Vai trò không hợp lệ: " + role);
