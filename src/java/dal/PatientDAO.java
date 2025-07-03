@@ -18,6 +18,15 @@ import model.Patient;
  */
 public class PatientDAO extends MyDAO {
 
+    public PatientDAO() {
+        super();
+        if (con == null) {
+            System.out.println("❌ DoctorDAO: Không kết nối được tới database");
+        } else {
+            System.out.println("✅ DoctorDAO: Kết nối database thành công");
+        }
+    }
+
     public List<Patient> getPatientsByFilter(String search, String role, Boolean status, int page, int pageSize) {
         List<Patient> list = new ArrayList<>();
         int offset = (page - 1) * pageSize;
@@ -106,9 +115,9 @@ public class PatientDAO extends MyDAO {
 
     public Patient getPatientById(int id) {
         Patient s = null;
-        String sql = "SELECT * FROM patient WHERE id = ?";
+        xSql = "SELECT * FROM patient WHERE id = ?";
         try {
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(xSql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -132,7 +141,7 @@ public class PatientDAO extends MyDAO {
                 s.setIdentityNumber(rs.getString("identity_number"));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("❌ Lỗi getPatientById: " + e.getMessage());
         }
         return s;
     }
@@ -185,24 +194,6 @@ public class PatientDAO extends MyDAO {
 
         return patient;
     }
-
-//    public void insert(Patient patient) {
-//        String sql = "INSERT INTO patient (full_name, email, username, password, status) VALUES (?, ?, ?, ?, ?)";
-//
-//        try (Connection conn = connection; PreparedStatement ps = conn.prepareStatement(sql)) {
-//
-//            ps.setString(1, patient.getFullName());
-//            ps.setString(2, patient.getEmail());
-//            ps.setString(3, patient.getUsername());
-//            ps.setString(4, patient.getPassword());
-//            ps.setBoolean(5, patient.isStatus());
-//
-//            ps.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
 // check trùng tài khoản khi đăng kí
     public boolean isUsernameTaken(String username) {

@@ -51,7 +51,7 @@
                                         <span class="badge bg-success">Đã thanh toán</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="badge bg-warning text-dark">${b.paymentStatus}</span>
+                                        <span class="badge bg-warning text-dark">Chưa thanh toán</span>
                                     </c:otherwise>
                                 </c:choose>
                             </td>
@@ -60,12 +60,11 @@
                             </td>
                             <td class="text-center">
                                 <a href="${pageContext.request.contextPath}/BillDetailServlet?id=${b.id}" class="btn btn-sm btn-info">Xem</a>
-
                             </td>
                         </tr>
                     </c:forEach>
-
                 </tbody>
+
             </table>
 
             <!-- phân trang -->

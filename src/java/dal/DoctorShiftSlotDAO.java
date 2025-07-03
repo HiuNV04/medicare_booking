@@ -73,8 +73,8 @@ public class DoctorShiftSlotDAO extends MyDAO {
                 + "FROM doctor_shift_slot s "
                 + "JOIN doctor d ON s.doctor_id = d.id "
                 + "JOIN specialization sp ON d.specialization_id = sp.id "
-                + "JOIN doctor_level l ON d.doctor_level_id = l.id " // ✅ sửa dòng này
-                + "LEFT JOIN appointment_schedule a ON s.id = a.doctor_shift_id "
+                + "JOIN doctor_level l ON d.doctor_level_id = l.id "
+                + "JOIN appointment_schedule a ON s.id = a.doctor_shift_id AND a.confirmation_status = 'Approved' "
                 + "LEFT JOIN patient p ON a.patient_id = p.id "
                 + "WHERE s.doctor_id = ? "
                 + "ORDER BY s.date, s.slot_start_time";

@@ -30,11 +30,12 @@ public class DoctorShiftSlot {
 
     private String patientName; // 👈 THÊM VÀO
     private Integer roomId;     // 👈 THÊM VÀO
+    private Integer patientId;
 
     public DoctorShiftSlot() {
     }
 
-    public DoctorShiftSlot(int slotId, int doctorId, int specializationId, int levelId, Time start, Time end, java.sql.Date slotDate, boolean booked, String doctorName, String specializationName, String levelName, String patientName, Integer roomId) {
+    public DoctorShiftSlot(int slotId, int doctorId, int specializationId, int levelId, Time start, Time end, java.sql.Date slotDate, boolean booked, String doctorName, String specializationName, String levelName, String patientName, Integer roomId, Integer patientId) {
         this.slotId = slotId;
         this.doctorId = doctorId;
         this.specializationId = specializationId;
@@ -48,6 +49,7 @@ public class DoctorShiftSlot {
         this.levelName = levelName;
         this.patientName = patientName;
         this.roomId = roomId;
+        this.patientId = patientId;
     }
 
     public int getSlotId() {
@@ -154,5 +156,12 @@ public class DoctorShiftSlot {
         this.roomId = roomId;
     }
 
-    
+    public Integer getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Integer patientId) {
+        this.patientId = patientId;
+    }
+
 }

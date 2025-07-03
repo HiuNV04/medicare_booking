@@ -15,21 +15,26 @@ public class Appointment {
     private int id;
     private int patientId;
     private String patientName;
-
     private int doctorId;
     private String doctorName;
-
     private Date date;
     private Time slotStartTime;
     private Time slotEndTime;
-
     private int roomId;
     private String confirmationStatus;
+
+    private String note;
+    private String roomName;
+    private String specialization;
+    private String doctorLevel;
+    private Date patientDob;
+    private String patientGender;
+
 
     public Appointment() {
     }
 
-    public Appointment(int id, int patientId, String patientName, int doctorId, String doctorName, Date date, Time slotStartTime, Time slotEndTime, int roomId, String confirmationStatus) {
+    public Appointment(int id, int patientId, String patientName, int doctorId, String doctorName, Date date, Time slotStartTime, Time slotEndTime, int roomId, String confirmationStatus, String note, String roomName, String specialization, String doctorLevel, Date patientDob, String patientGender) {
         this.id = id;
         this.patientId = patientId;
         this.patientName = patientName;
@@ -40,6 +45,12 @@ public class Appointment {
         this.slotEndTime = slotEndTime;
         this.roomId = roomId;
         this.confirmationStatus = confirmationStatus;
+        this.note = note;
+        this.roomName = roomName;
+        this.specialization = specialization;
+        this.doctorLevel = doctorLevel;
+        this.patientDob = patientDob;
+        this.patientGender = patientGender;
     }
 
     public int getId() {
@@ -121,6 +132,55 @@ public class Appointment {
     public void setConfirmationStatus(String confirmationStatus) {
         this.confirmationStatus = confirmationStatus;
     }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getDoctorLevel() {
+        return doctorLevel;
+    }
+
+    public void setDoctorLevel(String doctorLevel) {
+        this.doctorLevel = doctorLevel;
+    }
+
+    public Date getPatientDob() {
+        return patientDob;
+    }
+
+    public void setPatientDob(Date patientDob) {
+        this.patientDob = patientDob;
+    }
+
+    public String getPatientGender() {
+        return patientGender;
+    }
+
+    public void setPatientGender(String patientGender) {
+        this.patientGender = patientGender;
+    }
+
 
     
 }

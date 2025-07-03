@@ -39,7 +39,9 @@
                                 </div>
                             </div>
 
-                            <a href="<%= request.getContextPath() %>/doctor/patient/patient_profile.jsp" class="nav-item nav-link">Hồ sơ bệnh nhân</a>
+                            <a href="${pageContext.request.contextPath}/DoctorViewPatientServlet?id=${s.patientId}" class="nav-item nav-link">Hồ sơ bệnh nhân</a>
+                       
+
 
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">

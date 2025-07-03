@@ -65,10 +65,6 @@
         <servlet-class>controller.admin.AdminHomeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PatientHomeServlet</servlet-name>
-        <servlet-class>controller.patient.PatientHomeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PatientRegisterServlet</servlet-name>
         <servlet-class>controller.auth.PatientRegisterServlet</servlet-class>
     </servlet>
@@ -79,10 +75,6 @@
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>controller.auth.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ReceptionistDetailServlet</servlet-name>
-        <servlet-class>controller.receptionist.ReceptionistDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AppointmentListServlet</servlet-name>
@@ -99,6 +91,30 @@
     <servlet>
         <servlet-name>BillDetailServlet</servlet-name>
         <servlet-class>controller.receptionist.BillDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AppointmentDetailServlet</servlet-name>
+        <servlet-class>controller.receptionist.AppointmentDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReceptionistProfileServlet</servlet-name>
+        <servlet-class>controller.receptionist.ReceptionistProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmSlotAppointmentServlet</servlet-name>
+        <servlet-class>controller.receptionist.ConfirmSlotAppointmentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReceptionistViewPatientServlet</servlet-name>
+        <servlet-class>controller.receptionist.ReceptionistViewPatientServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PatientHomeServlet</servlet-name>
+        <servlet-class>controller.patient.PatientHomeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DoctorViewPatientServlet</servlet-name>
+        <servlet-class>controller.doctor.DoctorViewPatientServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DoctorProfileServlet</servlet-name>
@@ -165,10 +181,6 @@
         <url-pattern>/AdminHomeServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PatientHomeServlet</servlet-name>
-        <url-pattern>/PatientHomeServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PatientRegisterServlet</servlet-name>
         <url-pattern>/PatientRegisterServlet</url-pattern>
     </servlet-mapping>
@@ -179,10 +191,6 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ReceptionistDetailServlet</servlet-name>
-        <url-pattern>/ReceptionistDetailServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AppointmentListServlet</servlet-name>
@@ -200,6 +208,30 @@
         <servlet-name>BillDetailServlet</servlet-name>
         <url-pattern>/BillDetailServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AppointmentDetailServlet</servlet-name>
+        <url-pattern>/AppointmentDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReceptionistProfileServlet</servlet-name>
+        <url-pattern>/ReceptionistProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmSlotAppointmentServlet</servlet-name>
+        <url-pattern>/ConfirmSlotAppointmentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReceptionistViewPatientServlet</servlet-name>
+        <url-pattern>/ReceptionistViewPatientServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PatientHomeServlet</servlet-name>
+        <url-pattern>/PatientHomeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DoctorViewPatientServlet</servlet-name>
+        <url-pattern>/DoctorViewPatientServlet</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>admin/home_admin.jsp</welcome-file>
         <welcome-file>auth/login.jsp</welcome-file>
@@ -208,6 +240,8 @@
         <welcome-file>auth/forget.jsp</welcome-file>
         <welcome-file>admin/register_role.jsp</welcome-file>
         <welcome-file>doctor/login_doctor.jsp</welcome-file>
+        
+        
         <welcome-file>LoginServlet</welcome-file>
         <welcome-file>DoctorProfileServlet</welcome-file>
         <welcome-file>DoctorUpdateServlet</welcome-file>
@@ -217,6 +251,9 @@
         <welcome-file>DoctorChangePasswordServlet</welcome-file>
         <welcome-file>DoctorSlotShiftServlet</welcome-file>
         <welcome-file>DoctorDetailSlotServlet</welcome-file>
+        
+        
+        
         <welcome-file>admin/home_admin.jsp</welcome-file>
         <welcome-file>auth/register.jsp</welcome-file>
         <welcome-file>auth/reset.jsp</welcome-file>
@@ -229,7 +266,7 @@
         <welcome-file>doctor/schedule/appointment_list.jsp</welcome-file>
         <welcome-file>doctor/schedule/appointment_pending.jsp</welcome-file>
         <welcome-file>doctor/schedule/appointment_history.jsp</welcome-file>
-        <welcome-file>doctor/patient/patient_profile.jsp</welcome-file>
+        <welcome-file>doctor/patient/booked_patient.jsp</welcome-file>
         <welcome-file>doctor/profile/detail_profile.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

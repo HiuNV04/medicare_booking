@@ -49,16 +49,20 @@
                             <td class="text-center">${a.roomId}</td>
                             <td>
                                 <c:choose>
-                                    <c:when test="${a.confirmationStatus eq 'Confirmed'}">
+                                    <c:when test="${a.confirmationStatus eq 'Approved'}">
                                         <span class="badge bg-success">Đã xác nhận</span>
                                     </c:when>
+                                    <c:when test="${a.confirmationStatus eq 'Canceled'}">
+                                        <span class="badge bg-danger">Đã hủy</span>
+                                    </c:when>
                                     <c:otherwise>
-                                        <span class="badge bg-warning text-dark">${a.confirmationStatus}</span>
+                                        <span class="badge bg-warning text-dark">Chưa xác nhận</span>
                                     </c:otherwise>
                                 </c:choose>
+
                             </td>
                             <td class="text-center">
-                                <a href="${pageContext.request.contextPath}/appointment-detail?id=${a.id}" class="btn btn-sm btn-info">Xem</a>
+                                <a href="${pageContext.request.contextPath}/AppointmentDetailServlet?id=${a.id}" class="btn btn-sm btn-info">Xem</a>
                             </td>
                         </tr>
                     </c:forEach>
